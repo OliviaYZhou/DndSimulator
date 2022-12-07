@@ -4,7 +4,9 @@ from Dice import *
 from Skills import *
 from Items import *
 stat_indices = {"str": 0, "dex": 1, "con": 2, "int": 3, "wis": 4, "cha": 5}
-
+proficiency_levels = [3, 20, 100, 300, 1000]
+exp_levels = {1:0, 2:300, 3:900, 4:2700, 5:6500, 6:14000, 7:23000, 8:34000, 9:48000, 10:64000, 11:85000,
+              12:100000, 13:120000, 14:140000, 15:165000, 16:195000, 17:225000, 18:265000, 19:305000, 20:355000}
 def rollStats() -> dict:
     stats = [1]*6
     for i in range(6):
@@ -66,7 +68,7 @@ class Character:
 
 
     def __init__(self, name: str, stats: Optional[Union[List[int], dict]] = None, exp:int=0, gold:int =50,
-                 talent1:str ="str", talent2:str = "dex", bag:List[Item]=None, skills:List[Skill]=None,
+                 talent1:str ="str", talent2:str = "dex", bag:List[Item]=None, skills:dict[str:List[Skill,int]]=None,
                  race:str="Human", classType:str="Civilian", description:str = ""):
         """
 
@@ -77,7 +79,7 @@ class Character:
         :param talent1:
         :param talent2:
         :param bag:
-        :param skills:
+        :param skills: {skillname: [Skill, uses]}
         :param race:
         :param classType:
         :param description:
@@ -133,11 +135,10 @@ class Character:
                   f"CHA: {self.stats['cha']}\n")
 
     def levelUp(self, stat, roll=None):
-        print("LEVEL UP")
         change = [0] * 8
         if stat not in stat_indices:
             print("Error: Nonexistent Stat. Try again.")
-            return
+            return False
         else:
             self.stats[stat] += 1
             change[stat_indices[stat]] = 1
@@ -152,7 +153,16 @@ class Character:
         self.recalculate_HP()
 
         self.printStats(change)
+        return True
 
+    def add_exp(self, exp_amount):
+        self.exp += exp_amount
+        if self.exp >= exp_levels[self.level+1]:
+            print("LEVEL UP")
+            while 1:
+                stat = input("Choose a stat")
+                if self.levelUp(stat):
+                    break
 
     def addToBag(self, item):
         self.bag.append(item)
@@ -171,6 +181,15 @@ class Character:
         if item:
             self.addToBag(item)
         self.gold -= amount
+
+    def use_skill(self, skill_name):
+        skill = self.skills[skill_name][0]
+        effect, roll = skill.get_combat_stats()
+        print(effect, f"{roll[1]}d{roll[0]}")
+        self.skills[skill_name][1] += 1
+        if self.skills[skill_name][1] in proficiency_levels:
+            skill.evolve_skill()
+        return effect, roll
 
     def attack(self, skill = None, initiationRoll = None, enemy = None, enemyRoll = None):
         if initiationRoll and enemyRoll:
