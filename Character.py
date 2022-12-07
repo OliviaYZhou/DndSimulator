@@ -105,32 +105,32 @@ class Character:
         self.description = description
 
     def recalculate_HP(self):
-        self.max_hp = sum(self.hp_rolls)+self.stats[stat_indices["con"]]*self.level+self.perm_modifiers["hp"]
+        self.max_hp = sum(self.hp_rolls)+self.stats["con"]*self.level+self.perm_modifiers["hp"]
 
     def setCon(self, amount):
-        self.stats[stat_indices["con"]] = amount
+        self.stats["con"] = amount
         self.recalculate_HP()
 
     def printStats(self, compare=None):
         if compare:
-            print(f"STR: {self.stR}+{compare[stat_indices['str']]}\n"
-                  f"DEX: {self.dex}+{compare[stat_indices['dex']]}\n"
-                  f"CON: {self.con}+{compare[stat_indices['con']]}\n"
-                  f"INT: {self.iNt}+{compare[stat_indices['int']]}\n"
-                  f"WIS: {self.wis}+{compare[stat_indices['wis']]}\n"
-                  f"CHA: {self.cha}+{compare[stat_indices['cha']]}\n"
+            print(f"STR: {self.stats['str']}+{compare[stat_indices['str']]}\n"
+                  f"DEX: {self.stats['dex']}+{compare[stat_indices['dex']]}\n"
+                  f"CON: {self.stats['con']}+{compare[stat_indices['con']]}\n"
+                  f"INT: {self.stats['int']}+{compare[stat_indices['int']]}\n"
+                  f"WIS: {self.stats['wis']}+{compare[stat_indices['wis']]}\n"
+                  f"CHA: {self.stats['cha']}+{compare[stat_indices['cha']]}\n"
                   f"HP: {self.max_hp}+{compare[6]}\n"
                   f"MP: {self.max_mp}+{compare[7]}\n"
                   )
         else:
             print(f"HP: {self.max_hp}\n"
                   f"MP: {self.max_mp}\n"
-                  f"STR: {self.stR}\n"
-                  f"DEX: {self.dex}\n"
-                  f"CON: {self.con}\n"
-                  f"INT: {self.iNt}\n"
-                  f"WIS: {self.wis}\n"
-                  f"CHA: {self.cha}\n")
+                  f"STR: {self.stats['stR']}\n"
+                  f"DEX: {self.stats['dex']}\n"
+                  f"CON: {self.stats['con']}\n"
+                  f"INT: {self.stats['iNt']}\n"
+                  f"WIS: {self.stats['wis']}\n"
+                  f"CHA: {self.stats['cha']}\n")
 
     def levelUp(self, stat, roll=None):
         print("LEVEL UP")
@@ -139,7 +139,7 @@ class Character:
             print("Error: Nonexistent Stat. Try again.")
             return
         else:
-            self.stats[stat_indices[stat]] += 1
+            self.stats[stat] += 1
             change[stat_indices[stat]] = 1
             print(f"{stat} + 1")
         if not roll:
@@ -160,9 +160,9 @@ class Character:
     def increaseStat(self, stat, amount=1):
         if type(stat) == str:
             if stat == self.talent1 or stat == self.talent2:
-                self.stats[stat_indices[stat]] += 2*amount
+                self.stats[stat] += 2*amount
             else:
-                self.stats[stat_indices[stat]] += amount
+                self.stats[stat] += amount
 
     def modifyGold(self, amount):
         self.gold = self.gold + amount

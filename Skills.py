@@ -1,7 +1,8 @@
+from __future__ import annotations
+
 from typing import Optional
 
 from Dice import *
-from __future__ import annotations
 
 default_level_modifiers = {0:-2, 1:0, 2:1, 3:3, 4:8, 5:15} # level : modifier
 proficiency_levels = {}
