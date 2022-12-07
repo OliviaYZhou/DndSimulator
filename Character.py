@@ -55,7 +55,9 @@ class Character:
     equipped = {"helmet": None, "armor":None, "shoes":None, "weapon": None, "top":None, "bot":None, "accessories":[]}
 
 
-    temp_stat_modifiers = [0,0,0,0,0,0]
+    temp_stat_modifiers = {"str": 0, "dex": 0, "con": 0, "int": 0, "wis": 0, "cha": 0}
+    current_hp = max_hp
+    current_mp = max_mp
     perm_modifiers = {"hp": 0}
 
     damage_taken = 0
@@ -155,6 +157,13 @@ class Character:
         self.printStats(change)
         return True
 
+    def get_stat(self, stat):
+        if stat in self.stats:
+            return self.stats[stat]
+        else:
+            print("Error nonexistent stat")
+            return False
+
     def add_exp(self, exp_amount):
         self.exp += exp_amount
         if self.exp >= exp_levels[self.level+1]:
@@ -181,6 +190,9 @@ class Character:
         if item:
             self.addToBag(item)
         self.gold -= amount
+
+    # def take_damage(self, amount):
+
 
     def use_skill(self, skill_name):
         skill = self.skills[skill_name][0]

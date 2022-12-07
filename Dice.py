@@ -7,6 +7,8 @@ def dice(size, times=None):
 
 def d20(times=None):
     return dice(20, times)
+def d10(times=None):
+    return dice(10, times)
 def d8(times=None):
     return dice(8, times)
 def d6(times=None):
