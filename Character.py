@@ -86,7 +86,7 @@ class Character:
         self.name = name
         if not stats:
             self.stats = rollStats()
-            # ask if roll stats
+            # TODO ask if roll stats
         elif type(stats) == list:
             self.stats = to_stat_dict(stats)
         elif type(stats) == dict:
