@@ -40,6 +40,8 @@ def init_db(conn):
 
 def get_from_db(conn, table:str, values:Union[str, List]="ALL"):
     if values == "ALL":
+        schema = conn.execute(f"SELECT * FROM pragma_table_info('{table}');")
+        print("(" + " ".join([row[1] for row in schema]) + ")")
         cursor = conn.execute(f"SELECT * from {table}")
         for row in cursor:
             print(row)
