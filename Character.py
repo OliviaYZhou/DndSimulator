@@ -1,13 +1,16 @@
+import itertools
 import random
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Dict
 from Dice import *
 from Skills import *
 from Items import *
-stat_indices = {"str": 0, "dex": 1, "con": 2, "int": 3, "wis": 4, "cha": 5}
+stat_indices = {"hp": 0, "mp": 1, "str": 2, "dex": 3, "con": 4, "int": 5, "wis": 6, "cha": 7}
 proficiency_levels = [3, 20, 100, 300, 1000]
 exp_levels = {1:0, 2:300, 3:900, 4:2700, 5:6500, 6:14000, 7:23000, 8:34000, 9:48000, 10:64000, 11:85000,
               12:100000, 13:120000, 14:140000, 15:165000, 16:195000, 17:225000, 18:265000, 19:305000, 20:355000}
+
 def rollStats() -> dict:
+    # TODO ADD HP AND MP
     stats = [1]*6
     for i in range(6):
         four_d6 = d6(4)
@@ -25,15 +28,64 @@ def to_stat_dict(stat_list: List[int]) -> dict:
     :return: dictionary of stats, eg {"str": 0, "dex": 1, "con": 3, "int": 4, "wis": 5, "cha": 6}
     """
     return {
-        "str": stat_list[0],
-        "dex": stat_list[1],
-        "con": stat_list[2],
-        "int": stat_list[3],
-        "wis": stat_list[4],
-        "cha": stat_list[5]
+        "hp": stat_list[0],
+        "mp": stat_list[1],
+        "str": stat_list[2],
+        "dex": stat_list[3],
+        "con": stat_list[4],
+        "int": stat_list[5],
+        "wis": stat_list[6],
+        "cha": stat_list[7]
     }
 
+class BasicCharacter:
+    """
+    Base class for any type of character.
+    """
+    id_iter = itertools.count()
+
+    def __init__(self, name:str=None, stats:List[int]=[10,10,5,5,5,5,5,5],
+                 skills:dict=None, race: str="Human", classType:str="Civilian", description:str = ""):
+        """
+
+        :param name:
+        :param stats: Optional[Union[List[int], Dict]]
+        :param skills: Dict[str, List[Union[Skill,int]]]
+        :param race:
+        :param classType:
+        :param description:
+        """
+        if not name:
+            self.idd = race+classType+next(self.id_iter)
+        else:
+            self.idd = name+next(self.id_iter)
+        self.name = name
+        self.stats = stats
+        self.skills = skills
+        self.race = race
+        self.classType = classType
+        self.description = description
+
+class EnemyCharacter(BasicCharacter):
+    """
+    Enemy character. Made for one time combat.
+    """
+
+class NPC(BasicCharacter):
+    """
+    Non player character. May or may not be hostile. More complex than enemy characters.
+    """
+
+class PlayerCharacter(NPC):
+    """
+    Player controlled character. Much more complicated than NPC's
+    """
+
 class Character:
+    """
+    More of a brainstorming thing.
+    Unorganized.
+    """
     name = ""
 
     stats = {"str": 0, "dex": 1, "con": 2, "int": 3, "wis": 4, "cha": 5}
@@ -70,7 +122,8 @@ class Character:
 
 
     def __init__(self, name: str, stats: Optional[Union[List[int], dict]] = None, exp:int=0, gold:int =50,
-                 talent1:str ="str", talent2:str = "dex", bag:List[Item]=None, skills:dict[str:List[Skill,int]]=None,
+                 talent1:str ="str", talent2:str = "dex", bag:List[Item]=None,
+                 skills:Dict[str, List[Union[Skill,int]]]=None,
                  race:str="Human", classType:str="Civilian", description:str = ""):
         """
 
@@ -203,7 +256,7 @@ class Character:
             skill.evolve_skill()
         return effect, roll
 
-    def attack(self, skill = None, initiationRoll = None, enemy = None, enemyRoll = None):
+    def attack(self, skill = None, weapon=None, initiationRoll = None, enemy = None, enemyRoll = None):
         if initiationRoll and enemyRoll:
             print()
         elif initiationRoll and enemy:
@@ -212,6 +265,9 @@ class Character:
         else:
             print(self.stats["dex"]+d20())
             return self.stats["dex"]+d20()
+
+    def save_to_database(self):
+        pass
 
 
 
