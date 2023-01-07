@@ -6,11 +6,7 @@ from Dice import *
 
 default_level_modifiers = {0:-2, 1:0, 2:1, 3:3, 4:8, 5:15} # level : modifier
 proficiency_levels = [3, 20, 100, 300, 1000]
-def mutable(parameter, default_val):
-    if parameter is None:
-        return default_val
-    else:
-        return parameter
+
 class Skill:
     def __init__(self, idd, level=0, nickname=None, base_effect=0,
                  roll=None, description=""):

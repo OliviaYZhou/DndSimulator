@@ -10,7 +10,21 @@ from typing import Union, List, Optional
 import sqlite3
 
 
-def load_game():
+def load_game(conn):
+    tables = ["CHARACTERS", "SKILLS", "ITEMS"]
+
+    cursor = get_from_db(conn, "CHARACTERS")
+    for row in cursor:
+        pass
+
+    cursor = get_from_db(conn, "SKILLS")
+    for row in cursor:
+        pass
+
+    cursor = get_from_db(conn, "ITEMS")
+    for row in cursor:
+        pass
+
     pass
     # load game from database
 def add_character():
@@ -45,15 +59,16 @@ def get_from_db(conn, table:str, values:Union[str, List]="ALL"):
         cursor = conn.execute(f"SELECT * from {table}")
         for row in cursor:
             print(row)
+        return cursor
     else:
         if not type(values) == list:
             print("Values not list")
             return False
         cursor = conn.execute(f"SELECT {', '.join(values)} from {table}")
-        for i in range(len(values)):
-            print(" ".join(values))
-            for row in cursor:
-                print(row)
+        print(" ".join(values))
+        for row in cursor:
+            print(row)
+        return cursor
 
 
 

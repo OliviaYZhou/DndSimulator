@@ -9,7 +9,7 @@ proficiency_levels = [3, 20, 100, 300, 1000]
 exp_levels = {1:0, 2:300, 3:900, 4:2700, 5:6500, 6:14000, 7:23000, 8:34000, 9:48000, 10:64000, 11:85000,
               12:100000, 13:120000, 14:140000, 15:165000, 16:195000, 17:225000, 18:265000, 19:305000, 20:355000}
 
-def rollStats() -> dict:
+def rollStats(choose_stats = False, level = None) -> dict:
     # TODO ADD HP AND MP
     stats = [1]*6
     for i in range(6):
@@ -17,6 +17,7 @@ def rollStats() -> dict:
         print(four_d6)
         stats[i] = sum(sorted(four_d6, reverse=True).pop())
     print(stats)
+
     # TODO choose stats
     return to_stat_dict(stats)
     # return stats
@@ -24,8 +25,8 @@ def rollStats() -> dict:
 def to_stat_dict(stat_list: List[int]) -> dict:
     """
     Converts stats from list to dict
-    :param stat_list: list of stats, [str, dex, con, int, wis, cha]
-    :return: dictionary of stats, eg {"str": 0, "dex": 1, "con": 3, "int": 4, "wis": 5, "cha": 6}
+    :param stat_list: list of stats, [hp, mp, str, dex, con, int, wis, cha]
+    :return: dictionary of stats, eg {"hp": 9, "mp": 9, "str": 0, "dex": 1, "con": 3, "int": 4, "wis": 5, "cha": 6}
     """
     return {
         "hp": stat_list[0],
@@ -42,9 +43,8 @@ class BasicCharacter:
     """
     Base class for any type of character.
     """
-    id_iter = itertools.count()
 
-    def __init__(self, name:str=None, stats:List[int]=[10,10,5,5,5,5,5,5],
+    def __init__(self, name:str=None, stats:Dict[str, int]=None,
                  skills:dict=None, race: str="Human", classType:str="Civilian", description:str = ""):
         """
 
@@ -55,31 +55,136 @@ class BasicCharacter:
         :param classType:
         :param description:
         """
-        if not name:
-            self.idd = race+classType+next(self.id_iter)
-        else:
-            self.idd = name+next(self.id_iter)
+
         self.name = name
-        self.stats = stats
+        self.stats = mutable(stats, to_stat_dict([10,10,5,5,5,5,5,5]))
         self.skills = skills
         self.race = race
         self.classType = classType
         self.description = description
 
+    def print_character_information(self):
+        print(f"{self.name}\n{self.race}\n{self.classType}\n{self.description}\n")
+
+    def print_stats(self):
+        print(self.stats)
+
+    def print_combat_info(self):
+        print(self.stats, self.skills)
+
 class EnemyCharacter(BasicCharacter):
     """
     Enemy character. Made for one time combat.
     """
+    def __init__(self, name: str = None, stats: Dict[str, int] = None, skills: dict = None, race: str = "Human",
+                 classType: str = "Civilian", description: str = "",
+                 drops:Dict[str, int]=None, gold: tuple = None, exp:int = 0, level = None
+                 ):
+        """
+        :param drops: {helmet: 40, golden_plate: 1}
+        :param gold: (probability, n, m) for (n)d(m) eg 2d20
+        :param exp: experience dropped for defeat
+        :param level: level of enemy. Calculate stats based on level if not provided.
+        """
+        if not stats:
+            if not level:
+                print("Error, no level or stats")
+            else:
+                print("Generating random stats")
 
-class NPC(BasicCharacter):
+        super().__init__(name, stats, skills, race, classType, description)
+        self.drops = drops
+        self.gold = gold
+        self.exp = exp
+        self.level = level
+
+    def attack(self):
+        pass
+
+    def take_damage(self):
+        
+        if self.current_hp == 0:
+            self.generate_drops()
+
+    def generate_drops(self, roll=False) -> List[str]:
+        # golden glove = 1
+        # roll > 99
+        # branch = 60
+        # roll > 40
+
+        dropped = []
+        for key in self.drops:
+            if not roll:
+                r = random.randint(0, 100)
+            else:
+                r = input(f"Roll 1d100 for {key}. Need >{100-self.drops[key]}")
+            if int(r) > 100-self.drops[key]:
+                dropped.append(key)
+        if self.gold:
+            if self.gold[0] == 100:
+                return dropped
+            if not roll:
+                r = random.randint(0, 100)
+            else:
+                r = input(f"Roll 1d100 for gold. Need >{100-self.gold[0]}")
+            if int(r) > 100-self.gold[0]:
+                print("You pass!")
+
+                if not roll:
+                    gold = dice(self.gold[2], self.gold[1])
+                    print(f"Gold: {gold}")
+                    if type(gold) == list:
+                        dropped.append(("gold", sum(gold)))
+                    else:
+                        dropped.append(("gold", gold))
+                else:
+                    gold_rolls = input(f"Roll {self.gold[1]}d{self.gold[2]} (separated by space)")
+                    gold = sum([int(i) for i in gold_rolls.split(" ")])
+                    dropped.append(("gold", gold))
+
+        return dropped
+
+    def print_drops(self):
+        for key, value in self.drops.items():
+            print(f"{key}, probability: {value}")
+        print(f"Gold, probability {self.gold[0]}, amount {self.gold[1]}d{self.gold[2]}")
+        print(f"Exp: {self.exp}")
+
+
+class Slime(EnemyCharacter):
     """
-    Non player character. May or may not be hostile. More complex than enemy characters.
+    Type of enemy character?
     """
+
+class NPC(EnemyCharacter):
+    """
+    Non player character. May or may not be hostile. More complex than enemy characters. Likely reoccuring
+    """
+    id_iter = itertools.count()
+
+    def __init__(self, name: str = None, stats: Dict[str, int] = None, skills: dict = None, race: str = "Human",
+                 classType: str = "Civilian", level=1, description: str = ""):
+        super().__init__(name, stats, skills, race, classType, description)
+
+        if not name:
+            self.idd = race+classType+next(self.id_iter)
+        else:
+            self.idd = name+next(self.id_iter)
+
+        self.level = level
+
+
 
 class PlayerCharacter(NPC):
     """
     Player controlled character. Much more complicated than NPC's
     """
+
+class Inventory:
+    """
+    Inventory of a character.
+    """
+    def __init__(self, bag, gold):
 
 class Character:
     """
@@ -87,6 +192,8 @@ class Character:
     Unorganized.
     """
     name = ""
+    talent1 = 0
+    talent2 = 1
 
     stats = {"str": 0, "dex": 1, "con": 2, "int": 3, "wis": 4, "cha": 5}
 
@@ -98,8 +205,7 @@ class Character:
 
     gold = 0
 
-    talent1 = 0
-    talent2 = 1
+
 
     bag = []
     skills = [] # max skills, skills, used times, proficiency level
@@ -122,7 +228,7 @@ class Character:
 
 
     def __init__(self, name: str, stats: Optional[Union[List[int], dict]] = None, exp:int=0, gold:int =50,
-                 talent1:str ="str", talent2:str = "dex", bag:List[Item]=None,
+                 talents=("str","dex"), bag:List[Item]=None,
                  skills:Dict[str, List[Union[Skill,int]]]=None,
                  race:str="Human", classType:str="Civilian", description:str = ""):
         """
@@ -131,8 +237,7 @@ class Character:
         :param stats:
         :param exp:
         :param gold:
-        :param talent1:
-        :param talent2:
+        :param talents:
         :param bag:
         :param skills: {skillname: [Skill, uses]}
         :param race:
