@@ -11,20 +11,47 @@ class DiceBoard extends React.Component {
         diceHistory: []
     }
     componentDidMount() {
-        // this.addDice(10)
-        // this.addHistory(6, 5)
-        // this.addHistory(10, 2)
-        // console.log(this.state.diceHistory)
-        // this.addHistory(11, 3)
-        // console.log(this.state.diceHistory)
+        this.getHistory()
     }
-    afunction(){}
+    getHistory(){
+        fetch("/diceboard").then(res =>{
+            return res.json()
+        })
+            .then((data) => {
+                this.setState({diceHistory: data.history})
+            })
+    }
 
     addHistory = (diceMax, diceroll) => {
-        console.log(this.state.diceHistory)
-        this.setState(() => ({
-            diceHistory: [...this.state.diceHistory, `d${diceMax}: ${diceroll}`]
-          }))
+        console.log("dicemax", diceMax, diceroll)
+        const diceJson = 
+                {
+                    dicemax: diceMax,
+                    diceval: diceroll,
+                    allhistory: this.state.diceHistory
+                }
+        
+
+        fetch("/diceboard/newroll",
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(diceJson)
+        }).then(res =>res.json())
+            .then((data) => {
+                console.log("from server", data)
+                this.setState({diceHistory: data})
+            })
+
+
+        // original
+
+        // this.setState(() => ({
+        //     diceHistory: [...this.state.diceHistory, `d${diceMax}: ${diceroll}`]
+        //   }))
     }
 
     handleInputChange(event, fieldName) {
@@ -41,12 +68,12 @@ class DiceBoard extends React.Component {
     }
 
     render() {
-
+        console.log(this.state.diceHistory)
         return (
             <div className='dice-module roundedbox'>
                 <div className='row wrapper'>
-                    <div className='add-dice'>
-                        <div className='addDiceButtonColumn column roundedbox'>
+                    <div className='add-dice roundedbox'>
+                        <div className='addDiceButtonColumn column'>
                             <button className='addDiceButton'
                             onClick={() => {this.addDice(3)}}>
                             d3</button>
@@ -65,7 +92,7 @@ class DiceBoard extends React.Component {
                                 <h3>Custom Dice</h3>
                                 <div className='d-something row'>
                                     d <input
-                                            className="customDiceInput"
+                                            className="customDiceInput roundedbox"
                                             type="number"
                                             onChange={(e) => this.handleInputChange(e, "customDice")}
                                         />

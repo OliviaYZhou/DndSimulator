@@ -31,7 +31,20 @@ class Dice extends React.Component {
             }
             , 100);
     }
-    
+
+    // rollAll(){
+    //     var times = 0
+    //     var interval = setInterval(() => 
+    //         {
+    //             this.rolling()
+    //             if (++times == 10){
+    //                 clearInterval(interval)
+    //                 var finalVal = this.rolling()
+    //                 this.props.addHistory(this.state.diceMax, finalVal)
+    //             }
+    //         }
+    //         , 100);
+    // }
     render() {
         return(
             <div className='dice-card hoverable' 
