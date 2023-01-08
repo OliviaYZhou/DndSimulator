@@ -1,0 +1,93 @@
+.dice-module{
+    width: 60%;
+    background-color: rgb(255, 184, 137);
+    min-height: 100%;
+    height: 100vh;
+    padding: 5%;
+}
+.roundedbox{
+    border-radius: 5px;
+}
+.row{
+    display: flex;
+}
+.column{
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper{
+    height: inherit;
+}
+.add-dice{
+    width: 20%;
+    height: 90%;
+    margin-right: 5%;
+    background-color: rgb(255, 122, 122);
+    display: flex;
+}
+
+.customDiceInput{
+    width: 80%;
+    margin-left: 1%;
+}
+.addDiceButtonColumn{
+    width: 90%;
+    margin: 10%;
+
+}
+.addDiceButton{
+    margin-top: 20%;
+    border-radius: 5px;
+    height: 9%;
+}
+.addCustomDiceButton{
+    margin-top: 10%;
+    border-radius: 5px;
+    height: 20%
+}
+.customDice{
+    height: fit-content;
+    align-items: center;
+    text-align: center;
+}
+.dice-board-wrapper{
+    width: 50%;
+    height: 90%;
+    background-color: rgb(236, 215, 255);
+    margin-right: 5%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+#dice-board{
+    height: 100%;
+    width: 100%;
+ 
+    background-color: rgb(255, 241, 254);
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+
+}
+#dice-board li{
+    display: inline-flex;
+    margin-top: 10%;
+    margin-left: 10%;
+}
+.dice-history{
+    width: 20%;
+    height: 90%;
+    background-color: bisque;
+    padding-left: 5%;
+}
+
+.dice-history-list{
+    list-style: none;
+    padding-left: 0%;
+    padding-right: 5%;
+    
+}
+.dice-history-list li{
+    padding-bottom: 10%;
+}

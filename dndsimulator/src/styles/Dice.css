@@ -1,0 +1,89 @@
+.dice-card{
+    width: 100px;
+    height: 100px;
+    /* margin: 20px; */
+    padding-bottom: 1%;
+   
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgb(232, 230, 230);
+    border-radius: 25px;
+
+}
+.dice-body{
+
+    height: 50%;
+    width: 50%;
+    /* padding: 5px; */
+    margin: 10%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    
+    background-color: rgb(158, 158, 158);
+
+    /* vertical-align: middle;
+    line-height: 100%;  */
+
+    
+    /* height: 100%; */
+    /* max-height: inherit; */
+
+    /* padding: 0% ; */
+    transform: rotate(45deg);
+    border-radius: 5px;
+    /* text-align: center; */
+
+    /* transform: rotateY(45deg) */
+}
+
+.dice-value{
+    height: inherit;
+    transform: rotate(-45deg);
+}
+
+.tilt{
+    transform: rotate(45deg);
+}
+.reverse-tilt{
+    transform: rotate(-45deg);
+}
+
+.revert-tilt{
+    transform: rotate(0deg);
+}
+
+.hoverable:hover {
+    cursor: grab;
+    border-color: red;
+}
+
+.dice-body:hover{
+    background-color: rgb(101, 101, 101);
+}
+
+.diamond {
+    /* position: absolute; */
+ 
+    /* left: 0; */
+    /* right: 0;
+    top: 0;
+    bottom: 0; */
+    margin: auto;
+    width: 60%;
+    /* height: 0; */
+    padding: 30% 0;
+    background: rgb(146, 48, 48);
+    text-align: center;
+    transform: rotate(45deg);
+    /* -ms-transform: rotate(45deg); */
+    /* -moz-transform: rotate(45deg); */
+    /* -webkit-transform: rotate(45deg); */
+    
+}
+
+
