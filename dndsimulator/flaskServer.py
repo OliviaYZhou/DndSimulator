@@ -15,11 +15,15 @@ def get_dice_history():
 def post_new_roll():
     diceval = request.json["diceval"]
     dicemax = request.json["dicemax"]
+    index = request.json["index"]
+
     original_history = request.json["allhistory"]
+    original_dice = request.json["allDice"]
     # pretend_original_history = ["d10:9", "d9:8"]
     # save to db
     original_history.append(f'd{dicemax}:{diceval}')
-    return original_history
+    original_dice[index][1] = diceval
+    return {"history": original_history, "diceList": original_dice}
 
 # Running app
 if __name__ == '__main__':

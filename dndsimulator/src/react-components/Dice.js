@@ -4,8 +4,16 @@ import "../styles/Dice.css"
 class Dice extends React.Component {
 
     state = {
-        diceMax: this.props.val,
-        diceVal: `d${this.props.val}`
+        diceMax: this.props.properties[0],
+        diceVal: this.props.properties[1],
+        originalprops: this.props.properties[1]
+    }
+
+    static getDerivedStateFromProps(props, state){
+        if (props.originalprops != state.originalprops){
+            return{diceVal: props.properties[1], originalprops: props.originalprops}
+        }
+        return null
     }
 
     
@@ -25,8 +33,9 @@ class Dice extends React.Component {
                 this.rolling()
                 if (++times == 10){
                     clearInterval(interval)
-                    var finalVal = this.rolling()
-                    this.props.addHistory(this.state.diceMax, finalVal)
+                    var finalVal = Math.floor(Math.random() * this.state.diceMax) + 1
+                    this.props.updateDice(this.props.index, finalVal, this.state.diceMax)
+                    // this.props.addHistory(this.state.diceMax, finalVal)
                 }
             }
             , 100);

@@ -6,7 +6,7 @@ import "../styles/DiceBoard.css"
 class DiceBoard extends React.Component {
 
     state = {
-        diceList: [],
+        diceList: [[6,5], [5,4]], // [[dicemax, diceval]]
         customDice: '',
         diceHistory: []
     }
@@ -22,12 +22,65 @@ class DiceBoard extends React.Component {
             })
     }
 
-    addHistory = (diceMax, diceroll) => {
-        console.log("dicemax", diceMax, diceroll)
+    // addHistory = (diceMax, diceroll) => {
+    //     console.log("dicemax", diceMax, diceroll)
+    //     const diceJson = 
+    //             {
+    //                 dicemax: diceMax,
+    //                 diceval: diceroll,
+    //                 allhistory: this.state.diceHistory
+    //             }
+        
+
+    //     fetch("/diceboard/newroll",
+    //     {
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json'
+    //         },
+    //         method: "POST",
+    //         body: JSON.stringify(diceJson)
+    //     }).then(res =>res.json())
+    //         .then((data) => {
+    //             console.log("from server", data)
+    //             this.setState({diceHistory: data})
+    //         })
+
+
+    //     // original
+
+    //     // this.setState(() => ({
+    //     //     diceHistory: [...this.state.diceHistory, `d${diceMax}: ${diceroll}`]
+    //     //   }))
+    // }
+
+    handleInputChange(event, fieldName) {
+        const target = event.target;
+        const value = target.value;
+
+        this.setState({[fieldName]: value});
+    }
+    addDice(diceMax){
+        this.setState(() => ({
+            diceList: [...this.state.diceList, [diceMax, `d${diceMax}`]]
+          }))
+        console.log(this.state.diceList)
+    }
+
+    updateDice = (index, roll, dicemax) => {
+
+
+        // let items = [...this.state.diceList]
+        // var rolledDice = items[index]
+        // rolledDice[1] = roll
+        // items[index] = rolledDice
+
         const diceJson = 
                 {
-                    dicemax: diceMax,
-                    diceval: diceroll,
+                    index: index,
+                    diceval: roll,
+                    dicemax: dicemax,
+                    allDice: this.state.diceList,
                     allhistory: this.state.diceHistory
                 }
         
@@ -43,32 +96,16 @@ class DiceBoard extends React.Component {
         }).then(res =>res.json())
             .then((data) => {
                 console.log("from server", data)
-                this.setState({diceHistory: data})
+                this.setState({diceHistory: data.history,
+                               diceList: data.diceList
+                })
             })
 
 
-        // original
-
-        // this.setState(() => ({
-        //     diceHistory: [...this.state.diceHistory, `d${diceMax}: ${diceroll}`]
-        //   }))
-    }
-
-    handleInputChange(event, fieldName) {
-        const target = event.target;
-        const value = target.value;
-
-        this.setState({[fieldName]: value});
-    }
-    addDice(diceMax){
-        this.setState(() => ({
-            diceList: [...this.state.diceList, diceMax]
-          }))
-        // console.log(this.state.diceList)
+        // this.setState({diceList: items})
     }
 
     render() {
-        console.log(this.state.diceHistory)
         return (
             <div className='dice-module roundedbox'>
                 <div className='row wrapper'>
@@ -111,9 +148,10 @@ class DiceBoard extends React.Component {
                     
                         <h3>Dice</h3>
                         <ul id="dice-board">
-                        {this.state.diceList.map((dicemax, index) => (
+                        {this.state.diceList.map((dice, index) => (
                             <li key={index}>
-                                <Dice val={dicemax} addHistory={this.addHistory}/>
+                                <Dice properties={dice} originalprops={dice[1]} index={index} updateDice={this.updateDice}
+                                />
                             </li>
                         ))}
        
