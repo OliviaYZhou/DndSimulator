@@ -3,16 +3,39 @@ import {uid} from "react-uid";
 import {withRouter} from 'react-router-dom';
 import Dice from "./Dice";
 import "../styles/DiceBoard.css"
-class DiceBoard extends React.Component {
+import socketIOClient from "socket.io-client"
 
+let socket = socketIOClient("http://localhost:5000/");
+
+class DiceBoard extends React.Component {
     state = {
         diceList: [[6,5], [5,4]], // [[dicemax, diceval]]
         customDice: '',
         diceHistory: []
+    // constructor(props) {
+    //     super(props)
+        
+    //     }
+        
     }
     componentDidMount() {
-        this.getHistory()
+        // this.getHistory()
+
+        socket.on("get_dice", data=> {this.setDice(data)});
+        
     }
+
+    setDice(data){
+        console.log("from server", data)
+        this.setState({diceHistory: data.history,
+                       diceList: data.diceList
+        })
+        
+      }
+
+    // componentDidUpdate(){
+    //     this.fetchData()
+    // }
     getHistory(){
         fetch("/diceboard").then(res =>{
             return res.json()
@@ -61,10 +84,25 @@ class DiceBoard extends React.Component {
         this.setState({[fieldName]: value});
     }
     addDice(diceMax){
-        this.setState(() => ({
-            diceList: [...this.state.diceList, [diceMax, `d${diceMax}`]]
-          }))
-        console.log(this.state.diceList)
+
+        const newDiceJson = 
+        {
+            dicemax: diceMax,
+            allDice: this.state.diceList,
+            allhistory: this.state.diceHistory
+        }
+
+        socket.emit("dice_add", newDiceJson)
+
+
+        // this.setState(() => ({
+        //     diceList: [...this.state.diceList, [diceMax, `d${diceMax}`]]
+        //   }))
+        // console.log(this.state.diceList)
+    }
+
+    emitUpdate = (dataJson) => {
+        socket.emit("dice_update", dataJson)
     }
 
     updateDice = (index, roll, dicemax) => {
@@ -83,23 +121,25 @@ class DiceBoard extends React.Component {
                     allDice: this.state.diceList,
                     allhistory: this.state.diceHistory
                 }
-        
+        this.emitUpdate(diceJson)
 
-        fetch("/diceboard/newroll",
-        {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify(diceJson)
-        }).then(res =>res.json())
-            .then((data) => {
-                console.log("from server", data)
-                this.setState({diceHistory: data.history,
-                               diceList: data.diceList
-                })
-            })
+        // fetch("/diceboard/newroll",
+        // {
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     },
+        //     method: "POST",
+        //     body: JSON.stringify(diceJson)
+        // })
+        
+        // .then(res =>res.json())
+        //     .then((data) => {
+        //         console.log("from server", data)
+        //         this.setState({diceHistory: data.history,
+        //                        diceList: data.diceList
+        //         })
+        //     })
 
 
         // this.setState({diceList: items})
