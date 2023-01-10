@@ -9,7 +9,7 @@ let socket = socketIOClient("http://localhost:5000/");
 
 class DiceBoard extends React.Component {
     state = {
-        diceList: [[6,5], [5,4]], // [[dicemax, diceval]]
+        diceList: [], // [[dicemax, diceval, rolling]]
         customDice: '',
         diceHistory: []
     // constructor(props) {
@@ -20,10 +20,17 @@ class DiceBoard extends React.Component {
     }
     componentDidMount() {
         // this.getHistory()
-
+        socket.emit("i_just_connected")
+        socket.on("welcome", data => this.load_board(data))
+        
         socket.on("get_dice", data=> {this.setDice(data)});
         socket.on("everyone_start_roll", data=>{this.rollDice(data.index, data.predetermined_result)})
         
+    }
+
+    load_board(data){
+        this.setState({diceList: data.diceList, diceHistory: data.diceHistory})
+        socket.off("welcome")
     }
     
     rolling(index, diceMax) {
@@ -39,8 +46,21 @@ class DiceBoard extends React.Component {
         })
     }
 
+    setRollingStatus(index){
+        let items = [...this.state.diceList]
+        var clickedDice = [...items[index]]
+        clickedDice[2] = !(items[index][2])
+        
+        items[index] = clickedDice
+        
+        this.setState({
+            diceList: items
+        })
+    }
+
     rollDice(index, predetermined_result) {
         var diceMax = this.state.diceList[index][0]
+        this.setRollingStatus(index)
         var times = 0
         var interval = setInterval(() => 
             {
@@ -49,6 +69,7 @@ class DiceBoard extends React.Component {
                     clearInterval(interval)
                     
                     this.updateDice(index, predetermined_result, diceMax)
+                    this.setRollingStatus(index)
                     // this.props.addHistory(this.state.diceMax, finalVal)
                 }
             }
@@ -129,18 +150,18 @@ class DiceBoard extends React.Component {
                 <div className='row wrapper'>
                     <div className='add-dice roundedbox'>
                         <div className='addDiceButtonColumn column'>
-                            <button className='addDiceButton'
+                            <button className='addDiceButton defaultButton'
                             onClick={() => {this.addDice(3)}}>
                             d3</button>
-                            <button className='addDiceButton'
+                            <button className='addDiceButton defaultButton'
                             onClick={() => {this.addDice(4)}}>d4</button>
-                            <button className='addDiceButton'
+                            <button className='addDiceButton defaultButton'
                             onClick={() => {this.addDice(6)}}>d6</button>
-                            <button className='addDiceButton'
+                            <button className='addDiceButton defaultButton'
                             onClick={() => {this.addDice(10)}}>d10</button>
-                            <button className='addDiceButton'
+                            <button className='addDiceButton defaultButton'
                             onClick={() => {this.addDice(20)}}>d20</button>
-                            <button className='addDiceButton'
+                            <button className='addDiceButton defaultButton'
                             onClick={() => {this.addDice(100)}}>d100</button>
                             <div className='column customDice'>
 
@@ -153,7 +174,7 @@ class DiceBoard extends React.Component {
                                         />
                                 </div>
                                 
-                                <button className='addCustomDiceButton'
+                                <button className='addCustomDiceButton defaultButton'
                                 onClick={() => {this.addDice(this.state.customDice)}}>Add Dice</button>
 
                             </div>
@@ -168,7 +189,7 @@ class DiceBoard extends React.Component {
                         <ul id="dice-board">
                         {this.state.diceList.map((dice, index) => (
                             <li key={index}>
-                                <Dice properties={dice} originalprops={dice[1]} index={index} updateDice={this.updateDice} socket={socket}
+                                <Dice properties={dice} originalprops={dice[1]} index={index} socket={socket}
                                 />
                             </li>
                         ))}

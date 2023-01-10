@@ -36,15 +36,21 @@
     margin: 10%;
 
 }
+.defaultButton{
+    background-color: white;
+    border-radius: 5px;
+}
+.defaultButton:hover{
+    background-color: rgb(201, 126, 255);
+    cursor: pointer;
+}
 .addDiceButton{
     margin-top: 20%;
-    border-radius: 5px;
     height: 9%;
 }
 .addCustomDiceButton{
     margin-top: 10%;
-    border-radius: 5px;
-    height: 20%
+    height: 20%;
 }
 .customDice{
     height: fit-content;
@@ -54,7 +60,7 @@
 .dice-board-wrapper{
     width: 50%;
     height: 90%;
-    background-color: rgb(236, 215, 255);
+    background-color: rgb(213, 164, 255);
     margin-right: 5%;
     align-items: center;
     display: flex;
@@ -64,7 +70,7 @@
     height: 100%;
     width: 100%;
  
-    background-color: rgb(255, 241, 254);
+    background-color: rgb(251, 222, 247);
     padding: 0px;
     margin: 0px;
     list-style: none;

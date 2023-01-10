@@ -10,12 +10,17 @@ class Dice extends React.Component {
         diceMax: this.props.properties[0],
         diceVal: this.props.properties[1],
         originalprops: this.props.properties[1],
+        isRolling: this.props.properties[2],
         index: this.props.index
     }
 
     static getDerivedStateFromProps(props, state){
         if (props.originalprops != state.originalprops){
             return{diceVal: props.properties[1], originalprops: props.originalprops}
+        }
+        if (props.properties[2] != state.isRolling){
+
+            return{isRolling: props.properties[2]}
         }
         return null
     }
@@ -69,7 +74,7 @@ class Dice extends React.Component {
                     this.rolled_dice_handler()
                 }}>
         
-                    <div className='dice-body'> 
+                    <div className='dice-body' style={{backgroundColor: this.state.isRolling ?  "rgb(237, 76, 97)": "rgb(236, 239, 255)"}}> 
                         <span className='dice-value'>{this.state.diceVal}</span>
                         
                     </div>

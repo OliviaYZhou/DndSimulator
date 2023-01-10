@@ -5,9 +5,14 @@ from flask_socketio import SocketIO, emit, send
 import random
 # import requests
 # async_mode = None
-
+master_diceList = []
+master_diceHistory = []
 app = Flask(__name__)
 socketIo = SocketIO(app, cors_allowed_origins="*")
+
+@socketIo.on('i_just_connected')
+def notify_connection():
+    emit("welcome", {"diceList": master_diceList, "diceHistory": master_diceHistory})
 
 @app.route('/diceboard')
 def get_dice_history():
@@ -21,8 +26,8 @@ def handle_add_dice(newDiceData):
     original_dice = newDiceData["allDice"]
     original_history = newDiceData["allhistory"]
 
-    original_dice.append([dicemax, dicemax]) 
-    emit("get_dice", {"history": original_history, "diceList": original_dice}, broadcast=True)
+    master_diceList.append([dicemax, f'd{dicemax}', False]) 
+    emit("get_dice", {"history": master_diceHistory, "diceList": master_diceList}, broadcast=True)
     return
 
 @socketIo.on('i_clicked_roll')
@@ -30,6 +35,7 @@ def handle_start_roll(data):
     maxRoll = data["maxRoll"]
     index = data["index"]
     actual_answer = random.randint(1, maxRoll)
+    master_diceHistory.append(f'd{maxRoll}: {actual_answer}')
     emit('everyone_start_roll', {"index":index, "predetermined_result": actual_answer}, broadcast=True)
 
 @socketIo.on('dice_update')
@@ -42,9 +48,8 @@ def handle_new_roll(newRollData):
     original_history = newRollData["allhistory"]
     original_dice = newRollData["allDice"]
 
-    original_history.append(f'd{dicemax}:{diceval}')
-    original_dice[index][1] = diceval
-    emit("get_dice", {"history": original_history, "diceList": original_dice}, broadcast=True)
+    master_diceList[index][1] = diceval
+    emit("get_dice", {"history": master_diceHistory, "diceList": master_diceList}, broadcast=True)
     return
 
 
