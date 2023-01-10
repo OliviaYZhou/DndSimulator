@@ -9,7 +9,7 @@
     justify-content: center;
     align-items: center;
 
-    background-color: rgb(232, 230, 230);
+    background-color: rgb(255, 255, 255);
     border-radius: 25px;
 
 }
@@ -24,7 +24,9 @@
     align-items: center;
     justify-content: center; 
     
-    background-color: rgb(158, 158, 158);
+    background-color: rgb(236, 239, 255);
+    border-style: solid;
+    border-color:rgb(90, 114, 255);
 
     /* vertical-align: middle;
     line-height: 100%;  */

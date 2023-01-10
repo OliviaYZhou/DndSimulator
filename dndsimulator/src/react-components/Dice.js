@@ -1,12 +1,16 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
+import socketIOClient from "socket.io-client"
 import "../styles/Dice.css"
+
+// let socket = socketIOClient("http://localhost:5000/");
 class Dice extends React.Component {
 
     state = {
         diceMax: this.props.properties[0],
         diceVal: this.props.properties[1],
-        originalprops: this.props.properties[1]
+        originalprops: this.props.properties[1],
+        index: this.props.index
     }
 
     static getDerivedStateFromProps(props, state){
@@ -16,30 +20,34 @@ class Dice extends React.Component {
         return null
     }
 
+    rolled_dice_handler(){
+        this.props.socket.emit("i_clicked_roll", {index: this.state.index, maxRoll: this.state.diceMax})
+    }
+
     
 
-    rolling() {
-        var ranVar = Math.floor(Math.random() * this.state.diceMax) + 1
-        this.setState({
-            diceVal:ranVar
-        })
-        return ranVar
-    }
+    // rolling() {
+    //     var ranVar = Math.floor(Math.random() * this.state.diceMax) + 1
+    //     this.setState({
+    //         diceVal:ranVar
+    //     })
+    //     return ranVar
+    // }
 
-    rollDice() {
-        var times = 0
-        var interval = setInterval(() => 
-            {
-                this.rolling()
-                if (++times == 10){
-                    clearInterval(interval)
-                    var finalVal = Math.floor(Math.random() * this.state.diceMax) + 1
-                    this.props.updateDice(this.props.index, finalVal, this.state.diceMax)
-                    // this.props.addHistory(this.state.diceMax, finalVal)
-                }
-            }
-            , 100);
-    }
+    // rollDice() {
+    //     var times = 0
+    //     var interval = setInterval(() => 
+    //         {
+    //             this.rolling()
+    //             if (++times == 10){
+    //                 clearInterval(interval)
+    //                 var finalVal = Math.floor(Math.random() * this.state.diceMax) + 1
+    //                 this.props.updateDice(this.props.index, finalVal, this.state.diceMax)
+    //                 // this.props.addHistory(this.state.diceMax, finalVal)
+    //             }
+    //         }
+    //         , 100);
+    // }
 
     // rollAll(){
     //     var times = 0
@@ -58,7 +66,7 @@ class Dice extends React.Component {
         return(
             <div className='dice-card hoverable' 
                 onClick={() => {
-                    this.rollDice()
+                    this.rolled_dice_handler()
                 }}>
         
                     <div className='dice-body'> 

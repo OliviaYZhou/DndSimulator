@@ -2,6 +2,7 @@ import sqlite3
 from threading import Lock
 from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, emit, send
+import random
 # import requests
 # async_mode = None
 
@@ -23,6 +24,13 @@ def handle_add_dice(newDiceData):
     original_dice.append([dicemax, dicemax]) 
     emit("get_dice", {"history": original_history, "diceList": original_dice}, broadcast=True)
     return
+
+@socketIo.on('i_clicked_roll')
+def handle_start_roll(data):
+    maxRoll = data["maxRoll"]
+    index = data["index"]
+    actual_answer = random.randint(1, maxRoll)
+    emit('everyone_start_roll', {"index":index, "predetermined_result": actual_answer}, broadcast=True)
 
 @socketIo.on('dice_update')
 def handle_new_roll(newRollData):

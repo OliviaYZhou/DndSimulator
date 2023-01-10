@@ -22,7 +22,37 @@ class DiceBoard extends React.Component {
         // this.getHistory()
 
         socket.on("get_dice", data=> {this.setDice(data)});
+        socket.on("everyone_start_roll", data=>{this.rollDice(data.index, data.predetermined_result)})
         
+    }
+    
+    rolling(index, diceMax) {
+        
+        var ranVar = Math.floor(Math.random() * diceMax) + 1
+        let items = [...this.state.diceList]
+        var rolledDice = items[index]
+        rolledDice[1] = ranVar
+        items[index] = rolledDice
+
+        this.setState({
+            diceList: items
+        })
+    }
+
+    rollDice(index, predetermined_result) {
+        var diceMax = this.state.diceList[index][0]
+        var times = 0
+        var interval = setInterval(() => 
+            {
+                this.rolling(index, diceMax)
+                if (++times == 10){
+                    clearInterval(interval)
+                    
+                    this.updateDice(index, predetermined_result, diceMax)
+                    // this.props.addHistory(this.state.diceMax, finalVal)
+                }
+            }
+            , 100);
     }
 
     setDice(data){
@@ -44,38 +74,6 @@ class DiceBoard extends React.Component {
                 this.setState({diceHistory: data.history})
             })
     }
-
-    // addHistory = (diceMax, diceroll) => {
-    //     console.log("dicemax", diceMax, diceroll)
-    //     const diceJson = 
-    //             {
-    //                 dicemax: diceMax,
-    //                 diceval: diceroll,
-    //                 allhistory: this.state.diceHistory
-    //             }
-        
-
-    //     fetch("/diceboard/newroll",
-    //     {
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json'
-    //         },
-    //         method: "POST",
-    //         body: JSON.stringify(diceJson)
-    //     }).then(res =>res.json())
-    //         .then((data) => {
-    //             console.log("from server", data)
-    //             this.setState({diceHistory: data})
-    //         })
-
-
-    //     // original
-
-    //     // this.setState(() => ({
-    //     //     diceHistory: [...this.state.diceHistory, `d${diceMax}: ${diceroll}`]
-    //     //   }))
-    // }
 
     handleInputChange(event, fieldName) {
         const target = event.target;
@@ -121,28 +119,8 @@ class DiceBoard extends React.Component {
                     allDice: this.state.diceList,
                     allhistory: this.state.diceHistory
                 }
+        console.log(diceJson)
         this.emitUpdate(diceJson)
-
-        // fetch("/diceboard/newroll",
-        // {
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     method: "POST",
-        //     body: JSON.stringify(diceJson)
-        // })
-        
-        // .then(res =>res.json())
-        //     .then((data) => {
-        //         console.log("from server", data)
-        //         this.setState({diceHistory: data.history,
-        //                        diceList: data.diceList
-        //         })
-        //     })
-
-
-        // this.setState({diceList: items})
     }
 
     render() {
@@ -190,7 +168,7 @@ class DiceBoard extends React.Component {
                         <ul id="dice-board">
                         {this.state.diceList.map((dice, index) => (
                             <li key={index}>
-                                <Dice properties={dice} originalprops={dice[1]} index={index} updateDice={this.updateDice}
+                                <Dice properties={dice} originalprops={dice[1]} index={index} updateDice={this.updateDice} socket={socket}
                                 />
                             </li>
                         ))}
