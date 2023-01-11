@@ -1,0 +1,8 @@
+#directionsBlock{
+    width: 30%;
+    height: fit-content;
+    font-size:x-small;
+    position: absolute;
+    bottom: 30%;
+    left: 0;
+}

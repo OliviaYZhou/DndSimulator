@@ -34,7 +34,19 @@ def handle_add_dice(newDiceData):
 def delete_dice(data):
     index = data["index"]
     del master_diceList[index]
+    emit("get_dice", {"history": master_diceHistory, "diceList": master_diceList}, broadcast=True)
+    return
+
+@socketIo.on('clear_dice')
+def clear_dice():
+    master_diceList.clear()
     print(master_diceList)
+    emit("get_dice", {"history": master_diceHistory, "diceList": master_diceList}, broadcast=True)
+    return
+
+@socketIo.on('clear_history')
+def clear_history():
+    master_diceHistory.clear()
     emit("get_dice", {"history": master_diceHistory, "diceList": master_diceList}, broadcast=True)
     return
 

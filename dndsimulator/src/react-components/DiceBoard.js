@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import {uid} from "react-uid";
 import {withRouter} from 'react-router-dom';
 import Dice from "./Dice";
+import Directions from "./Directions";
 import "../styles/DiceBoard.css"
 import socketIOClient from "socket.io-client"
 
@@ -22,7 +23,21 @@ class DiceBoard extends React.Component {
         
         socket.on("get_dice", data=> {this.setDice(data)});
         socket.on("everyone_start_roll", data=>{this.rollDice(data.index, data.predetermined_result)})
+        // this.scaleFontSize("dice-history")
         
+    }
+
+    scaleFontSize(element) {
+        var container = document.getElementsByClassName(element);
+    
+        // Reset font-size to 100% to begin
+        container.style.fontSize = "100%";
+    
+        // Check if the text is wider than its container,
+        // if so then reduce font-size
+        if (container.scrollWidth > container.clientWidth) {
+            container.style.fontSize = "70%";
+        }
     }
 
     load_board(data){
@@ -32,9 +47,15 @@ class DiceBoard extends React.Component {
 
 
     deleteDice(index){
-        console.log("right clicked")
         socket.emit("delete_dice", {index: index})
+    }
 
+    clearDice(){
+        socket.emit("clear_dice")
+    }
+
+    clearHistory(){
+        socket.emit("clear_history")
     }
     
     rolling(index, diceMax) {
@@ -134,27 +155,31 @@ class DiceBoard extends React.Component {
     }
 
     render() {
+        
         return (
+            <div>
             <div className='dice-module roundedbox'>
                 <div className='row wrapper'>
                     <div className='add-dice roundedbox'>
                         <div className='addDiceButtonColumn column'>
-                            <button className='addDiceButton defaultButton'
+                            {/* <button className='addDiceButton defaultButton'
                             onClick={() => {this.addDice(3)}}>
                             d3</button>
                             <button className='addDiceButton defaultButton'
-                            onClick={() => {this.addDice(4)}}>d4</button>
+                            onClick={() => {this.addDice(4)}}>d4</button> */}
                             <button className='addDiceButton defaultButton'
                             onClick={() => {this.addDice(6)}}>d6</button>
+                            <button className='addDiceButton defaultButton'
+                            onClick={() => {this.addDice(8)}}>d8</button>
                             <button className='addDiceButton defaultButton'
                             onClick={() => {this.addDice(10)}}>d10</button>
                             <button className='addDiceButton defaultButton'
                             onClick={() => {this.addDice(20)}}>d20</button>
-                            <button className='addDiceButton defaultButton'
+                            <button className='addDiceButton defaultButton lowestButton'
                             onClick={() => {this.addDice(100)}}>d100</button>
-                            <div className='column customDice'>
+                            <div className='column customDiceWrapper'>
 
-                                <h3>Custom Dice</h3>
+                                <span className='label'>Custom</span>
                                 <div className='d-something row'>
                                     d <input
                                             className="customDiceInput roundedbox"
@@ -174,7 +199,10 @@ class DiceBoard extends React.Component {
 
                     <div class='dice-board-wrapper roundedbox'>
                     
-                        <h3>Dice</h3>
+                        <span className='bigHeader' onContextMenu={(e)=>{
+                            e.preventDefault()
+                            this.clearDice()
+                        }}>Dice</span>
                         <ul id="dice-board" style={{backgroundColor: this.state.isRolling ?  " rgb(253, 184, 244)": "rgb(251, 222, 247)"}}>
                         {this.state.diceList.map((dice, index) => (
                             <li key={index}>
@@ -187,7 +215,10 @@ class DiceBoard extends React.Component {
                 
                     </div>
                     <div className='dice-history roundedbox'>
-                        <h2>Dice History</h2>
+                        <span className='bigHeader' onContextMenu={(e)=>{
+                            e.preventDefault()
+                            this.clearHistory()
+                        }}>History</span>
                         <ul className='dice-history-list'>
                             {this.state.diceHistory.map((historyString, index) => (
                                 <li key={index}>
@@ -197,6 +228,8 @@ class DiceBoard extends React.Component {
                         </ul>
                     </div>
                 </div>
+            </div>
+            <Directions/>
             </div>
         )
     }
