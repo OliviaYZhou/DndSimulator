@@ -22,7 +22,8 @@ def get_dice_history():
 def handle_add_dice(newDiceData):
 
 
-    dicemax = newDiceData["dicemax"]
+    dicemax = int(newDiceData["dicemax"])
+
     original_dice = newDiceData["allDice"]
     original_history = newDiceData["allhistory"]
 

@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useRef} from 'react';
 import {uid} from "react-uid";
 import {withRouter} from 'react-router-dom';
 import Dice from "./Dice";
@@ -7,6 +7,7 @@ import "../styles/DiceBoard.css"
 import socketIOClient from "socket.io-client"
 
 let socket = socketIOClient("http://localhost:5000/");
+
 
 class DiceBoard extends React.Component {
     state = {
@@ -17,7 +18,7 @@ class DiceBoard extends React.Component {
         
     }
     componentDidMount() {
-        // this.getHistory()
+
         socket.emit("i_just_connected")
         socket.on("welcome", data => this.load_board(data))
         
@@ -27,18 +28,18 @@ class DiceBoard extends React.Component {
         
     }
 
-    scaleFontSize(element) {
-        var container = document.getElementsByClassName(element);
+    // scaleFontSize(element) {
+    //     var container = document.getElementsByClassName(element);
     
-        // Reset font-size to 100% to begin
-        container.style.fontSize = "100%";
+    //     // Reset font-size to 100% to begin
+    //     container.style.fontSize = "100%";
     
-        // Check if the text is wider than its container,
-        // if so then reduce font-size
-        if (container.scrollWidth > container.clientWidth) {
-            container.style.fontSize = "70%";
-        }
-    }
+    //     // Check if the text is wider than its container,
+    //     // if so then reduce font-size
+    //     if (container.scrollWidth > container.clientWidth) {
+    //         container.style.fontSize = "70%";
+    //     }
+    // }
 
     load_board(data){
         this.setState({diceList: data.diceList, diceHistory: data.diceHistory})
@@ -157,7 +158,7 @@ class DiceBoard extends React.Component {
     render() {
         
         return (
-            <div>
+            <div className='screen-wrapper'>
             <div className='dice-module roundedbox'>
                 <div className='row wrapper'>
                     <div className='add-dice roundedbox'>

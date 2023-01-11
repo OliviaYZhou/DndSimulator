@@ -1,17 +1,44 @@
-import React from 'react';
+import React, {createRef} from 'react';
 import {withRouter} from 'react-router-dom';
 import socketIOClient from "socket.io-client"
 import "../styles/Dice.css"
 
-// let socket = socketIOClient("http://localhost:5000/");
+// let socket = socketIOClient("htref = React.createRef()
 class Dice extends React.Component {
-
-    state = {
-        diceMax: this.props.properties[0],
-        diceVal: this.props.properties[1],
-        isRolling: this.props.properties[2],
-        index: this.props.index
+    constructor(props){
+        super(props)
+        this.state = {
+            diceMax: this.props.properties[0],
+            diceVal: this.props.properties[1],
+            isRolling: this.props.properties[2],
+            index: this.props.index,
+            hei: 0
+        }
+        this.ref = createRef()
+        this.handleResize = this.handleResize.bind(this);
     }
+
+    componentDidMount(){
+        console.log(this.ref)
+        window.addEventListener("resize", this.handleResize);
+        this.setState({hei: this.ref.current.clientWidth})
+
+    }
+    handleResize(WindowSize, event) {
+        this.setState({hei: this.ref.current.clientWidth})
+    }
+    
+    getHeight(){
+
+        if(this.state.hei !== 0){
+            return `${this.state.hei}px`
+        }
+        else{
+            return "50px"
+        }
+        
+    }
+    
 
     static getDerivedStateFromProps(props, state){
         if (props.properties[1] != state.diceVal){
@@ -28,6 +55,8 @@ class Dice extends React.Component {
         console.log("left click")
         this.props.socket.emit("i_clicked_roll", {index: this.state.index, maxRoll: this.state.diceMax})
     }
+
+
 
     // rollAll(){
     //     var times = 0
@@ -54,7 +83,7 @@ class Dice extends React.Component {
                 }}
                 >
         
-                    <div className='dice-body' style={{backgroundColor: this.state.isRolling ?  "rgb(134, 125, 253)": "rgb(236, 239, 255)"}}> 
+                    <div className='dice-body' ref={this.ref} style={{backgroundColor: this.state.isRolling ?  "rgb(134, 125, 253)": "rgb(236, 239, 255)", height: this.getHeight()}}> 
                         <span className='dice-value'>{this.state.diceVal}</span>
                         
                     </div>
