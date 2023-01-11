@@ -11,11 +11,8 @@ class DiceBoard extends React.Component {
     state = {
         diceList: [], // [[dicemax, diceval, rolling]]
         customDice: '',
-        diceHistory: []
-    // constructor(props) {
-    //     super(props)
-        
-    //     }
+        diceHistory: [],
+        isRolling: false
         
     }
     componentDidMount() {
@@ -32,6 +29,13 @@ class DiceBoard extends React.Component {
         this.setState({diceList: data.diceList, diceHistory: data.diceHistory})
         socket.off("welcome")
     }
+
+
+    deleteDice(index){
+        console.log("right clicked")
+        socket.emit("delete_dice", {index: index})
+
+    }
     
     rolling(index, diceMax) {
         
@@ -46,31 +50,31 @@ class DiceBoard extends React.Component {
         })
     }
 
-    setRollingStatus(index){
+    setRollingStatus(index, on=true){
         let items = [...this.state.diceList]
         var clickedDice = [...items[index]]
-        clickedDice[2] = !(items[index][2])
-        
+        clickedDice[2] = on
         items[index] = clickedDice
         
         this.setState({
-            diceList: items
+            diceList: items,
+            isRolling: on
         })
     }
 
     rollDice(index, predetermined_result) {
         var diceMax = this.state.diceList[index][0]
-        this.setRollingStatus(index)
+        this.setRollingStatus(index, true)
         var times = 0
         var interval = setInterval(() => 
-            {
+            {   
+
                 this.rolling(index, diceMax)
                 if (++times == 10){
                     clearInterval(interval)
                     
                     this.updateDice(index, predetermined_result, diceMax)
-                    this.setRollingStatus(index)
-                    // this.props.addHistory(this.state.diceMax, finalVal)
+                    this.setRollingStatus(index, false)
                 }
             }
             , 100);
@@ -84,9 +88,6 @@ class DiceBoard extends React.Component {
         
       }
 
-    // componentDidUpdate(){
-    //     this.fetchData()
-    // }
     getHistory(){
         fetch("/diceboard").then(res =>{
             return res.json()
@@ -112,12 +113,6 @@ class DiceBoard extends React.Component {
         }
 
         socket.emit("dice_add", newDiceJson)
-
-
-        // this.setState(() => ({
-        //     diceList: [...this.state.diceList, [diceMax, `d${diceMax}`]]
-        //   }))
-        // console.log(this.state.diceList)
     }
 
     emitUpdate = (dataJson) => {
@@ -125,12 +120,6 @@ class DiceBoard extends React.Component {
     }
 
     updateDice = (index, roll, dicemax) => {
-
-
-        // let items = [...this.state.diceList]
-        // var rolledDice = items[index]
-        // rolledDice[1] = roll
-        // items[index] = rolledDice
 
         const diceJson = 
                 {
@@ -186,10 +175,10 @@ class DiceBoard extends React.Component {
                     <div class='dice-board-wrapper roundedbox'>
                     
                         <h3>Dice</h3>
-                        <ul id="dice-board">
+                        <ul id="dice-board" style={{backgroundColor: this.state.isRolling ?  " rgb(253, 184, 244)": "rgb(251, 222, 247)"}}>
                         {this.state.diceList.map((dice, index) => (
                             <li key={index}>
-                                <Dice properties={dice} originalprops={dice[1]} index={index} socket={socket}
+                                <Dice properties={dice} index={index} socket={socket} deleteDice={this.deleteDice}
                                 />
                             </li>
                         ))}

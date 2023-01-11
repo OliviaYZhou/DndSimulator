@@ -30,6 +30,14 @@ def handle_add_dice(newDiceData):
     emit("get_dice", {"history": master_diceHistory, "diceList": master_diceList}, broadcast=True)
     return
 
+@socketIo.on('delete_dice')
+def delete_dice(data):
+    index = data["index"]
+    del master_diceList[index]
+    print(master_diceList)
+    emit("get_dice", {"history": master_diceHistory, "diceList": master_diceList}, broadcast=True)
+    return
+
 @socketIo.on('i_clicked_roll')
 def handle_start_roll(data):
     maxRoll = data["maxRoll"]
