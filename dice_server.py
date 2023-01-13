@@ -1,22 +1,22 @@
-import sqlite3
-from threading import Lock
-from flask import Flask, render_template, session, request
-from flask_socketio import SocketIO, emit, send
+
+# from threading import Lock
 import random
+try:
+    from __main__ import socketIo
+except ImportError:
+    from server import socketIo
 # import requests
 # async_mode = None
 master_diceList = []
 master_diceHistory = []
-app = Flask(__name__)
-socketIo = SocketIO(app, cors_allowed_origins="*")
 
 @socketIo.on('i_just_connected')
 def notify_connection():
     emit("welcome", {"diceList": master_diceList, "diceHistory": master_diceHistory})
 
-@app.route('/diceboard')
-def get_dice_history():
-    return {"history": ["d6:5", "d5:4"]}
+# @app.route('/diceboard')
+# def get_dice_history():
+#     return {"history": ["d6:5", "d5:4"]}
 
 @socketIo.on('dice_add')
 def handle_add_dice(newDiceData):
@@ -89,9 +89,10 @@ def handle_new_roll(newRollData):
 #     return {"history": original_history, "diceList": original_dice}
 
 # Running app
-if __name__ == '__main__':
-    # app.run(debug=True)
-    socketIo.run(app)
+# if __name__ == '__main__':
+
+#     # app.run(debug=True)
+#     socketIo.run(app)
 
 # socketio = SocketIO(app, async_mode=async_mode)
 # thread = None

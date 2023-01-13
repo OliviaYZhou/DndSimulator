@@ -125,6 +125,7 @@
 }
 .row{
     display: flex;
+    width: auto;
 }
 .column{
     display: flex;

@@ -200,23 +200,23 @@ class DiceBoard extends React.Component {
 
                     <div class='dice-board-wrapper roundedbox'>
                     
-                        <span className='bigHeader' onContextMenu={(e)=>{
+                        <span className='bigHeader hoverable' onContextMenu={(e)=>{
                             e.preventDefault()
                             this.clearDice()
                         }}>Dice</span>
                         <ul id="dice-board" style={{backgroundColor: this.state.isRolling ?  " rgb(253, 184, 244)": "rgb(251, 222, 247)"}}>
-                        {this.state.diceList.map((dice, index) => (
-                            <li key={index}>
-                                <Dice properties={dice} index={index} socket={socket} deleteDice={this.deleteDice}
-                                />
-                            </li>
-                        ))}
+                            {this.state.diceList.map((dice, index) => (
+                                <li key={index}>
+                                    <Dice properties={dice} index={index} socket={socket} deleteDice={this.deleteDice}
+                                    />
+                                </li>
+                            ))}
        
                         </ul>
                 
                     </div>
                     <div className='dice-history roundedbox'>
-                        <span className='bigHeader' onContextMenu={(e)=>{
+                        <span className='bigHeader hoverable' onContextMenu={(e)=>{
                             e.preventDefault()
                             this.clearHistory()
                         }}>History</span>

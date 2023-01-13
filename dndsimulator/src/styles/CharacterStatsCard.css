@@ -1,0 +1,110 @@
+.characterCardBody{
+    margin: 10px;
+    height: 400px;
+    align-items: center;
+    text-align: center;
+    background-color: rgb(255, 194, 119);
+    padding: 5px;
+    width: 275px;
+    border-radius: 3%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    position: relative;
+}
+.addStatusEffectButton{
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgb(207, 255, 168);
+    border-radius: 50%;
+}
+.characterid{
+    margin-bottom: 5px;
+}
+.hpMpRow{
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.cumulativeStatsRow{
+    justify-content: center;
+}
+
+.inventory{
+    height: 120px;
+}
+.inventoryList{
+    box-shadow: rgba(189, 117, 1, 0.537) 0px 0px 30px -10px inset, rgba(110, 110, 110, 0.3) 0px 0px 6px -18px inset;
+    margin: 10px;
+    background-color: beige;
+    height: inherit;
+    border-radius: 5%;
+}
+.statrow{
+    margin-top: 5px;
+    align-items: center;
+    justify-content: center;
+}
+.eachStat{
+    margin-left: 6px;
+    margin-right: 6px;
+    font-size: small;
+
+}
+.eachStat:hover{
+    cursor: pointer;
+}
+.cumulativeStat{
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: smaller;
+}
+
+.statDetails{
+    font-size: x-small;
+}
+
+.nameHeader{
+    text-align: center;
+    display: block;
+    font-size: 1.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.2em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+.statBreakdown{
+    margin: 10px;
+    position: relative;
+    
+}
+
+.status_effect_list{
+    border-radius: 5px;
+    justify-content: left;
+    padding: 0px;
+    margin: 0;
+    height: 80px;
+    background-color: beige;
+    overflow:hidden; 
+    overflow-y:scroll;
+    font-size: small;
+}
+.status_effect_list li{
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.closeStatBreakdownButton{
+    background-color: rgb(252, 180, 180);
+    font-weight: bold;
+    border-radius: 50%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 0px;
+}

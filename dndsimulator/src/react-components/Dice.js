@@ -73,7 +73,7 @@ class Dice extends React.Component {
     // }
     render() {
         return(
-            <div className='dice-card hoverable' 
+            <div className='dice-card' 
                 onClick={() => {
                     this.rolled_dice_handler()
                 }}

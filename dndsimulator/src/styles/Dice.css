@@ -67,6 +67,7 @@
 }
 
 .dice-body:hover{
+    cursor: pointer;
     background-color: rgb(134, 125, 253);
 
 }
