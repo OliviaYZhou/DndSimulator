@@ -22,12 +22,6 @@ jobs:
       env: 
         CI: ""
       working-directory: ./dndsimulator
-      
-    - name: Setup Python
-      uses: actions/setup-python@v4.5.0
-      with:
-        python-version: 3.7
-        cache: 'pip'
         
     - name: Install dependencies
-      run: pip install -r requirements.txt
+      run: pip3 install -r requirements.txt
