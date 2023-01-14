@@ -7,7 +7,7 @@ import {withRouter} from 'react-router-dom';
 import CharacterWorkSpace from './react-components/CharacterWorkSpace';
 import Directions from './react-components/Directions';
 
-let socket = socketIOClient("/api");
+let socket = socketIOClient("http://52.14.89.21/");
 
 class App extends React.Component {
   state = {
