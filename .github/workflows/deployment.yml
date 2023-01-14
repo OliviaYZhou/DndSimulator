@@ -18,6 +18,8 @@ jobs:
     - run: npm ci
       working-directory: ./dndsimulator
     - run: npm run build --if-present
+      env: 
+        CI: ""
       working-directory: ./dndsimulator
       
     - name: Setup Python
