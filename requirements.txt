@@ -9,5 +9,5 @@ python-engineio==4.3.4
 python-socketio==5.7.2
 requests==2.27.1
 websockets==10.3
-gunicorn==*
+gunicorn==20.1.0
 
