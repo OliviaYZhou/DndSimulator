@@ -10,3 +10,4 @@ python-socketio==5.7.2
 requests==2.27.1
 websockets==10.3
 gevent==22.10.2
+gevent-websocket==0.10.1
