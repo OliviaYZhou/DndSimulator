@@ -40,18 +40,31 @@ class CharacterStatsCard extends React.Component {
     // }
 
     componentDidMount() {
-        this.props.socket.emit("character_connected", {characterid: this.state.characterid})
-        this.props.socket.on("character_setup", data => this.load_card(data))
-
+        // this.props.socket.emit("character_connected", {characterid: this.state.characterid})
+        // this.props.socket.on("character_setup", data => this.load_card(data))
+        this.load_card()
         this.props.socket.on("get_character_changes", data=> this.reload_card(data))
         
     }
-    load_card(data){
-        console.log("loading")
-        this.setState(data, () => this.setCurrentStats())
-        console.log("status", this.state.status_effects)
+    load_card(){
+        // ?characterid=${this.state.characterid
+
+        fetch(`/character_connected/?characterid=${this.state.characterid}`, {
+            headers : { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+             }
+            }).then(res =>res.json())
+            .then((data) => {
+                console.log("from server", data)
+                this.setState(data, () => this.setCurrentStats())
+            })
+
+        // console.log("loading")
+        // this.setState(data, () => this.setCurrentStats())
+        // console.log("status", this.state.status_effects)
         console.log("curr", this.state.current_stats)
-        this.props.socket.off("character_setup")
+        // this.props.socket.off("character_setup")
     }
     reload_card(data){
         this.setState(data)
@@ -82,7 +95,11 @@ class CharacterStatsCard extends React.Component {
         for (const key in this.state.max_stats){
             newCurrStats[key] = this.state.max_stats[key] + this.state.status_effects[key]
         }
+        newCurrStats["HP"] += newCurrStats["CON"]
         this.setState({current_stats: newCurrStats})
+    }
+    addStatusEffect(){
+        
     }
 
 
@@ -111,7 +128,7 @@ class CharacterStatsCard extends React.Component {
                 <div className='characterName'><span className='nameHeader'>{this.state.name}</span></div>
                 <div className='characterid'> <i>{this.state.characterid}</i></div>
                 <div className='hpMpRow row'>
-                    <div> HP: {this.state.current_stats["HP"]}/{this.state.max_stats["HP"]} </div>
+                    <div> HP: {this.state.current_stats["HP"]}/{this.state.max_stats["HP"]+this.state.current_stats["CON"]} </div>
                     
                 </div>
                 <div className='cumulativeStatsRow row'>

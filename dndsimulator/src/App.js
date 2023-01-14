@@ -7,16 +7,16 @@ import {withRouter} from 'react-router-dom';
 import CharacterWorkSpace from './react-components/CharacterWorkSpace';
 import Directions from './react-components/Directions';
 
-let socket = socketIOClient("http://52.14.89.21/");
+// let socket = socketIOClient("http://52.14.89.21/");
+let socket = socketIOClient("http://localhost:5000/");
 
 class App extends React.Component {
   state = {
-    characterList: ["tester2"]
+    characterList: ["orc_guy", "tentacle_guy"]
   }
   render() {
     return (
       <div className="App">
-        Hello
           <ul className='characterWSList'>
           {this.state.characterList.map((characterid) => (
             <li>
