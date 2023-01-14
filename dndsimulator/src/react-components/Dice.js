@@ -12,7 +12,7 @@ class Dice extends React.Component {
             diceVal: this.props.properties[1],
             isRolling: this.props.properties[2],
             index: this.props.index,
-            hei: 0
+            hei: 0,
         }
         this.ref = createRef()
         this.handleResize = this.handleResize.bind(this);
@@ -53,7 +53,7 @@ class Dice extends React.Component {
 
     rolled_dice_handler(){
         console.log("left click")
-        this.props.socket.emit("i_clicked_roll", {index: this.state.index, maxRoll: this.state.diceMax})
+        this.props.socket.emit(`i_clicked_roll`, {index: this.state.index, maxRoll: this.state.diceMax, boardIndex: this.props.boardIndex})
     }
 
 

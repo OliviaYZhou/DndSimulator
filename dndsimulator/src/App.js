@@ -4,6 +4,8 @@ import React from 'react';
 import CharacterStatsCard from './react-components/CharacterStatsCard';
 import socketIOClient from "socket.io-client"
 import {withRouter} from 'react-router-dom';
+import CharacterWorkSpace from './react-components/CharacterWorkSpace';
+import Directions from './react-components/Directions';
 
 let socket = socketIOClient("http://localhost:5000/");
 
@@ -15,14 +17,16 @@ class App extends React.Component {
     return (
       <div className="App">
         Hello
-          <ul className='characters'>
+          <ul className='characterWSList'>
           {this.state.characterList.map((characterid) => (
             <li>
-                <CharacterStatsCard characterid={characterid} socket={socket}/>
+                <CharacterWorkSpace characterid={characterid} socket={socket}/>
             </li>
           ))}
               
           </ul>
+
+          <Directions/>
       </div>
     )
   }

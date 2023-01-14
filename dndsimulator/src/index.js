@@ -9,6 +9,7 @@ import Dice from "./react-components/Dice.js";
 import DiceBoard from "./react-components/DiceBoard.js";
 import CharacterStatsCard from "./react-components/CharacterStatsCard";
 import Directions from "./react-components/Directions";
+import CharacterWorkSpace from "./react-components/CharacterWorkSpace";
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
@@ -16,6 +17,7 @@ ReactDOM.render(
       <Route exact path="/charactercard" render={() => <CharacterStatsCard />} />
       <Route exact path="/" render={() => <App />} />
       <Route exact path="/direction" render={() => <Directions />} />
+      <Route exact path="/workspace" render={() => <CharacterWorkSpace />} />
       {/* <Route exact path="/book/view" render={() => <BookViewer />} /> */}
 
     </Switch>

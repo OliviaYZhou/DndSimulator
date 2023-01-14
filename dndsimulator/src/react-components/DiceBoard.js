@@ -6,7 +6,7 @@ import Directions from "./Directions";
 import "../styles/DiceBoard.css"
 import socketIOClient from "socket.io-client"
 
-let socket = socketIOClient("http://localhost:5000/");
+// let socket = socketIOClient("http://localhost:5000/");
 
 
 class DiceBoard extends React.Component {
@@ -14,16 +14,18 @@ class DiceBoard extends React.Component {
         diceList: [], // [[dicemax, diceval, rolling]]
         customDice: '',
         diceHistory: [],
-        isRolling: false
+        isRolling: false,
+        socket: this.props.socket,
+        boardIndex: 0 //this.props.boardIndex
         
     }
     componentDidMount() {
 
-        socket.emit("i_just_connected")
-        socket.on("welcome", data => this.load_board(data))
+        this.state.socket.emit("i_just_connected", {boardIndex: this.state.boardIndex})
+        this.state.socket.on(`welcome${this.state.boardIndex}`, data => this.load_board(data))
         
-        socket.on("get_dice", data=> {this.setDice(data)});
-        socket.on("everyone_start_roll", data=>{this.rollDice(data.index, data.predetermined_result)})
+        this.state.socket.on(`get_dice${this.state.boardIndex}`, data=> {this.setDice(data)});
+        this.state.socket.on(`everyone_start_roll${this.state.boardIndex}`, data=>{this.rollDice(data.index, data.predetermined_result)})
         // this.scaleFontSize("dice-history")
         
     }
@@ -43,20 +45,20 @@ class DiceBoard extends React.Component {
 
     load_board(data){
         this.setState({diceList: data.diceList, diceHistory: data.diceHistory})
-        socket.off("welcome")
+        this.state.socket.off("welcome")
     }
 
 
     deleteDice(index){
-        socket.emit("delete_dice", {index: index})
+        this.state.socket.emit("delete_dice", {index: index, boardIndex: this.state.boardIndex})
     }
 
     clearDice(){
-        socket.emit("clear_dice")
+        this.state.socket.emit("clear_dice", {boardIndex: this.state.boardIndex})
     }
 
     clearHistory(){
-        socket.emit("clear_history")
+        this.state.socket.emit("clear_history", {boardIndex: this.state.boardIndex})
     }
     
     rolling(index, diceMax) {
@@ -131,14 +133,16 @@ class DiceBoard extends React.Component {
         {
             dicemax: diceMax,
             allDice: this.state.diceList,
-            allhistory: this.state.diceHistory
+            allhistory: this.state.diceHistory,
+            boardIndex: this.state.boardIndex
         }
+        console.log(newDiceJson)
 
-        socket.emit("dice_add", newDiceJson)
+        this.state.socket.emit("dice_add", newDiceJson)
     }
 
     emitUpdate = (dataJson) => {
-        socket.emit("dice_update", dataJson)
+        this.state.socket.emit("dice_update", dataJson)
     }
 
     updateDice = (index, roll, dicemax) => {
@@ -149,7 +153,8 @@ class DiceBoard extends React.Component {
                     diceval: roll,
                     dicemax: dicemax,
                     allDice: this.state.diceList,
-                    allhistory: this.state.diceHistory
+                    allhistory: this.state.diceHistory,
+                    boardIndex: this.state.boardIndex
                 }
         console.log(diceJson)
         this.emitUpdate(diceJson)
@@ -158,7 +163,7 @@ class DiceBoard extends React.Component {
     render() {
         
         return (
-            <div className='screen-wrapper'>
+      
             <div className='dice-module roundedbox'>
                 <div className='row wrapper'>
                     <div className='add-dice roundedbox'>
@@ -207,7 +212,8 @@ class DiceBoard extends React.Component {
                         <ul id="dice-board" style={{backgroundColor: this.state.isRolling ?  " rgb(253, 184, 244)": "rgb(251, 222, 247)"}}>
                             {this.state.diceList.map((dice, index) => (
                                 <li key={index}>
-                                    <Dice properties={dice} index={index} socket={socket} deleteDice={this.deleteDice}
+                                    <Dice properties={dice} index={index} socket={this.state.socket} deleteDice={this.deleteDice} 
+                                    boardIndex={this.state.boardIndex}
                                     />
                                 </li>
                             ))}
@@ -230,8 +236,8 @@ class DiceBoard extends React.Component {
                     </div>
                 </div>
             </div>
-            <Directions/>
-            </div>
+      
+    
         )
     }
 

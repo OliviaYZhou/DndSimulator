@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session, request
-from flask_socketio import SocketIO, emit, send
+from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 socketIo = SocketIO(app, cors_allowed_origins="*")

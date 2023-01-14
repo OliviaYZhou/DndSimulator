@@ -83,12 +83,15 @@
     overflow:hidden; 
     overflow-y:scroll;
     border-radius: 5%;
+    justify-content: left;
+    justify-items: left;
 
 }
 #dice-board li{
     display: inline-flex;
     margin-top: 10%;
-    margin-left: 10%;
+    margin-left: 5%;
+    margin-right: 5%;
     
     /* margin-bottom: 5%; */
     width: 35%;
@@ -112,6 +115,7 @@
     padding-right: 5%;
     overflow:hidden; 
     overflow-y:scroll;
+    
     
 }
 
