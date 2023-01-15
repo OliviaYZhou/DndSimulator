@@ -2,6 +2,7 @@ from character_db import *
 
 stat_order_list = ["HP", "STR", "DEX", "CON", "INT", "WIS", "CHA"]
 
+
 def create_table_BASIC_CHARACTER(cur):
     cur.execute('DROP TABLE IF EXISTS BASIC_CHARACTER CASCADE;')
     cur.execute(
@@ -136,13 +137,27 @@ def init_orc_guy():
     You are exhausted.')
     print(get_player_stats("orc_guy"))
 
+def init_tester_olivia():
+    # add_character("tester2", "olivia2", "ncp")
+    # add_character_stats("tester2", "20 5 6 7 8 9 10", 1)
+    # add_status_effect("tester2", "Crushed Spirit", "0 0 0 0 -1 0 0", 5, "From working in factory")
+    # add_status_effect("tester2", "Tired", "0 2 0 0 0 -5 0", 2, "Loss of sleep")
+    # add_status_effect("tester2", "Candy", "0 0 0 0 0 1 0", 1, "energizing candy")
+    # add_cumulative_stats("tester2", 50, 300)  
+    print(get_player_stats("tester2"))
+
 if __name__ == '__main__':
     conn = psycopg2.connect("dbname=dndtoolkitdb user=olivia")
     cur = conn.cursor()
+    set_conn(conn)
+    # init_tester_olivia()
 
-    # init_db(cur, conn)
-    # init_tentacle_guy()
-    # init_orc_guy()
+
+    init_db(cur, conn)
+    cur.close()
+    init_tentacle_guy()
+    init_orc_guy()
+    
     # print(get_character_stats("tentacle_guy"))
 
 

@@ -5,8 +5,17 @@ from psycopg2 import sql
 try:
     from __main__ import conn
 except ImportError:
-    from server import conn
+    try:
+        from server import conn
+    except:
+        print("main import failed")
+        conn = None
+
+def set_conn(connection):
+    global conn 
+    conn = connection
 # from psql_init import init_db
+
 
 stat_order_list = ["HP", "STR", "DEX", "CON", "INT", "WIS", "CHA"]
 # Open a cursor to perform database operations
@@ -46,14 +55,22 @@ def format_single_stat_status_effect(stat, amount):
 
 def add_status_effect(character_id, effect_name, stats, duration=1, description=''):
     cur = conn.cursor()
+
     if type(stats) == str:
         list_stats = stats.split(" ")
+        print(list_stats)
         cur.execute('INSERT INTO STATUS_EFFECTS (NAME, CHARACTERID, HP, STR, DEX, CON, INT, WIS, CHA, DESCRIPTION, DURATION, DURATION_REMAINING)'
         'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (effect_name, character_id, list_stats[0], list_stats[1],
         list_stats[2], list_stats[3], list_stats[4], list_stats[5], list_stats[6], description, duration, duration))
+        print(f"Status effect {effect_name} added to {character_id}.")
+    elif type(stats) == dict:
+        cur.execute('INSERT INTO STATUS_EFFECTS (NAME, CHARACTERID, HP, STR, DEX, CON, INT, WIS, CHA, DESCRIPTION, DURATION, DURATION_REMAINING)'
+        'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (effect_name, character_id, stats["HP"], stats["STR"],
+        stats["DEX"], stats["CON"], stats["INT"], stats["WIS"], stats["CHA"], description, duration, duration))
+        print(f"Status effect {effect_name} added to {character_id}.")
     conn.commit()
     cur.close()
-    print(f"Status effect {effect_name} added to {character_id}.")
+    
 
 def add_status_effect_delayed(character_id, effect_name, stats, duration, duration_remaining, description=''):
     cur = conn.cursor()
@@ -184,7 +201,7 @@ def get_status_effects_of(statQuery, charid):
     cur = conn.cursor()
     cur.execute(q1,  (charid,))
     status_effects_tuple_list = cur.fetchall()
-    print("status_effects_tuple_list", status_effects_tuple_list)
+    # print("status_effects_tuple_list", status_effects_tuple_list)
     # print(1, status_effects_tuple_list)
     status_effects_json_list = []
     for row in status_effects_tuple_list:
@@ -194,7 +211,7 @@ def get_status_effects_of(statQuery, charid):
 
 def to_json(order_list, query_results):
     # print(f"\n\n############### {query_results}\n #############\n\n")
-    print("query_results", query_results)
+    # print("query_results", query_results)
     newJson = {}
     for i in range(len(order_list)):
         newJson[order_list[i]] = query_results[i]
@@ -207,8 +224,13 @@ def close_db(cur):
 def close_cursor(cur):
     cur.close()
     
-def save_db(conn):
-    conn.commit()
+def save_db(connection = None, charid=None):
+    if not connection:
+        conn.commit()
+        if charid:
+            print(get_player_stats(charid))
+    else:
+        connection.commit()
     print("Database saved.")
 
 # SELECT HP+MHP, STR+MSTR, DEX+MDEX, CON+MCON, INT+MINT, WIS+MWIS, CHA+MCHA 
@@ -237,16 +259,8 @@ def save_db(conn):
 #             )
 if __name__ == "__main__":
     # psql_init.init_db(cur)
-    # add_character("tester2", "olivia2", "ncp")
-    # add_character_stats("tester2", "20 5 6 7 8 9 10", 1)
-    # add_status_effect("tester2", "0 0 0 0 -1 0 0", "Crushed Spirit", "From working in factory", 5)
-    # add_status_effect("tester2", "0 0 0 0 0 -5 0", "Tired", "Loss of sleep", 1)
-    # add_status_effect("tester2", "0 0 0 0 0 1 0", "Candy", "energizing candy", 1)
-
-
     # get_all_characters()
-    # print(get_character_stats("tester2"))
-    # add_cumulative_stats("tester2", 50, 300)
+    
     # conn.commit()
     print(get_player_stats("tester2"))
 

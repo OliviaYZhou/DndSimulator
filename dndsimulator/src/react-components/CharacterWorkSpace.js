@@ -5,19 +5,35 @@ import CharacterStatsCard from './CharacterStatsCard';
 import DiceBoard from './DiceBoard';
 import "../styles/DiceBoard.css"
 import "../styles/CharacterWorkSpace.css"
+import StatusEffectForm from './StatusEffectForm';
 
 class CharacterWorkSpace extends React.Component {
 
     state = {
-        characterid: this.props.characterid,
-        socket: this.props.socket
+        showStatusForm: false
+    }
+
+    showStatusForm = () => {
+        this.setState({showStatusForm : true})
+    }
+    closeStatusForm = () => {
+        this.setState({showStatusForm : false})
     }
 
     render(){
+        const renderStatusEffectForm = () => {
+            if (this.state.showStatusForm){
+                return <StatusEffectForm characterid={this.props.characterid} closeStatusForm={this.closeStatusForm} />
+            }
+            
+        }
         return(
             <div className='CharacterWorkSpace'>
-                <CharacterStatsCard socket={this.state.socket} characterid={this.state.characterid}/>
-                <DiceBoard socket={this.state.socket} />
+                <div className='flexbox'>
+                    <CharacterStatsCard socket={this.props.socket} characterid={this.props.characterid} showStatusForm={this.showStatusForm}/>
+                    {renderStatusEffectForm()}
+                </div>
+                <DiceBoard socket={this.props.socket} />
             </div>
         )
 

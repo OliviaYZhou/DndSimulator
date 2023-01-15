@@ -43,13 +43,13 @@ class CharacterStatsCard extends React.Component {
         // this.props.socket.emit("character_connected", {characterid: this.state.characterid})
         // this.props.socket.on("character_setup", data => this.load_card(data))
         this.load_card()
-        this.props.socket.on("get_character_changes", data=> this.reload_card(data))
+        this.props.socket.on(`get_character_changes/${this.state.characterid}`, data=> this.reload_card(data))
         
     }
     load_card(){
         // ?characterid=${this.state.characterid
 
-        fetch(`/character_connected/?characterid=${this.state.characterid}`, {
+        fetch(`/api/character_connected/?characterid=${this.state.characterid}`, {
             headers : { 
               'Content-Type': 'application/json',
               'Accept': 'application/json'
@@ -67,7 +67,7 @@ class CharacterStatsCard extends React.Component {
         // this.props.socket.off("character_setup")
     }
     reload_card(data){
-        this.setState(data)
+        this.setState(data, ()=> this.setCurrentStats())
     }
     componentDidUpdate(prevProps, prevState){
         if (prevState.status_effects != this.state.status_effects || prevState.max_stats != this.state.max_stats){
@@ -99,7 +99,7 @@ class CharacterStatsCard extends React.Component {
         this.setState({current_stats: newCurrStats})
     }
     addStatusEffect(){
-        
+        this.props.showStatusForm()
     }
 
 
@@ -109,7 +109,7 @@ class CharacterStatsCard extends React.Component {
                 var effectJsonList = this.state.stat_breakdown[this.state.selectedStat] // [{name: name, amount: amount, description: description, duration: duration, duration_remaining: duration}]
                 return(
                     <div className='statBreakdown'>
-                        <button className='closeStatBreakdownButton' onClick={()=>this.closeStatBreakdown()}> x</button>
+                        <button className='closeButton' onClick={()=>this.closeStatBreakdown()}> x</button>
                         <ul className='status_effect_list'>
                             {effectJsonList.map((effect) =>(
                                 <li className='status_effect'>
@@ -124,7 +124,7 @@ class CharacterStatsCard extends React.Component {
         }
         return(
             <div className='characterCardBody'>
-                <button className='addStatusEffectButton'>+</button>
+                <button className='addStatusEffectButton' onClick={()=>this.addStatusEffect()}>+</button>
                 <div className='characterName'><span className='nameHeader'>{this.state.name}</span></div>
                 <div className='characterid'> <i>{this.state.characterid}</i></div>
                 <div className='hpMpRow row'>
