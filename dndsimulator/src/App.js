@@ -12,7 +12,7 @@ let socket = socketIOClient("http://52.14.89.21/");
 
 class App extends React.Component {
   state = {
-    characterList: ["tentacle_guy", "orc_guy"]
+    characterList: ["tester2", "orc_guy"]
   }
   render() {
     return (

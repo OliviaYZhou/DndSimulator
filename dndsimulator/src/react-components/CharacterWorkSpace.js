@@ -23,7 +23,7 @@ class CharacterWorkSpace extends React.Component {
     render(){
         const renderStatusEffectForm = () => {
             if (this.state.showStatusForm){
-                return <StatusEffectForm characterid={this.props.characterid} closeStatusForm={this.closeStatusForm} />
+                return <StatusEffectForm characterid={this.props.characterid} socket={this.props.socket} closeStatusForm={this.closeStatusForm} />
             }
             
         }
