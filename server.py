@@ -6,7 +6,7 @@ import psycopg2
 
 app = Flask(__name__)
 api = Api(app)
-socketIo = SocketIO(app, cors_allowed_origins="*")
+socketIo = SocketIO(app, host='52.14.89.21', cors_allowed_origins="*")
 
 from backend.dice_server import *
 
