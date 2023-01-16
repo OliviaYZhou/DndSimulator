@@ -1,7 +1,7 @@
 try:
-    from __main__ import socketIo, app, api
+    from __main__ import socketIo, app #, api
 except ImportError:
-    from server import socketIo, app, api
+    from server import socketIo, app #, api
 from flask_socketio import emit
 from flask import request
 

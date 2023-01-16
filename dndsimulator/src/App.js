@@ -7,8 +7,8 @@ import {withRouter} from 'react-router-dom';
 import CharacterWorkSpace from './react-components/CharacterWorkSpace';
 import Directions from './react-components/Directions';
 
-let socket = socketIOClient("http://52.14.89.21/");
-// let socket = socketIOClient("http://localhost:5000/");
+// let socket = socketIOClient("http://52.14.89.21/");
+let socket = socketIOClient("http://localhost:8000/");
 
 class App extends React.Component {
   state = {
