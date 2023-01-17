@@ -1,7 +1,7 @@
 
-.App {
+/* .App {
   text-align: center;
-}
+} */
 
 .characterWSList{
   list-style: none;
@@ -9,6 +9,8 @@
 
 .characterWSList li{
   float: left;
+  margin-left: 1%;
+  margin-right: 1%;
 }
 
 
