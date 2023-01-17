@@ -160,8 +160,9 @@ def get_character_stats(charid):
 
 def get_player_stats(charid):
     # print(charid)
+    print("get_player_stats", charid)
     stats_dict = get_character_stats(charid)
-    # print(stats_dict)
+    print(stats_dict)
 
     q1 = '''
     SELECT GOLD, EXP
@@ -170,6 +171,7 @@ def get_player_stats(charid):
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     cur.execute(q1, (charid,))
     cumulative_stats = cur.fetchone()
+    print("cumulative_stats", cumulative_stats)
     # cumulative_stats = to_json(["gold", "exp"], cumulative_stats)
 
     stats_dict["gold"] = cumulative_stats["gold"]
