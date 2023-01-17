@@ -10,12 +10,12 @@ except ImportError:
         from server import conn
     except:
         print("server import failed")
-        conn = None
+        conn = psycopg2.connect("dbname=dndtoolkitdb user=olivia")
 
 def set_conn(connection = None):
 
     global conn 
-    if not connection:
+    if not connection and not conn:
         conn = psycopg2.connect("dbname=dndtoolkitdb user=olivia")
     else:
         conn = connection
