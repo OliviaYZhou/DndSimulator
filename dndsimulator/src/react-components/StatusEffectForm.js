@@ -45,18 +45,18 @@ class StatusEffectForm extends React.Component {
             duration: this.state.inputDuration,
             description: this.state.inputDescription
         }
-        this.props.socket.emit(`/status_effect/`, statusEffectJson)
+        // this.props.socket.emit(`/status_effect/`, statusEffectJson)
 
-        // fetch(`/api/status_effect/`,
-        //         {
-        //             headers: {
-        //                 'Accept': 'application/json',
-        //                 'Content-Type': 'application/json'
-        //             },
-        //             method: "POST",
-        //             body: JSON.stringify(statusEffectJson),
-        //             credentials: "include"
-        //         })
+        fetch(`/api/status_effect/`,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    method: "POST",
+                    body: JSON.stringify(statusEffectJson),
+                    credentials: "include"
+                })
         this.props.closeStatusForm()
         // send server call
 

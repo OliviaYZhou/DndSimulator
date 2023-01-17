@@ -40,39 +40,39 @@ class CharacterStatsCard extends React.Component {
     // }
 
     componentDidMount() {
-        console.log("mount")
-        this.props.socket.emit("character_connected", {characterid: this.state.characterid}, function(error, message){
-            console.log(error);
-            console.log(message);
-        })
-        this.props.socket.on(`character_setup/${this.state.characterid}`, data => this.load_card(data))
-        // this.load_card()
+        // console.log("mount")
+        // this.props.socket.emit("character_connected", {characterid: this.state.characterid}, function(error, message){
+        //     console.log(error);
+        //     console.log(message);
+        // })
+        // this.props.socket.on(`character_setup/${this.state.characterid}`, data => this.load_card(data))
+        this.load_card()
         this.props.socket.on(`get_character_changes/${this.state.characterid}`, data=> this.reload_card(data))
         
     }
-    load_card(data){
-        // ?characterid=${this.state.characterid
+    load_card(data = {}){
+        // characterid=${this.state.characterid
 
-        // fetch(`/api/character_connected/?characterid=${this.state.characterid}`, {
-        //     headers : { 
-        //       'Content-Type': 'application/json',
-        //       'Accept': 'application/json'
-        //      }
-        //     }).then(res =>res.json())
-        //     .then((data) => {
-        //         console.log("from server", data)
-        //         this.setState(data, () => this.setCurrentStats())
-        //     })
+        fetch(`/api/character_connected/?characterid=${this.state.characterid}`, {
+            headers : { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+             }
+            }).then(res =>res.json())
+            .then((data) => {
+                // console.log("from server", data)
+                this.setState(data, () => this.setCurrentStats())
+            })
 
         // console.log("curr", this.state.current_stats)
 
 
         // console.log("loading")
-        console.log("loadcard", data)
-        this.setState(data, () => this.setCurrentStats())
+        // console.log("loadcard", data)
+        // this.setState(data, () => this.setCurrentStats())
         // console.log("status", this.state.status_effects)
         
-        this.props.socket.off(`character_setup/${this.state.characterid}`)
+        // this.props.socket.off(`character_setup/${this.state.characterid}`)
     }
     reload_card(data){
         this.setState(data, ()=> this.setCurrentStats())
