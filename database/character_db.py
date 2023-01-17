@@ -6,14 +6,19 @@ try:
     from __main__ import conn
 except ImportError:
     try:
+        print("main import failed")
         from server import conn
     except:
-        print("main import failed")
+        print("server import failed")
         conn = None
 
-def set_conn(connection):
+def set_conn(connection = None):
+
     global conn 
-    conn = connection
+    if not connection:
+        conn = psycopg2.connect("dbname=dndtoolkitdb user=olivia")
+    else:
+        conn = connection
 # from psql_init import init_db
 
 
