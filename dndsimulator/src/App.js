@@ -2,7 +2,7 @@ import './App.css';
 import Dice from "./react-components/Dice";
 import React from 'react';
 import CharacterStatsCard from './react-components/CharacterStatsCard';
-import { socketIOClient, io }from "socket.io-client"
+import { io }from "socket.io-client"
 import {withRouter} from 'react-router-dom';
 import CharacterWorkSpace from './react-components/CharacterWorkSpace';
 import Directions from './react-components/Directions';
