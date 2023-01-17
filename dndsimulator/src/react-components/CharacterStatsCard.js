@@ -23,7 +23,8 @@ class CharacterStatsCard extends React.Component {
                         "STR": [
                                 {name: "curse", amount: -1, description: "You really pissed the wizard off", duration: 12, duration_remaining: 10}]
     },
-        selectedStat: "WIS"
+        selectedStat: "WIS",
+        inventory: [{"itemName": "bandage", "amount": 1},{"itemName": "candy", "amount": 2}, {"itemName": "floss", "amount": 9}] // item name: amount
     }
     // componentDidMount(){
     //     this.setCurrentStats()
@@ -122,7 +123,7 @@ class CharacterStatsCard extends React.Component {
                         <ul className='status_effect_list'>
                             {effectJsonList.map((effect) =>(
                                 <li className='status_effect'>
-                                    <div>{effect["AMOUNT"]} {effect["NAME"]} ({effect["DURATION_REMAINING"]}/{effect["DURATION"]} turns left)</div>
+                                    <div>{effect["AMOUNT"] >= 0 ? "+" : null}{effect["AMOUNT"]} {effect["NAME"]} ({effect["DURATION_REMAINING"]}/{effect["DURATION"]} turns left)</div>
                                     <div><i>{effect["DESCRIPTION"]}</i></div>
                                 </li>
                             ))} 
@@ -147,9 +148,13 @@ class CharacterStatsCard extends React.Component {
                         <div className='cumulativeStat'>{this.state.gold} Gold </div>
                     </div>
                 </div>
-                <div className='inventory'>
+                <div className='inventoryWrapper'>
                     <ul className='inventoryList'>
-
+                        {this.state.inventory.map((itemJson) => (
+                            <li>
+                                {itemJson["amount"]} x {itemJson["itemName"]}
+                            </li>
+                        ))}
                     </ul>
                 </div>
                 <div className='statrow row'>

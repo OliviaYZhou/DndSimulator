@@ -29,7 +29,7 @@
     justify-content: center;
 }
 
-.inventory{
+.inventoryWrapper{
     height: 120px;
 }
 .inventoryList{
@@ -38,6 +38,17 @@
     background-color: beige;
     height: inherit;
     border-radius: 5%;
+    padding-left: 5%;
+    list-style: none;
+    overflow:hidden; 
+    overflow-y:scroll;
+    font-size: small;
+    justify-content: left;
+}
+.inventoryList li{
+    margin-left: 5%;
+    margin-right: 5%;
+    
 }
 .statrow{
     margin-top: 5px;

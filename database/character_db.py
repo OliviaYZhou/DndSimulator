@@ -96,6 +96,25 @@ def add_cumulative_stats(character_id, gold, exp):
     cur.close()
     print(f"Cumulative stats of {character_id} added")
 
+def add_inventory_item(charid, item_name, amount):
+    cur = conn.cursor()
+    q1 = """
+    SELECT ITEM_NAME, AMOUNT FROM INVENTORY_ITEMS WHERE CHARACTERID=(%s) AND ITEM_NAME=(%s);
+    """
+    print("add", charid, item_name, amount)
+    cur.execute(q1, (charid, item_name))
+    this_item = cur.fetchone()
+    if not this_item:
+        cur.execute('INSERT INTO INVENTORY_ITEMS (ITEM_NAME, CHARACTERID, AMOUNT)'
+            'VALUES (%s, %s, %s)',(item_name, charid, amount))
+    else:
+        cur.execute('UPDATE INVENTORY_ITEMS SET AMOUNT = (INVENTORY_ITEMS.AMOUNT + (%s)) WHERE CHARACTERID=(%s) AND ITEM_NAME=(%s);'
+        , (amount, charid, item_name))
+    
+    conn.commit()
+    cur.close()
+    print(f"{amount} of {item_name} added to inventory of {charid}")
+
 def get_all_characters():
     cur = conn.cursor()
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
@@ -199,6 +218,12 @@ def get_player_stats(charid):
     cur.close()
     return stats_dict
 
+def get_all_player_info(charid):
+    print("playerinfo")
+    player_stats = get_player_stats(charid)
+    inventory = get_character_inventory(charid)
+    player_stats["inventory"] = inventory
+    return player_stats
   
 def get_status_effects_of(statQuery, charid):
     # cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
@@ -213,6 +238,7 @@ def get_status_effects_of(statQuery, charid):
     status_effects_json_list = []
     for row in status_effects_tuple_list:
         status_effects_json_list.append(to_json(["AMOUNT", "NAME", "DESCRIPTION", "DURATION", "DURATION_REMAINING"], row))
+    cur.close()
     return status_effects_json_list
 
 
@@ -223,6 +249,24 @@ def to_json(order_list, query_results):
     for i in range(len(order_list)):
         newJson[order_list[i]] = query_results[i]
     return newJson
+
+
+def get_character_inventory(charid):
+    cur = conn.cursor()
+    q1 = """
+    SELECT ITEM_NAME, AMOUNT FROM INVENTORY_ITEMS WHERE CHARACTERID=(%s);
+    """
+    cur.execute(q1, (charid,))
+
+    all_items = cur.fetchall()
+
+    items_json_list = []
+    for item_tuple in all_items:
+        items_json_list.append(to_json(["itemName", "amount"], item_tuple))
+
+    cur.close()
+    print("inventory", items_json_list)
+    return items_json_list
 
 def close_db(cur):
     cur.close()

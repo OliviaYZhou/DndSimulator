@@ -21,7 +21,7 @@ import database.character_db as character_db
 def send_all_stats():
     print("api send_all_stats")
     characterid = request.args.get('characterid')
-    all_stats = character_db.get_player_stats(characterid)
+    all_stats = character_db.get_all_player_info(characterid)
     print(all_stats, "api\n\n\n\n")
     return all_stats
 
