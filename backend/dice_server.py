@@ -19,66 +19,73 @@ master_diceHistory = []
 @socketIo.on('i_just_connected')
 def notify_connection(data):
 
-    emit(f"welcome{data['boardIndex']}", {"diceList": master_diceList, "diceHistory": master_diceHistory})
+    board_index = int(data["boardIndex"])
+    # print("\n\n\nconnect board\n\n\n", board_index)
 
-# @app.route('/diceboard')
-# def get_dice_history():
-#     return {"history": ["d6:5", "d5:4"]}
+    if board_index > len(master_diceList)-1:
+        master_diceList.append([])
+        master_diceHistory.append([])
+
+    emit(f"welcome/{board_index}", {"diceList": master_diceList[board_index], "diceHistory": master_diceHistory[board_index]})
+
 
 @socketIo.on('dice_add')
 def handle_add_dice(newDiceData):
     # print('\n\n\n\n\n')
-    # print(newDiceData)
+    # print("server add dice", newDiceData)
     # print('\n\n\n\n\n')
+    board_index = int(newDiceData["boardIndex"])
+
     dicemax = int(newDiceData["dicemax"])
 
-    original_dice = newDiceData["allDice"]
-    original_history = newDiceData["allhistory"]
-
-    master_diceList.append([dicemax, f'd{dicemax}', False]) 
-    emit(f"get_dice{newDiceData['boardIndex']}", {"history": master_diceHistory, "diceList": master_diceList}, broadcast=True)
+    master_diceList[board_index].append([dicemax, f'd{dicemax}', False]) 
+    emit(f"get_dice/{newDiceData['boardIndex']}", {"history": master_diceHistory[board_index], "diceList": master_diceList[board_index]}, broadcast=True)
     return
 
 @socketIo.on('delete_dice')
 def delete_dice(data):
+    board_index = int(data["boardIndex"])
     index = data["index"]
-    del master_diceList[index]
-    emit(f"get_dice{data['boardIndex']}", {"history": master_diceHistory, "diceList": master_diceList}, broadcast=True)
+    del master_diceList[board_index][index]
+    emit(f"get_dice/{data['boardIndex']}", {"history": master_diceHistory[board_index], "diceList": master_diceList[board_index]}, broadcast=True)
     return
 
 @socketIo.on('clear_dice')
 def clear_dice(data):
-    master_diceList.clear()
+    board_index = int(data["boardIndex"])
+    master_diceList[board_index].clear()
     # print(master_diceList)
-    emit(f"get_dice{data['boardIndex']}", {"history": master_diceHistory, "diceList": master_diceList}, broadcast=True)
+    emit(f"get_dice/{data['boardIndex']}", {"history": master_diceHistory[board_index], "diceList": master_diceList[board_index]}, broadcast=True)
     return
 
 @socketIo.on('clear_history')
 def clear_history(data):
-    master_diceHistory.clear()
-    emit(f"get_dice{data['boardIndex']}", {"history": master_diceHistory, "diceList": master_diceList}, broadcast=True)
+    board_index = int(data["boardIndex"])
+    master_diceHistory[board_index].clear()
+    emit(f"get_dice/{data['boardIndex']}", {"history": master_diceHistory[board_index], "diceList": master_diceList[board_index]}, broadcast=True)
     return
 
 @socketIo.on('i_clicked_roll')
 def handle_start_roll(data):
+    board_index = int(data["boardIndex"])
     maxRoll = data["maxRoll"]
     index = data["index"]
     actual_answer = random.randint(1, maxRoll)
-    master_diceHistory.append(f'd{maxRoll}: {actual_answer}')
-    emit(f"everyone_start_roll{data['boardIndex']}", {"index":index, "predetermined_result": actual_answer}, broadcast=True)
+    master_diceHistory[board_index].append(f'd{maxRoll}: {actual_answer}')
+    emit(f"everyone_start_roll/{data['boardIndex']}", {"index":index, "predetermined_result": actual_answer}, broadcast=True)
 
 @socketIo.on('dice_update')
 def handle_new_roll(newRollData):
-
+    board_index = int(newRollData["boardIndex"])
     diceval = newRollData["diceval"]
     dicemax = newRollData["dicemax"]
     index = newRollData["index"]
 
-    original_history = newRollData["allhistory"]
-    original_dice = newRollData["allDice"]
+    # original_history = newRollData["allhistory"]
+    # original_dice = newRollData["allDice"]
 
-    master_diceList[index][1] = diceval
-    emit(f"get_dice{newRollData['boardIndex']}", {"history": master_diceHistory, "diceList": master_diceList}, broadcast=True)
+    master_diceList[board_index][index][1] = diceval
+    emit(f"get_dice/{newRollData['boardIndex']}", {"history": master_diceHistory[board_index], "diceList": master_diceList[board_index]}, broadcast=True)
     return
 
 

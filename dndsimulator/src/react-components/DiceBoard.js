@@ -16,16 +16,16 @@ class DiceBoard extends React.Component {
         diceHistory: [],
         isRolling: false,
         socket: this.props.socket,
-        boardIndex: 0 //this.props.boardIndex
+        boardIndex: this.props.boardIndex
         
     }
     componentDidMount() {
-
-        this.state.socket.emit("i_just_connected", {boardIndex: this.state.boardIndex})
-        this.state.socket.on(`welcome${this.state.boardIndex}`, data => this.load_board(data))
+        console.log("mount board index", this.state.boardIndex)
+        this.state.socket.emit("i_just_connected", {boardIndex: this.props.boardIndex})
+        this.state.socket.on(`welcome`, data => this.load_board(data))
         
-        this.state.socket.on(`get_dice${this.state.boardIndex}`, data=> {this.setDice(data)});
-        this.state.socket.on(`everyone_start_roll${this.state.boardIndex}`, data=>{this.rollDice(data.index, data.predetermined_result)})
+        this.state.socket.on(`get_dice/${this.state.boardIndex}`, data=> {this.setDice(data)});
+        this.state.socket.on(`everyone_start_roll/${this.state.boardIndex}`, data=>{this.rollDice(data.index, data.predetermined_result)})
         // this.scaleFontSize("dice-history")
         
     }
@@ -44,12 +44,12 @@ class DiceBoard extends React.Component {
     // }
 
     load_board(data){
-        this.setState({diceList: data.diceList, diceHistory: data.diceHistory})
+        this.setState({diceList: data.diceList, diceHistory: data.diceHistory, boardIndex: data.boardIndex})
         this.state.socket.off("welcome")
     }
 
 
-    deleteDice(index){
+    deleteDice = (index) => {
         this.state.socket.emit("delete_dice", {index: index, boardIndex: this.state.boardIndex})
     }
 
@@ -112,14 +112,14 @@ class DiceBoard extends React.Component {
         
       }
 
-    getHistory(){
-        fetch("/diceboard").then(res =>{
-            return res.json()
-        })
-            .then((data) => {
-                this.setState({diceHistory: data.history})
-            })
-    }
+    // getHistory(){
+    //     fetch("/diceboard").then(res =>{
+    //         return res.json()
+    //     })
+    //         .then((data) => {
+    //             this.setState({diceHistory: data.history})
+    //         })
+    // }
 
     handleInputChange(event, fieldName) {
         const target = event.target;
@@ -132,8 +132,6 @@ class DiceBoard extends React.Component {
         const newDiceJson = 
         {
             dicemax: diceMax,
-            allDice: this.state.diceList,
-            allhistory: this.state.diceHistory,
             boardIndex: this.state.boardIndex
         }
         console.log(newDiceJson)
@@ -153,7 +151,6 @@ class DiceBoard extends React.Component {
                     diceval: roll,
                     dicemax: dicemax,
                     allDice: this.state.diceList,
-                    allhistory: this.state.diceHistory,
                     boardIndex: this.state.boardIndex
                 }
         console.log(diceJson)

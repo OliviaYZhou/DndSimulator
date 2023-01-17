@@ -30,10 +30,11 @@ class CharacterWorkSpace extends React.Component {
         return(
             <div className='CharacterWorkSpace'>
                 <div className='flexbox'>
-                    <CharacterStatsCard socket={this.props.socket} characterid={this.props.characterid} showStatusForm={this.showStatusForm}/>
+                    {console.log("workspace board", this.props.boardIndex)}
+                    <CharacterStatsCard socket={this.props.socket} characterid={this.props.characterid} showStatusForm={this.showStatusForm} />
                     {renderStatusEffectForm()}
                 </div>
-                <DiceBoard socket={this.props.socket} />
+                <DiceBoard socket={this.props.socket} boardIndex={this.props.boardIndex}/>
             </div>
         )
 

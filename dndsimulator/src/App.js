@@ -19,9 +19,9 @@ class App extends React.Component {
     return (
       <div className="App">
           <ul className='characterWSList'>
-          {this.state.characterList.map((characterid) => (
+          {this.state.characterList.map((characterid, index) => (
             <li>
-                <CharacterWorkSpace characterid={characterid} socket={socket}/>
+                <CharacterWorkSpace characterid={characterid} socket={socket} boardIndex={index}/>
             </li>
           ))}
               
