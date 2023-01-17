@@ -64,10 +64,11 @@ class CharacterStatsCard extends React.Component {
 
 
         // console.log("loading")
+        console.log("loadcard", data)
         this.setState(data, () => this.setCurrentStats())
         // console.log("status", this.state.status_effects)
         
-        this.props.socket.off(`character_setup${this.state.characterid}`)
+        this.props.socket.off(`character_setup/${this.state.characterid}`)
     }
     reload_card(data){
         this.setState(data, ()=> this.setCurrentStats())
@@ -94,6 +95,7 @@ class CharacterStatsCard extends React.Component {
         this.setState({toggleStatBreakdown: false})
     }
     setCurrentStats(){
+        console.log("setCurrentStats", this.state.max_stats)
         var newCurrStats = {}
         for (const key in this.state.max_stats){
             newCurrStats[key] = this.state.max_stats[key] + this.state.status_effects[key]
