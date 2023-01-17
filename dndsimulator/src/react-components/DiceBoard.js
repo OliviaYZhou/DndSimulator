@@ -22,7 +22,7 @@ class DiceBoard extends React.Component {
     componentDidMount() {
         console.log("mount board index", this.state.boardIndex)
         this.state.socket.emit("i_just_connected", {boardIndex: this.props.boardIndex})
-        this.state.socket.on(`welcome`, data => this.load_board(data))
+        this.state.socket.on(`welcome/${this.state.boardIndex}`, data => this.load_board(data))
         
         this.state.socket.on(`get_dice/${this.state.boardIndex}`, data=> {this.setDice(data)});
         this.state.socket.on(`everyone_start_roll/${this.state.boardIndex}`, data=>{this.rollDice(data.index, data.predetermined_result)})
@@ -31,8 +31,8 @@ class DiceBoard extends React.Component {
     }
 
     load_board(data){
-        this.setState({diceList: data.diceList, diceHistory: data.diceHistory, boardIndex: data.boardIndex})
-        this.state.socket.off("welcome")
+        this.setState({diceList: data.diceList, diceHistory: data.diceHistory})
+        this.state.socket.off(`welcome/${this.state.boardIndex}`)
     }
 
 
