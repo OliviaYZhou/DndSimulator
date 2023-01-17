@@ -27,9 +27,9 @@ def notify_connection(data):
 
 @socketIo.on('dice_add')
 def handle_add_dice(newDiceData):
-    print('\n\n\n\n\n')
-    print(newDiceData)
-    print('\n\n\n\n\n')
+    # print('\n\n\n\n\n')
+    # print(newDiceData)
+    # print('\n\n\n\n\n')
     dicemax = int(newDiceData["dicemax"])
 
     original_dice = newDiceData["allDice"]
@@ -49,7 +49,7 @@ def delete_dice(data):
 @socketIo.on('clear_dice')
 def clear_dice(data):
     master_diceList.clear()
-    print(master_diceList)
+    # print(master_diceList)
     emit(f"get_dice{data['boardIndex']}", {"history": master_diceHistory, "diceList": master_diceList}, broadcast=True)
     return
 

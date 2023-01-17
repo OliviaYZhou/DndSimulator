@@ -8,9 +8,11 @@ from flask import request
 import database.character_db as character_db
 @socketIo.on('character_connected')
 def send_all_stats(data):
+    print("send_all_stats data", data)
     characterid = data.get('characterid')
     all_stats = character_db.get_player_stats(characterid)
     # print(all_stats, "\n\n\n\n")
+    print("send_all_stats stats", all_stats)
     emit(f"character_setup/{characterid}", all_stats)
     return all_stats
 # @app.route('/api/character_connected/') #?characterid=<characterid>
@@ -22,6 +24,7 @@ def send_all_stats(data):
 
 @socketIo.on("/status_effect/")
 def add_status_effect(data):
+    print("add_status_effect", data)
     character_db.add_status_effect(data["characterid"], data["name"], data["stats"], data["duration"], data["description"])
     character_db.save_db(charid=data["characterid"])
     # print(character_db.get_player_stats(data["characterid"]))
