@@ -13,7 +13,7 @@ const socket = io();
 
 class App extends React.Component {
   state = {
-    characterList: ["tentacle_guy", "orc_guy"]
+    characterList: ["tentacle_guy", "orc_guy", "tester2"]
   }
   render() {
     return (

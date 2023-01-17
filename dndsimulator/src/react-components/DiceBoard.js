@@ -30,19 +30,6 @@ class DiceBoard extends React.Component {
         
     }
 
-    // scaleFontSize(element) {
-    //     var container = document.getElementsByClassName(element);
-    
-    //     // Reset font-size to 100% to begin
-    //     container.style.fontSize = "100%";
-    
-    //     // Check if the text is wider than its container,
-    //     // if so then reduce font-size
-    //     if (container.scrollWidth > container.clientWidth) {
-    //         container.style.fontSize = "70%";
-    //     }
-    // }
-
     load_board(data){
         this.setState({diceList: data.diceList, diceHistory: data.diceHistory, boardIndex: data.boardIndex})
         this.state.socket.off("welcome")
@@ -111,15 +98,6 @@ class DiceBoard extends React.Component {
         })
         
       }
-
-    // getHistory(){
-    //     fetch("/diceboard").then(res =>{
-    //         return res.json()
-    //     })
-    //         .then((data) => {
-    //             this.setState({diceHistory: data.history})
-    //         })
-    // }
 
     handleInputChange(event, fieldName) {
         const target = event.target;
@@ -241,3 +219,25 @@ class DiceBoard extends React.Component {
 }
 
 export default withRouter(DiceBoard);
+
+    // scaleFontSize(element) {
+    //     var container = document.getElementsByClassName(element);
+    
+    //     // Reset font-size to 100% to begin
+    //     container.style.fontSize = "100%";
+    
+    //     // Check if the text is wider than its container,
+    //     // if so then reduce font-size
+    //     if (container.scrollWidth > container.clientWidth) {
+    //         container.style.fontSize = "70%";
+    //     }
+    // }
+
+        // getHistory(){
+    //     fetch("/diceboard").then(res =>{
+    //         return res.json()
+    //     })
+    //         .then((data) => {
+    //             this.setState({diceHistory: data.history})
+    //         })
+    // }

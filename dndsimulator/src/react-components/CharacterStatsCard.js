@@ -60,7 +60,7 @@ class CharacterStatsCard extends React.Component {
              }
             }).then(res =>res.json())
             .then((data) => {
-                console.log("api server call", data)
+                // console.log("api server call", data)
                 this.setState(data, () => this.setCurrentStats())
             })
 
@@ -90,16 +90,16 @@ class CharacterStatsCard extends React.Component {
     }
 
     openStatBreakdown(stat){
-        console.log("clicked")
+        // console.log("clicked")
         this.setState({selectedStat: stat})
-        console.log(this.state.selectedStat)
+        // console.log(this.state.selectedStat)
         this.setState({toggleStatBreakdown: true})
     }
     closeStatBreakdown(){
         this.setState({toggleStatBreakdown: false})
     }
     setCurrentStats(){
-        console.log("setCurrentStats", this.state.max_stats)
+        // console.log("setCurrentStats", this.state.max_stats)
         var newCurrStats = {}
         for (const key in this.state.max_stats){
             newCurrStats[key] = this.state.max_stats[key] + this.state.status_effects[key]
