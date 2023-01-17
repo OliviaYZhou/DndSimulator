@@ -60,7 +60,7 @@ class CharacterStatsCard extends React.Component {
              }
             }).then(res =>res.json())
             .then((data) => {
-                // console.log("from server", data)
+                console.log("api server call", data)
                 this.setState(data, () => this.setCurrentStats())
             })
 

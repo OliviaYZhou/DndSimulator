@@ -19,6 +19,7 @@ import database.character_db as character_db
 
 @app.route('/api/character_connected/') #?characterid=<characterid>
 def send_all_stats():
+    print("api send_all_stats")
     characterid = request.args.get('characterid')
     all_stats = character_db.get_player_stats(characterid)
     print(all_stats, "api\n\n\n\n")
@@ -37,7 +38,7 @@ def send_all_stats():
 @app.route('/api/status_effect/', methods=["GET", "POST"]) #?characterid=<characterid>
 def add_status_effect():
     data = request.json
-    # print(data["characterid"])
+    print("api add_status_effect")
     character_db.add_status_effect(data["characterid"], data["name"], data["stats"], data["duration"], data["description"])
     character_db.save_db(charid=data["characterid"])
     # print(character_db.get_player_stats(data["characterid"]))
