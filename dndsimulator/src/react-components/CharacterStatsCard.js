@@ -40,6 +40,7 @@ class CharacterStatsCard extends React.Component {
     // }
 
     componentDidMount() {
+        console.log("mount")
         this.props.socket.emit("character_connected", {characterid: this.state.characterid})
         this.props.socket.on(`character_setup/${this.state.characterid}`, data => this.load_card(data))
         // this.load_card()
