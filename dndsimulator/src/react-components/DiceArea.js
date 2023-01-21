@@ -40,12 +40,7 @@ function DiceArea(props) {
             else{
                 return(
                 <button className='bigHeader clear-dice-button' 
-                    onClick={() => showDiceBoard(boardIndex)} 
-                    
-                    onContextMenu={(e)=>{
-                        e.preventDefault()
-                        this.clearDice()
-                    }}>
+                    onClick={() => showDiceBoard(boardIndex)}>
                     {characterid}
                 </button>)
             }

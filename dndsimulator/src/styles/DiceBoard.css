@@ -95,9 +95,11 @@
     /* border-radius: 40%; */
     padding: 0.5em 1em 0.5em 1em;
     min-width: 7em;
+    width: fit-content;
+    height: fit-content;
     /* width: fit-content; */
     max-width: 15em;
-    max-height: 3em;
+    max-height: 5em;
 }
 .dice-board{
     

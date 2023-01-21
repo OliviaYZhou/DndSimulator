@@ -153,7 +153,12 @@ class DiceBoard extends React.Component {
         return (
             <div className='dice-module-wrapper'>
                 <button className='bigHeader clear-dice-button' 
-                    onClick={() => this.props.closeDiceBoard(this.props.boardIndex)}>
+                    onClick={() => this.props.closeDiceBoard(this.props.boardIndex)} 
+                    
+                    onContextMenu={(e)=>{
+                        e.preventDefault()
+                        this.clearDice()
+                    }}>
                     {this.state.characterid}
                 </button>
                 <div className='dice-module roundedbox'>
