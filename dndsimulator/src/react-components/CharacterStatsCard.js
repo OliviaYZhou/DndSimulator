@@ -24,7 +24,8 @@ class CharacterStatsCard extends React.Component {
                                 {name: "curse", amount: -1, description: "You really pissed the wizard off", duration: 12, duration_remaining: 10}]
     },
         selectedStat: "WIS",
-        inventory: [{"itemName": "bandage", "amount": 1},{"itemName": "candy", "amount": 2}, {"itemName": "floss", "amount": 9}] // item name: amount
+        inventory: [{"itemName": "bandage", "amount": 1},{"itemName": "candy", "amount": 2}, {"itemName": "floss", "amount": 9}], // item name: amount
+        minimized: true
     }
     // componentDidMount(){
     //     this.setCurrentStats()
@@ -99,6 +100,10 @@ class CharacterStatsCard extends React.Component {
     closeStatBreakdown(){
         this.setState({toggleStatBreakdown: false})
     }
+    toggleMinimizeCard(){
+        this.setState({minimized: !this.state.minimized})
+    }
+
     setCurrentStats(){
         // console.log("setCurrentStats", this.state.max_stats)
         var newCurrStats = {}
@@ -115,7 +120,7 @@ class CharacterStatsCard extends React.Component {
 
     render(){
         const renderStatBreakdown = () => {
-            if(this.state.toggleStatBreakdown){
+            if(this.state.toggleStatBreakdown && !this.state.minimized){
                 var effectJsonList = this.state.stat_breakdown[this.state.selectedStat] // [{name: name, amount: amount, description: description, duration: duration, duration_remaining: duration}]
                 return(
                     <div className='statBreakdown'>
@@ -133,14 +138,16 @@ class CharacterStatsCard extends React.Component {
             }
         }
         return(
-            <div className='characterCardBody'>
+            <div className='characterCardBody' style={{height: this.state.minimized ? "fit-content" : "400px"}}>
                 <button className='addStatusEffectButton' onClick={()=>this.addStatusEffect()}>+</button>
-                <div className='characterName'><span className='nameHeader'>{this.state.name}</span></div>
-                <div className='characterid'> <i>{this.state.characterid}</i></div>
+                <div className='characterName' onClick={()=>{this.toggleMinimizeCard()}}><span className='nameHeader'>{this.state.name}</span></div>
+                {this.state.minimized ? null : <div className='characterid'> <i>{this.state.characterid}</i></div>}
+                
                 <div className='hpMpRow row'>
                     <div> HP: {this.state.current_stats["HP"]}/{this.state.max_stats["HP"]+this.state.current_stats["CON"]} </div>
                     
                 </div>
+                
                 <div className='cumulativeStatsRow row'>
                     <div className='row'>
                         <div className='cumulativeStat'>Level {this.state.level} </div>
@@ -148,7 +155,7 @@ class CharacterStatsCard extends React.Component {
                         <div className='cumulativeStat'>{this.state.gold} Gold </div>
                     </div>
                 </div>
-                <div className='inventoryWrapper'>
+                <div className='inventoryWrapper' style={{height: this.state.minimized ? "0px" : "120px"}}>
                     <ul className='inventoryList'>
                         {this.state.inventory.map((itemJson) => (
                             <li>
@@ -169,7 +176,7 @@ class CharacterStatsCard extends React.Component {
                                 </div>
                                 <div className='statDetails'>
                                 
-                                {
+                                { this.state.minimized ? null :
                                     this.state.status_effects[stat] >= 0 ? `(${this.state.max_stats[stat]}+${this.state.status_effects[stat]})` : 
                                     `(${this.state.max_stats[stat]}${this.state.status_effects[stat]})`
                                 }

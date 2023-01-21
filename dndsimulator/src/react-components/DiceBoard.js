@@ -16,7 +16,8 @@ class DiceBoard extends React.Component {
         diceHistory: [],
         isRolling: false,
         socket: this.props.socket,
-        boardIndex: this.props.boardIndex
+        boardIndex: this.props.boardIndex,
+        characterid: this.props.characterid
         
     }
     componentDidMount() {
@@ -116,6 +117,18 @@ class DiceBoard extends React.Component {
 
         this.state.socket.emit("dice_add", newDiceJson)
     }
+    allowDrop(ev) {
+        ev.preventDefault();
+      }
+    drag(ev, diceMax) {
+        ev.dataTransfer.setData("diceMax", diceMax);
+      }
+
+    drop(ev) {
+        ev.preventDefault();
+        var diceMax = ev.dataTransfer.getData("diceMax");
+        this.addDice(diceMax);
+      }
 
     emitUpdate = (dataJson) => {
         this.state.socket.emit("dice_update", dataJson)
@@ -138,77 +151,88 @@ class DiceBoard extends React.Component {
     render() {
         
         return (
-      
-            <div className='dice-module roundedbox'>
-                <div className='row wrapper'>
-                    <div className='add-dice roundedbox'>
-                        <div className='addDiceButtonColumn column'>
-                            {/* <button className='addDiceButton defaultButton'
-                            onClick={() => {this.addDice(3)}}>
-                            d3</button>
-                            <button className='addDiceButton defaultButton'
-                            onClick={() => {this.addDice(4)}}>d4</button> */}
-                            <button className='addDiceButton defaultButton'
-                            onClick={() => {this.addDice(6)}}>d6</button>
-                            <button className='addDiceButton defaultButton'
-                            onClick={() => {this.addDice(8)}}>d8</button>
-                            <button className='addDiceButton defaultButton'
-                            onClick={() => {this.addDice(10)}}>d10</button>
-                            <button className='addDiceButton defaultButton'
-                            onClick={() => {this.addDice(20)}}>d20</button>
-                            <button className='addDiceButton defaultButton lowestButton'
-                            onClick={() => {this.addDice(100)}}>d100</button>
-                            <div className='column customDiceWrapper'>
+            <div className='dice-module-wrapper'>
+                <button className='bigHeader clear-dice-button' 
+                    onClick={() => this.props.closeDiceBoard(this.props.boardIndex)}>
+                    {this.state.characterid}
+                </button>
+                <div className='dice-module roundedbox'>
+                    {/* <div className='row wrapper'> */}
+                        <div className='add-dice '>
+                            <div className='addDiceButtonColumn'>
+                                {/* <button className='addDiceButton defaultButton'
+                                onClick={() => {this.addDice(3)}}>
+                                d3</button> */}
+                                <div className='addDiceButtonGrid'>
+                                    <button draggable='true' onDragStart={(ev)=>{this.drag(ev, 4)}} className='addDiceButton defaultButton'
+                                    onClick={() => {this.addDice(4)}}>d4</button>
+                                    <button draggable='true' onDragStart={(ev)=>{this.drag(ev, 6)}} className='addDiceButton defaultButton'
+                                    onClick={() => {this.addDice(6)}}>d6</button>
+                                    <button draggable='true' onDragStart={(ev)=>{this.drag(ev, 8)}} className='addDiceButton defaultButton'
+                                    onClick={() => {this.addDice(8)}}>d8</button>
+                                    <button draggable='true' onDragStart={(ev)=>{this.drag(ev, 10)}} className='addDiceButton defaultButton'
+                                    onClick={() => {this.addDice(10)}}>d10</button>
+                                    <button draggable='true' onDragStart={(ev)=>{this.drag(ev, 20)}} className='addDiceButton defaultButton'
+                                    onClick={() => {this.addDice(20)}}>d20</button>
+                                    <button draggable='true' onDragStart={(ev)=>{this.drag(ev, 100)}} className='addDiceButton defaultButton lowestButton'
+                                    onClick={() => {this.addDice(100)}}>d100</button>
+                                </div>
+                            </div>
 
-                                <span className='label'>Custom</span>
-                                <div className='d-something row'>
-                                    d <input
-                                            className="customDiceInput roundedbox"
-                                            type="number"
-                                            onChange={(e) => this.handleInputChange(e, "customDice")}
-                                        />
+                                <div className='column customDiceWrapper'>
+
+                                    <span className='label'>Custom</span>
+                                    <div className='d-something row'>
+                                        d <input
+                                                className="customDiceInput roundedbox"
+                                                type="number"
+                                                min="2"
+                                                onChange={(e) => this.handleInputChange(e, "customDice")}
+                                            />
+                                    </div>
+                                    
+                                    <button draggable={this.state.customDice > 0 ? true : false} onDragStart={(ev)=>{this.drag(ev, this.state.customDice)}} className='addCustomDiceButton defaultButton'
+                                    onClick={() => {this.addDice(this.state.customDice)}}>Add Dice</button>
+
                                 </div>
                                 
-                                <button className='addCustomDiceButton defaultButton'
-                                onClick={() => {this.addDice(this.state.customDice)}}>Add Dice</button>
-
-                            </div>
+                            
                             
                         </div>
-                        
-                    </div>
 
-                    <div class='dice-board-wrapper roundedbox'>
-                    
-                        <span className='bigHeader hoverable' onContextMenu={(e)=>{
-                            e.preventDefault()
-                            this.clearDice()
-                        }}>Dice</span>
-                        <ul id="dice-board" style={{backgroundColor: this.state.isRolling ?  " rgb(253, 184, 244)": "rgb(251, 222, 247)"}}>
+                        {/* <div class='dice-board-wrapper roundedbox'> */}
+                        
+                     
+
+                        <ul className='dice-board' onDrop={(ev) => {this.drop(ev)}} onDragOver={(ev) => this.allowDrop(ev)} style={{backgroundColor: this.state.isRolling ?  " rgb(253, 184, 244)": "rgb(251, 222, 247)"}}>
+        
                             {this.state.diceList.map((dice, index) => (
-                                <li key={index}>
+                                <li key={index} className="dicelistitem">
                                     <Dice properties={dice} index={index} socket={this.state.socket} deleteDice={this.deleteDice} 
-                                    boardIndex={this.state.boardIndex}
+                                    boardIndex={this.state.boardIndex} drag={this.drag}
                                     />
                                 </li>
                             ))}
-       
+
                         </ul>
-                
-                    </div>
-                    <div className='dice-history roundedbox'>
-                        <span className='bigHeader hoverable' onContextMenu={(e)=>{
-                            e.preventDefault()
-                            this.clearHistory()
-                        }}>History</span>
-                        <ul className='dice-history-list'>
-                            {this.state.diceHistory.map((historyString, index) => (
-                                <li key={index}>
-                                    {historyString}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+               
+                            
+                    
+                        {/* </div> */}
+                        <div className='dice-history'>
+                            <span className='bigHeader hoverable' onContextMenu={(e)=>{
+                                e.preventDefault()
+                                this.clearHistory()
+                            }}>History</span>
+                            <ul className='dice-history-list'>
+                                {this.state.diceHistory.map((historyString, index) => (
+                                    <li key={index}>
+                                        {historyString}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    {/* </div> */}
                 </div>
             </div>
       

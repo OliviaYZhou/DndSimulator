@@ -73,7 +73,11 @@ class Dice extends React.Component {
     // }
     render() {
         return(
-            <div className='dice-card' 
+            <div className='dice-card' draggable='true' 
+                onDragStart={(ev)=>{
+                    this.props.deleteDice(this.state.index)
+                    this.props.drag(ev, this.state.diceMax)
+                }}
                 onClick={() => {
                     this.rolled_dice_handler()
                 }}

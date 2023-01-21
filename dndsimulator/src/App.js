@@ -2,10 +2,12 @@ import './App.css';
 import Dice from "./react-components/Dice";
 import React from 'react';
 import CharacterStatsCard from './react-components/CharacterStatsCard';
-import { io }from "socket.io-client"
+import { io } from "socket.io-client"
 import {withRouter} from 'react-router-dom';
-import CharacterWorkSpace from './react-components/CharacterWorkSpace';
+
 import Directions from './react-components/Directions';
+import CharacterArea from './react-components/CharacterArea';
+import DiceArea from './react-components/DiceArea';
 
 // let socket = socketIOClient("http://52.14.89.21/");
 // let socket = socketIOClient("http://localhost:5000/");
@@ -18,16 +20,13 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-          <ul className='characterWSList'>
-          {this.state.characterList.map((characterid, index) => (
-            <li>
-                <CharacterWorkSpace characterid={characterid} socket={socket} boardIndex={index}/>
-            </li>
-          ))}
-              
-          </ul>
-
+        <div className='main-grid'>
+          <CharacterArea socket={socket}/>
+          <div></div>
+          <DiceArea socket={socket}/>
           <Directions/>
+        </div>
+
       </div>
     )
   }

@@ -10,7 +10,8 @@ import StatusEffectForm from './StatusEffectForm';
 class CharacterWorkSpace extends React.Component {
 
     state = {
-        showStatusForm: false
+        showStatusForm: false,
+        showDiceBoard: true
     }
 
     showStatusForm = () => {
@@ -19,22 +20,38 @@ class CharacterWorkSpace extends React.Component {
     closeStatusForm = () => {
         this.setState({showStatusForm : false})
     }
+    showDiceBoard = () => {
+        this.setState({showDiceBoard: true})
+    }
+
+    closeDiceBoard = () => {
+        console.log("close ")
+        this.setState({showDiceBoard: false})
+    }
 
     render(){
         const renderStatusEffectForm = () => {
             if (this.state.showStatusForm){
                 return <StatusEffectForm characterid={this.props.characterid} socket={this.props.socket} closeStatusForm={this.closeStatusForm} />
             }
-            
+        }
+        const renderDiceBoard = () =>{
+            if (this.state.showDiceBoard){
+                return <DiceBoard socket={this.props.socket} boardIndex={this.props.boardIndex} closeDiceBoard={this.closeDiceBoard}/>
+            }
+            else{
+                return <button onClick={() => this.showDiceBoard()}>DiceBoard+</button>
+            }
         }
         return(
             <div className='CharacterWorkSpace'>
-                <div className='flexbox'>
+                <div className='column ch-column'>
                     {/* {console.log("workspace board", this.props.boardIndex)} */}
                     <CharacterStatsCard socket={this.props.socket} characterid={this.props.characterid} showStatusForm={this.showStatusForm} />
                     {renderStatusEffectForm()}
+                    {/* {renderDiceBoard()} */}
                 </div>
-                <DiceBoard socket={this.props.socket} boardIndex={this.props.boardIndex}/>
+                    
             </div>
         )
 

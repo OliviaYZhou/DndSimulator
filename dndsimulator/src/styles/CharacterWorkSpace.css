@@ -1,9 +1,11 @@
 .CharacterWorkSpace{
     /* display: flex; */
-    flex-direction: column;
-    width: fit-content;
+    /* flex-direction: column; */
     margin-left: 7%;
     margin-right: 7%;
     
-    /* justify-content: center; */
+    
 }
+/* .ch-column{
+    justify-content: center;
+} */

@@ -1,0 +1,10 @@
+.characterDiceBoardList{
+    list-style: none;
+    display: flex;
+    overflow: hidden;
+    overflow-x: scroll;
+}
+.characterDiceBoardList li {
+    padding: 0px;
+    margin: 0 1% 0 1%;
+}

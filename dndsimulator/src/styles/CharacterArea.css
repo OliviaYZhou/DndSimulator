@@ -1,0 +1,16 @@
+.characterWSList{
+    list-style: none;
+  }
+  
+  .characterWSList li{
+    float: left;
+    margin-left: 1%;
+    margin-right: 1%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    /* width: fit-content; */
+  }
+  
