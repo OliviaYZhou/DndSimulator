@@ -21,12 +21,12 @@ class DiceBoard extends React.Component {
         
     }
     componentDidMount() {
-        console.log("mount board index", this.state.boardIndex)
+        console.log("mount board index", this.props.boardIndex)
         this.state.socket.emit("i_just_connected", {boardIndex: this.props.boardIndex})
-        this.state.socket.on(`welcome/${this.state.boardIndex}`, data => this.load_board(data))
+        this.state.socket.on(`welcome/${this.props.boardIndex}`, data => this.load_board(data))
         
-        this.state.socket.on(`get_dice/${this.state.boardIndex}`, data=> {this.setDice(data)});
-        this.state.socket.on(`everyone_start_roll/${this.state.boardIndex}`, data=>{this.rollDice(data.index, data.predetermined_result)})
+        this.state.socket.on(`get_dice/${this.props.boardIndex}`, data=> {this.setDice(data)});
+        this.state.socket.on(`everyone_start_roll/${this.props.boardIndex}`, data=>{this.rollDice(data.index, data.predetermined_result)})
         // this.scaleFontSize("dice-history")
         
     }
@@ -49,7 +49,7 @@ class DiceBoard extends React.Component {
         this.state.socket.emit("clear_history", {boardIndex: this.state.boardIndex})
     }
     
-    rolling(index, diceMax) {
+    rolling = (index, diceMax) => {
         
         var ranVar = Math.floor(Math.random() * diceMax) + 1
         let items = [...this.state.diceList]
@@ -62,7 +62,7 @@ class DiceBoard extends React.Component {
         })
     }
 
-    setRollingStatus(index, on=true){
+    setRollingStatus = (index, on=true) => {
         let items = [...this.state.diceList]
         var clickedDice = [...items[index]]
         clickedDice[2] = on
@@ -74,7 +74,8 @@ class DiceBoard extends React.Component {
         })
     }
 
-    rollDice(index, predetermined_result) {
+    rollDice = (index, predetermined_result) => {
+        console.log(this)
         var diceMax = this.state.diceList[index][0]
         this.setRollingStatus(index, true)
         var times = 0
@@ -92,7 +93,7 @@ class DiceBoard extends React.Component {
             , 100);
     }
 
-    setDice(data){
+    setDice = (data) => {
         console.log("from server", data)
         this.setState({diceHistory: data.history,
                        diceList: data.diceList
