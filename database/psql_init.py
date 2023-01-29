@@ -9,7 +9,7 @@ def create_table_BASIC_CHARACTER(cur):
         '''CREATE TABLE BASIC_CHARACTER
         (ID              TEXT                PRIMARY KEY,
         NAME             TEXT,
-        CHARACTER_TYPE   TEXT);''')  # player, npc, enemy
+        CHARACTER_TYPE   TEXT);''')  # player, npc, enemy, basic
     print("Table BASIC_CHARACTER added")
 
 def create_table_CHARACTER_STATS(cur):

@@ -1,30 +1,24 @@
 import React, {Fragment, useRef} from 'react';
 import {uid} from "react-uid";
 import {withRouter} from 'react-router-dom';
-import "../styles/DiceBoard.css"
-import "../styles/CharacterStatsCard.css"
+import "../../styles/CharacterStatsCard.css"
 
 class CharacterStatsCard extends React.Component {
 
     state = {
         characterid: this.props.characterid,
-        name: 'Olivia',
-        status_effects: {HP: -1, STR: 0, DEX: 2, con: -1, int: 2, wis: -5, cha: 0},
-        max_stats: {hp: 20, str: 12, dex: 13, con: 14, int: 15, wis: 16, cha: 17},
+        character_type: '',
+        name: 'No Name',
+        status_effects: {HP: 0, STR: 0, DEX: 0, CON: 0, INT: 0, WIS: 0, CHA: 0},
+        max_stats: {HP: 0, STR: 0, DEX: 0, CON: 0, INT: 0, WIS: 0, CHA: 0},
         current_stats: {}, // never directly set, always calculate this
-        exp: 600,
-        gold: 20,
-        level: 3,
+        exp: 0,
+        gold: 0,
+        level: 0,
         toggleStatBreakdown: false,
-        stat_breakdown: {"WIS":[
-                                {name: "curse", amount: -1, description: "You really pissed the wizard off", duration: 12, duration_remaining: 10},
-                                {name: "food poisoning", amount: -3, description: "Should you have drank that milk?", duration: 3, duration_remaining: 3}
-                            ],
-                        "STR": [
-                                {name: "curse", amount: -1, description: "You really pissed the wizard off", duration: 12, duration_remaining: 10}]
-    },
-        selectedStat: "WIS",
-        inventory: [{"itemName": "bandage", "amount": 1},{"itemName": "candy", "amount": 2}, {"itemName": "floss", "amount": 9}], // item name: amount
+        stat_breakdown: {"STR": [],"DEX": [],"CON": [],"INT": [],"WIS":[],"CHA": []},
+        selectedStat: "",
+        inventory: [], // item name: amount {"itemName": "bandage", "amount": 1}
         minimized: true
     }
     // componentDidMount(){
@@ -62,7 +56,7 @@ class CharacterStatsCard extends React.Component {
              }
             }).then(res =>res.json())
             .then((data) => {
-                // console.log("api server call", data)
+                console.log("api server call", data)
                 this.setState(data, () => this.setCurrentStats())
             })
 
@@ -153,6 +147,13 @@ class CharacterStatsCard extends React.Component {
                         <div className='cumulativeStat'>Level {this.state.level} </div>
                         <div className='cumulativeStat'>Exp: {this.state.exp} </div>
                         <div className='cumulativeStat'>{this.state.gold} Gold </div>
+                        {/* {this.state.character_type == "PLAYER" ? 
+                        <Fragment>
+                            <div className='cumulativeStat'>Exp: {this.state.exp} </div>
+                            <div className='cumulativeStat'>{this.state.gold} Gold </div>
+                        </Fragment> 
+                        : null} */}
+                        
                     </div>
                 </div>
                 <div className='inventoryWrapper' style={{height: this.state.minimized ? "0px" : "120px"}}>

@@ -1,14 +1,10 @@
-
 .App {
-  height: 90vh;
+    height: 100vh;
 }
 
-.main-grid{
-  max-height: 100%;
-  display: grid;
-  grid-template-columns: 4fr 1fr;
-  grid-template-rows: 2fr 1fr;
-  
+.main-grid {
+    max-height: 100%;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    grid-template-rows: 2fr 1fr;
 }
-
-

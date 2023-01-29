@@ -2,11 +2,7 @@ import React, {Fragment, useRef} from 'react';
 import {uid} from "react-uid";
 import {withRouter} from 'react-router-dom';
 import Dice from "./Dice";
-import Directions from "./Directions";
-import "../styles/DiceBoard.css"
-import socketIOClient from "socket.io-client"
-
-// let socket = socketIOClient("http://localhost:5000/");
+import "../../styles/DiceBoard.css"
 
 
 class DiceBoard extends React.Component {
@@ -50,6 +46,10 @@ class DiceBoard extends React.Component {
     }
     
     rolling = (index, diceMax) => {
+        if (this.state.diceList.length <= index){
+            console.log("index out of bounds")
+            return false
+        }
         
         var ranVar = Math.floor(Math.random() * diceMax) + 1
         let items = [...this.state.diceList]
@@ -60,29 +60,47 @@ class DiceBoard extends React.Component {
         this.setState({
             diceList: items
         })
+        return true
     }
 
     setRollingStatus = (index, on=true) => {
-        let items = [...this.state.diceList]
-        var clickedDice = [...items[index]]
-        clickedDice[2] = on
-        items[index] = clickedDice
-        
-        this.setState({
-            diceList: items,
-            isRolling: on
-        })
+        if (this.state.diceList.length <= index){
+            console.log("setRollingStatus index out of bounds")
+            this.setState({isRolling: on})
+        }
+        else{
+            let items = [...this.state.diceList]
+            var clickedDice = [...items[index]]
+            clickedDice[2] = on
+            items[index] = clickedDice
+            
+            this.setState({
+                diceList: items,
+                isRolling: on
+            })
+        }
     }
 
     rollDice = (index, predetermined_result) => {
-        console.log(this)
+        console.log("index", index)
+        console.log(this.state)
+        if (this.state.diceList.length <= index){
+            console.log("rollDice index out of bounds")
+            this.updateDice(index, predetermined_result, diceMax)
+            return false
+        }
         var diceMax = this.state.diceList[index][0]
         this.setRollingStatus(index, true)
         var times = 0
         var interval = setInterval(() => 
             {   
 
-                this.rolling(index, diceMax)
+                const status = this.rolling(index, diceMax)
+                if (status === false){
+                    clearInterval(interval)
+                    this.setRollingStatus(index, false)
+                    return false
+                }
                 if (++times == 10){
                     clearInterval(interval)
                     
@@ -93,7 +111,7 @@ class DiceBoard extends React.Component {
             , 100);
     }
 
-    setDice = (data) => {
+    setDice(data) {
         console.log("from server", data)
         this.setState({diceHistory: data.history,
                        diceList: data.diceList
@@ -131,22 +149,16 @@ class DiceBoard extends React.Component {
         this.addDice(diceMax);
       }
 
-    emitUpdate = (dataJson) => {
-        this.state.socket.emit("dice_update", dataJson)
-    }
-
-    updateDice = (index, roll, dicemax) => {
+    updateDice = (index, roll) => {
 
         const diceJson = 
                 {
                     index: index,
                     diceval: roll,
-                    dicemax: dicemax,
-                    allDice: this.state.diceList,
                     boardIndex: this.state.boardIndex
                 }
         console.log(diceJson)
-        this.emitUpdate(diceJson)
+        this.state.socket.emit("dice_update", diceJson)
     }
 
     render() {

@@ -5,11 +5,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import Dice from "./react-components/Dice.js";
-import DiceBoard from "./react-components/DiceBoard.js";
-import CharacterStatsCard from "./react-components/CharacterStatsCard";
+import Dice from "./react-components/Dice/Dice.js";
+import DiceBoard from "./react-components/Dice/DiceBoard.js";
+import CharacterStatsCard from "./react-components/Characters/CharacterStatsCard";
 import Directions from "./react-components/Directions";
-import CharacterWorkSpace from "./react-components/CharacterWorkSpace";
+import CharacterWorkSpace from "./react-components/Characters/CharacterWorkSpace";
 ReactDOM.render(
   <BrowserRouter>
     <Switch>

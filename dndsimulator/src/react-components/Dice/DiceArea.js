@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DiceBoard from './DiceBoard';
-import '../styles/DiceArea.css'
+import '../../styles/DiceArea.css'
 
 function DiceArea(props) {
     const [diceList, setDiceList] = useState([["tentacle_guy", true], ["orc_guy", true], ["tester2", true]]);

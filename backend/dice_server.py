@@ -37,7 +37,10 @@ def handle_add_dice(newDiceData):
     board_index = int(newDiceData["boardIndex"])
 
     dicemax = int(newDiceData["dicemax"])
-
+    
+    print('\n\n\n\n\n')
+    print("server add dice", master_diceList)
+    print('\n\n\n\n\n')
     master_diceList[board_index].append([dicemax, f'd{dicemax}', False]) 
     emit(f"get_dice/{newDiceData['boardIndex']}", {"history": master_diceHistory[board_index], "diceList": master_diceList[board_index]}, broadcast=True)
     return
@@ -78,7 +81,6 @@ def handle_start_roll(data):
 def handle_new_roll(newRollData):
     board_index = int(newRollData["boardIndex"])
     diceval = newRollData["diceval"]
-    dicemax = newRollData["dicemax"]
     index = newRollData["index"]
 
     # original_history = newRollData["allhistory"]

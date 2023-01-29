@@ -1,8 +1,0 @@
-Classes
-
-Character - Stats, bag:{item: amount}, skills: {skill: usage}, equipment
-Skill - skill descriptions, mp, damage_per_proficiency
-Consumable - description, value, stat_modifiers
-Equipment - description, stat_modifiers
-Books(?) - half consumable
-

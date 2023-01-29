@@ -1,13 +1,13 @@
 import './App.css';
-import Dice from "./react-components/Dice";
 import React from 'react';
-import CharacterStatsCard from './react-components/CharacterStatsCard';
+// import Dice from "./react-components/Dice";
+// import CharacterStatsCard from './react-components/CharacterStatsCard';
 import { io } from "socket.io-client"
 import {withRouter} from 'react-router-dom';
 
 import Directions from './react-components/Directions';
-import CharacterArea from './react-components/CharacterArea';
-import DiceArea from './react-components/DiceArea';
+import CharacterArea from './react-components/Characters/CharacterArea';
+import DiceArea from './react-components/Dice/DiceArea';
 
 // let socket = socketIOClient("http://52.14.89.21/");
 // let socket = socketIOClient("http://localhost:5000/");

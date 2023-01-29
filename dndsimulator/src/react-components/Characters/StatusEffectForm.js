@@ -1,8 +1,8 @@
 import React, {Fragment, useRef} from 'react';
 import {uid} from "react-uid";
 import {withRouter} from 'react-router-dom';
-import "../styles/DiceBoard.css"
-import "../styles/StatusEffectForm.css"
+import "../../styles/DiceBoard.css"
+import "../../styles/StatusEffectForm.css"
 
 class StatusEffectForm extends React.Component {
 

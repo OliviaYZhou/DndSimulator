@@ -1,6 +1,8 @@
 import os
 import psycopg2
 import psycopg2.extras
+
+
 from psycopg2 import sql
 try:
     from __main__ import conn
@@ -11,7 +13,13 @@ except ImportError:
     except:
         print("server import failed")
         conn = psycopg2.connect("dbname=dndtoolkitdb user=olivia")
+    
+default_return = {"status": True}
+failed_return = {"status": False}
 
+def print_block(info, name=""):
+    print("\n\n\n", name, info, "\n\n\n")
+    
 def set_conn(connection = None):
 
     global conn 
@@ -23,7 +31,22 @@ def set_conn(connection = None):
 
 
 stat_order_list = ["HP", "STR", "DEX", "CON", "INT", "WIS", "CHA"]
-# Open a cursor to perform database operations
+
+def to_json(order_list, query_results):
+    # print_block(query_results, "query_results")
+    try:
+        newJson = {}
+        if query_results is None or query_results[0] is None:
+            print_block("query results is None")
+            
+            for i in range(len(order_list)):
+                newJson[order_list[i]] = 0
+        else:
+            for i in range(len(order_list)):
+                newJson[order_list[i]] = query_results[i]
+        return newJson
+    except TypeError:
+        return False
 
 
 def add_character(character_id, name, character_type):
@@ -115,22 +138,33 @@ def add_inventory_item(charid, item_name, amount):
     cur.close()
     print(f"{amount} of {item_name} added to inventory of {charid}")
 
+def get_character_id_list():
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT ID FROM BASIC_CHARACTER
+        """)
+    id_tuples = cur.fetchall()
+    id_list = [t[0] for t in id_tuples]
+    cur.close()
+    print_block(id_list)
+    return id_list
+
 def get_all_characters():
     cur = conn.cursor()
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     cur.execute("""
     SELECT * FROM BASIC_CHARACTER
     """)
-    print(cur.fetchall())
+    print_block(cur.fetchall())
     cur.execute("""
     SELECT * FROM CHARACTER_STATS
     """)
-    print(cur.fetchall())
+    print_block(cur.fetchall())
 
     cur.execute("""
     SELECT * FROM STATUS_EFFECTS
     """)
-    print(cur.fetchall())
+    print_block(cur.fetchall())
     cur.close()
 
 def get_character_stats(charid):
@@ -144,7 +178,11 @@ def get_character_stats(charid):
     cur.execute(q1, (charid,))
     status_effects = (0,0,0,0,0,0,0)
     try:
-        status_effects = cur.fetchone()
+        status_effects_placeholder = cur.fetchone()
+        if status_effects_placeholder is None or status_effects_placeholder[0] is None:
+            pass
+        else:
+            status_effects = status_effects_placeholder
     except psycopg2.ProgrammingError:
         print("not found")
     status_effects = to_json(stat_order_list, status_effects)
@@ -158,8 +196,11 @@ def get_character_stats(charid):
     max_stats = (0,0,0,0,0,0,0)
     try:
         max_stats = cur.fetchone()
+        print_block(max_stats, "max_stats")
+        if max_stats is None:
+            return False
     except psycopg2.ProgrammingError:
-        print("\n\n\n\nmaxstats not found")
+        print_block("max_stats not found")
     
     # print(max_stats)
     max_stats = to_json(stat_order_list, max_stats)
@@ -186,7 +227,10 @@ def get_player_stats(charid):
     # print(charid)
     # print("get_player_stats", charid)
     stats_dict = get_character_stats(charid)
-    print(stats_dict)
+    # print(stats_dict)
+    if stats_dict == False:
+        print("character stats not found")
+        return False
 
     q1 = '''
     SELECT GOLD, EXP
@@ -197,9 +241,12 @@ def get_player_stats(charid):
     cumulative_stats = cur.fetchone()
     # print("cumulative_stats", cumulative_stats)
     # cumulative_stats = to_json(["gold", "exp"], cumulative_stats)
-
-    stats_dict["gold"] = cumulative_stats["gold"]
-    stats_dict["exp"] = cumulative_stats["exp"]
+    
+    stats_dict["gold"] = 0
+    stats_dict["exp"] = 0
+    if cumulative_stats is not None:
+        stats_dict["gold"] = cumulative_stats["gold"]
+        stats_dict["exp"] = cumulative_stats["exp"]
 
     stat_queries = [
         """SELECT HP, NAME, DESCRIPTION, DURATION, DURATION_REMAINING FROM STATUS_EFFECTS WHERE CHARACTERID=(%s) AND HP != 0""",
@@ -219,13 +266,18 @@ def get_player_stats(charid):
     return stats_dict
 
 def get_all_player_info(charid):
-    print("playerinfo")
+    # print("playerinfo")
     player_stats = get_player_stats(charid)
+    if not player_stats:
+        print("player stats not found")
+        return False
     inventory = get_character_inventory(charid)
+    if not inventory:
+        return player_stats
     player_stats["inventory"] = inventory
     return player_stats
   
-def get_status_effects_of(statQuery, charid):
+def get_status_effects_of(statQuery, charid, verbose=False):
     # cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     # q1 = sql.SQL("""SELECT "WIS" FROM STATUS_EFFECTS WHERE CHARACTERID=(%s) AND WIS != 0""")
     # q1 = sql.SQL("""SELECT {}, NAME, DESCRIPTION, DURATION, DURATION_REMAINING FROM STATUS_EFFECTS WHERE CHARACTERID=(%s) AND {} != 0""").format(sql.Identifier(stat), sql.Identifier(stat))
@@ -233,25 +285,29 @@ def get_status_effects_of(statQuery, charid):
     cur = conn.cursor()
     cur.execute(q1,  (charid,))
     status_effects_tuple_list = cur.fetchall()
-    # print("status_effects_tuple_list", status_effects_tuple_list)
-    # print(1, status_effects_tuple_list)
+    if status_effects_tuple_list is None:
+        return []
+    if verbose:
+        print("status_effects_tuple_list", status_effects_tuple_list)
     status_effects_json_list = []
     for row in status_effects_tuple_list:
         status_effects_json_list.append(to_json(["AMOUNT", "NAME", "DESCRIPTION", "DURATION", "DURATION_REMAINING"], row))
     cur.close()
     return status_effects_json_list
 
+def get_basic_character(charid):
+    
+    cur = conn.cursor()
+    q1 = '''SELECT * FROM BASIC_CHARACTER WHERE ID=(%s);'''
+    # print("characterid", charid)
+    cur.execute(q1,  (charid,))
 
-def to_json(order_list, query_results):
-    # print(f"\n\n############### {query_results}\n #############\n\n")
-    # print("query_results", query_results)
-    newJson = {}
-    for i in range(len(order_list)):
-        newJson[order_list[i]] = query_results[i]
-    return newJson
+    basic_character_tuple = cur.fetchone()
+    character_json = to_json(["characterid", "name", "character_type"], basic_character_tuple)
+    return character_json 
+    
 
-
-def get_character_inventory(charid):
+def get_character_inventory(charid, verbose=False):
     cur = conn.cursor()
     q1 = """
     SELECT ITEM_NAME, AMOUNT FROM INVENTORY_ITEMS WHERE CHARACTERID=(%s);
@@ -265,7 +321,8 @@ def get_character_inventory(charid):
         items_json_list.append(to_json(["itemName", "amount"], item_tuple))
 
     cur.close()
-    print("inventory", items_json_list)
+    if verbose:
+        print("inventory", items_json_list)
     return items_json_list
 
 def close_db(cur):
@@ -309,11 +366,15 @@ def save_db(connection = None, charid=None):
 #              'Another great classic!')
 #             )
 if __name__ == "__main__":
+    # get_character_id_list()
+    print(get_player_stats("tester3"))
+    
     # psql_init.init_db(cur)
+    # set_conn()
     # get_all_characters()
     
     # conn.commit()
-    print(get_player_stats("tester2"))
+    # print(get_player_stats("tester2"))
 
 
 

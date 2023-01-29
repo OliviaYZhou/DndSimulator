@@ -2,10 +2,12 @@ import React, {Fragment, useRef} from 'react';
 import {uid} from "react-uid";
 import {withRouter} from 'react-router-dom';
 import CharacterStatsCard from './CharacterStatsCard';
-import DiceBoard from './DiceBoard';
-import "../styles/DiceBoard.css"
-import "../styles/CharacterWorkSpace.css"
+import "../../styles/CharacterWorkSpace.css"
 import StatusEffectForm from './StatusEffectForm';
+
+// import CharacterAdd from './CharacterAdd';
+// import DiceBoard from './DiceBoard';
+// import "../styles/DiceBoard.css"
 
 class CharacterWorkSpace extends React.Component {
 
@@ -35,14 +37,14 @@ class CharacterWorkSpace extends React.Component {
                 return <StatusEffectForm characterid={this.props.characterid} socket={this.props.socket} closeStatusForm={this.closeStatusForm} />
             }
         }
-        const renderDiceBoard = () =>{
-            if (this.state.showDiceBoard){
-                return <DiceBoard socket={this.props.socket} boardIndex={this.props.boardIndex} closeDiceBoard={this.closeDiceBoard}/>
-            }
-            else{
-                return <button onClick={() => this.showDiceBoard()}>DiceBoard+</button>
-            }
-        }
+        // const renderDiceBoard = () =>{
+        //     if (this.state.showDiceBoard){
+        //         return <DiceBoard socket={this.props.socket} boardIndex={this.props.boardIndex} closeDiceBoard={this.closeDiceBoard}/>
+        //     }
+        //     else{
+        //         return <button onClick={() => this.showDiceBoard()}>DiceBoard+</button>
+        //     }
+        // }
         return(
             <div className='CharacterWorkSpace'>
                 <div className='column ch-column'>
