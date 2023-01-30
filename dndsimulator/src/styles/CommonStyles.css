@@ -1,0 +1,159 @@
+.roundedbox {
+    border-radius: 10px;
+}
+.row {
+    display: flex;
+    width: auto;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper {
+    height: inherit;
+}
+
+.bigHeader {
+    text-align: center;
+    display: block;
+    font-size: 1em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+.defaultHeader {
+    text-align: center;
+
+    display: block;
+    font-size: 0.8em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+.label {
+    text-align: center;
+
+    display: block;
+    font-size: 0.75em;
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+.half-and-half-col-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100%;
+}
+.default-inputbox {
+    border-style: solid;
+    border-width: 1px;
+    height: 0.9em;
+    border-radius: 5px;
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.oneStat {
+    /* margin: auto; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.inputboxSmall {
+    width: 30px;
+    /* height: 0.9em; */
+    margin-right: 7%;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 3px;
+}
+.inputboxMedium {
+    width: 100px;
+    border-radius: 10px;
+    height: 0.9em;
+    margin-right: 10%;
+}
+.centered-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Buttons */
+.plusButton {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: 900;
+    background-color: rgb(253, 253, 253);
+    border-radius: 50%;
+    border-style: none;
+}
+
+.plusButton:hover {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.closeButton {
+    background-color: rgb(255, 214, 214, 0);
+    border-style: none;
+    font-weight: bold;
+    border-radius: 50%;
+    position: absolute;
+    right: 3px;
+    top: 3px;
+    margin: 0px;
+    z-index: 3;
+}
+.closeButton:hover {
+    cursor: pointer;
+    background-color: rgb(208, 177, 177);
+    /* color: white; */
+}
+
+.defaultButton {
+    background-color: white;
+    border-style: none;
+    border-radius: 5px;
+    font-size: 0.7em;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.defaultButton:hover {
+    background-color: rgb(199, 199, 199);
+
+    cursor: pointer;
+}
+
+.lowestButton {
+    margin-bottom: 5%;
+}
+
+.submit-button {
+    margin-top: 10px;
+}
+
+.strong-button {
+    font-weight: bold;
+    font-size: small;
+    padding: 15px;
+    min-width: 80px;
+}
+/* ... */

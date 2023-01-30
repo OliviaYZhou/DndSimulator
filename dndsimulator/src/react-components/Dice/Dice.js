@@ -81,18 +81,15 @@ class Dice extends React.Component {
                 onContextMenu={(e) => {
                     e.preventDefault()
                     this.props.deleteDice(this.state.index)
-                }}
-            >
+                }}>
                 <div
                     className="dice-body"
                     ref={this.ref}
                     style={{
-                        backgroundColor: this.state.isRolling
-                            ? "rgb(134, 125, 253)"
-                            : "rgb(236, 239, 255)",
+                        backgroundColor: this.state.isRolling ? "black" : "rgb(0, 0, 0, 0)",
+                        color: this.state.isRolling ? "white" : "black",
                         height: this.getHeight(),
-                    }}
-                >
+                    }}>
                     <span className="dice-value">{this.state.diceVal}</span>
                 </div>
                 <div className="dice-type"> d{this.state.diceMax} </div>

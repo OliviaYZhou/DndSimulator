@@ -1,0 +1,57 @@
+.floaty {
+    z-index: 2;
+}
+#side-bar {
+    position: fixed;
+    left: 2%;
+    width: 90px;
+    top: 5%;
+    bottom: 5%;
+
+    background-color: rgb(227, 225, 225);
+    border-radius: 10px;
+    font-size: small;
+    font-weight: bold;
+    display: grid;
+    grid-template-rows: 1fr;
+}
+.vertical-grid {
+    display: grid;
+    /* height: 100%; */
+    /* border-radius: 20px; */
+    padding: 5px;
+    grid-template-rows: repeat(8, 1fr);
+}
+.time-grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+.time-grid > div {
+    margin: auto;
+}
+.vertical-grid > * {
+    font-size: small;
+    font-weight: bold;
+    overflow: hidden;
+    overflow-x: scroll;
+    border-style: none;
+    background-color: rgb(227, 225, 225);
+}
+
+.vertical-grid > button:hover {
+    cursor: pointer;
+    color: rgb(223, 182, 0);
+}
+
+.sidebar-popup {
+    position: fixed;
+    left: calc(3% + 90px);
+    z-index: 2;
+    height: fit-content;
+    width: fit-content;
+    background-color: rgb(227, 225, 225);
+}
+.secondSidebarChild {
+    top: 20%;
+    min-height: 100px;
+}

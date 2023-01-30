@@ -2,10 +2,11 @@ import React, { Fragment, useState, useEffect } from "react"
 import "../../styles/CharacterAdd.css"
 // ".../styles/CharacterAdd.css"
 function CharacterAdd(props) {
-    const [showAddCharacterForm, setAddCharacterForm] = useState(true)
+    const [showAddCharacterForm, setAddCharacterForm] = useState(false)
     const [showAddStatsForm, setAddStatsForm] = useState(false)
     const [showAddCumulativeStatsForm, setAddCumulativeStatsForm] = useState(false)
     const [showDeleteCharacterForm, setDeleteCharacterForm] = useState(false)
+    const [showFormName, setShowFormName] = useState("") // "character", "stats", "cumulative", "delete"
     const [characterid, setCharacterId] = useState("")
 
     useEffect(() => {
@@ -16,112 +17,130 @@ function CharacterAdd(props) {
 
     const handleFocus = (event) => event.target.select()
 
+    function renderForm() {
+        switch (showFormName) {
+            case "character":
+                return renderAddCharacterForm()
+            case "stats":
+                return renderAddStatsForm()
+            case "cumulative":
+                return renderAddCumulativeStatsForm()
+            case "delete":
+                return renderDeleteCharacterForm()
+            default:
+                return null
+        }
+    }
     function renderAddCharacterForm() {
-        if (showAddCharacterForm) {
+        if (1) {
             return (
                 <div className="add-basic-character add-character-block">
-                    <button className="closeButton" onClick={() => setAddCharacterForm(false)}>
+                    <button className="closeButton" onClick={() => setShowFormName("")}>
                         {" "}
                         x
                     </button>
                     <form className="character-form" action="/api/add_character/" target="dummyframe" method="post">
-                        <label for="charName">Character name:</label>
-                        <input type="text" id="charName" name="characterName" />
-                        <br />
-                        <label for="charid">Character ID:</label>
-                        <input type="text" id="charid" name="characterid" />
-                        <br />
-                        <label for="chartype">Character Type:</label>
-                        <select type="text" id="chartype" name="characterType">
-                            <option value="basic">Basic</option>
-                            <option value="npc">NPC</option>
-                            <option value="enemy">Enemy</option>
-                            <option value="player">Player</option>
-                        </select>
-                        <input type="submit"></input>
+                        <div className="add-character-form-grid">
+                            <label for="charName">Character name:</label>
+                            <input className=".default-inputbox" type="text" id="charName" name="characterName" />
+
+                            <label for="charid">Character ID:</label>
+                            <input className=".default-inputbox" type="text" id="charid" name="characterid" />
+
+                            <label for="chartype">Character Type:</label>
+                            <select className=".default-inputbox" type="text" id="chartype" name="characterType">
+                                <option value="basic">Basic</option>
+                                <option value="npc">NPC</option>
+                                <option value="enemy">Enemy</option>
+                                <option value="player">Player</option>
+                            </select>
+                            <div className="centered-flex">
+                                <input className="submit-button defaultButton strong-button" type="submit"></input>
+                            </div>
+                        </div>
                     </form>
                 </div>
             )
-        } else {
-            return (
-                <button
-                    onClick={() => {
-                        setAddCharacterForm(true)
-                    }}
-                >
-                    Add Basic Character
-                </button>
-            )
         }
+        // else {
+        //     return (
+
+        //     )
+        // }
     }
     function renderAddStatsForm() {
-        if (showAddStatsForm) {
+        if (1) {
             return (
                 <div className="add-character-stats add-character-block">
-                    <button className="closeButton" onClick={() => setAddStatsForm(false)}>
+                    <button className="closeButton" onClick={() => setShowFormName("")}>
                         x
                     </button>
-                    <form className="character-form" action="/api/add_new_stats/" target="dummyframe" method="post">
+                    <form className="character-form centered-flex column" action="/api/add_new_stats/" target="dummyframe" method="post">
                         <label for="charidstats">Character ID: </label>
                         <input type="text" id="charidstats" name="characterid" />
-                        <br />
-                        <label for="nHP">HP: </label>
-                        <input
-                            className="inputboxSmall roundedbox inline"
-                            type="number"
-                            min={0}
-                            defaultValue={0}
-                            onFocus={handleFocus}
-                            id="nHP"
-                            name="HP"
-                        />
-                        <br />
-                        <label for="nlevel">Level: </label>
-                        <input
-                            className="inputboxSmall roundedbox inline"
-                            type="number"
-                            min={1}
-                            defaultValue={1}
-                            onFocus={handleFocus}
-                            id="nlevel"
-                            name="level"
-                        />
-                        <br />
-                        {["STR", "DEX", "CON", "INT", "WIS", "CHA"].map((stat) => (
-                            <Fragment>
-                                <label for={stat}>{stat}: </label>
-                                <input
-                                    className="inputboxSmall roundedbox inline"
-                                    type="number"
-                                    min={0}
-                                    defaultValue={0}
-                                    onFocus={handleFocus}
-                                    id={stat}
-                                    name={stat}
-                                />
-                            </Fragment>
-                        ))}
-                        <input type="submit"></input>
+                        {/* <br /> */}
+                        <div className="hp-level-grid-row">
+                            <span className="gridplaceholder"></span>
+                            {/* <span> */}
+                            <label for="nHP">HP: </label>
+                            <input
+                                className="inputboxSmall roundedbox inline"
+                                type="number"
+                                min={0}
+                                defaultValue={0}
+                                onFocus={handleFocus}
+                                id="nHP"
+                                name="HP"
+                            />
+                            {/* </span> */}
+                            {/* <span> */}
+                            <label for="nlevel">Level: </label>
+                            <input
+                                className="inputboxSmall roundedbox inline"
+                                type="number"
+                                min={1}
+                                defaultValue={1}
+                                onFocus={handleFocus}
+                                id="nlevel"
+                                name="level"
+                            />
+                            {/* </span> */}
+                            <span className="gridplaceholder"></span>
+                        </div>
+
+                        <div className="stats-grid">
+                            {["STR", "DEX", "CON", "INT", "WIS", "CHA"].map((stat) => (
+                                <span className="oneStat">
+                                    <label for={stat}>{stat}: </label>
+                                    <input
+                                        className="inputboxSmall inline"
+                                        type="number"
+                                        min={0}
+                                        defaultValue={0}
+                                        onFocus={handleFocus}
+                                        id={stat}
+                                        name={stat}
+                                    />
+                                </span>
+                            ))}
+                        </div>
+
+                        <input className="submit-button" type="submit"></input>
                     </form>
                 </div>
             )
-        } else {
-            return (
-                <button
-                    onClick={() => {
-                        setAddStatsForm(true)
-                    }}
-                >
-                    Add Stats
-                </button>
-            )
         }
+        // else {
+        //     return (
+
+        //     )
+        // }
     }
     function renderAddCumulativeStatsForm() {
-        if (showAddCumulativeStatsForm) {
+        if (1) {
             return (
                 <div className="add-cumulative-stats-form add-character-block">
-                    <button className="closeButton" onClick={() => setAddCumulativeStatsForm(false)}>
+                    <button className="closeButton" onClick={() => setShowFormName("")}>
                         {" "}
                         x
                     </button>
@@ -139,24 +158,19 @@ function CharacterAdd(props) {
                     </form>
                 </div>
             )
-        } else {
-            return (
-                <button
-                    onClick={() => {
-                        setAddCumulativeStatsForm(true)
-                    }}
-                >
-                    Add Cumulative Stats
-                </button>
-            )
         }
+        // else {
+        //     return (
+
+        //     )
+        // }
     }
 
     function renderDeleteCharacterForm() {
-        if (showDeleteCharacterForm) {
+        if (1) {
             return (
                 <div className="delete-character-form add-character-block">
-                    <button className="closeButton" onClick={() => setDeleteCharacterForm(false)}>
+                    <button className="closeButton" onClick={() => setShowFormName("")}>
                         {" "}
                         x
                     </button>
@@ -168,25 +182,35 @@ function CharacterAdd(props) {
                     </form>
                 </div>
             )
-        } else {
-            return (
-                <button
-                    onClick={() => {
-                        setDeleteCharacterForm(true)
-                    }}
-                >
-                    Delete A Character
-                </button>
-            )
         }
+        // else {
+        //     return (
+
+        //     )
+        // }
     }
 
     return (
         <div className="character-add">
             <iframe name="dummyframe" id="dummyframe" style={{ display: "none" }}></iframe>
-            {renderAddCharacterForm()}
-            {renderAddStatsForm()}
-            {renderAddCumulativeStatsForm()}
+            <div className="add-character-grid">
+                <div className="add-character-navbar">
+                    <button className="defaultButton" onClick={() => setShowFormName("character")}>
+                        Add Basic Character
+                    </button>
+                    <button className="defaultButton" onClick={() => setShowFormName("stats")}>
+                        Add Stats
+                    </button>
+                    <button className="defaultButton" onClick={() => setShowFormName("cumulative")}>
+                        Add Cumulative Stats
+                    </button>
+                    {/* <button onClick={() => setDeleteCharacterForm(true)}>Delete A Character</button> */}
+                </div>
+                <div className="add-character-grid-space">{renderForm()}</div>
+                {/* {renderAddCharacterForm()}
+                {renderAddStatsForm()}
+                {renderAddCumulativeStatsForm()} */}
+            </div>
         </div>
     )
 }

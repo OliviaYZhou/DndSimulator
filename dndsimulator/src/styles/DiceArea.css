@@ -1,4 +1,8 @@
-.characterDiceBoardList{
+.dice-area {
+    width: 100%;
+    overflow: hidden;
+}
+.characterDiceBoardList {
     list-style: none;
     display: flex;
     overflow: hidden;
