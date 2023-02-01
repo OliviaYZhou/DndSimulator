@@ -1,4 +1,4 @@
-.status-effect-form{
+.status-effect-form {
     position: relative;
     /* float: left; */
     font-size: small;
@@ -6,17 +6,8 @@
     display: flex;
     justify-content: left;
 }
-.inputboxSmall{
-    width: 30px;
-    height: 0.9em;
-    margin-right: 7%;
-}
-.inputboxMedium{
-    width: 100px;
-    height: 0.9em;
-    margin-right: 10%;
-}
-.titleHeader{
+
+.titleHeader {
     text-align: center;
     display: block;
     font-size: 1.2em;

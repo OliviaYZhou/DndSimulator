@@ -42,7 +42,7 @@
     cursor: pointer;
     color: rgb(223, 182, 0);
 }
-
+/* .sidebar-popup-wrapper > * :nth-child() */
 .sidebar-popup {
     position: fixed;
     left: calc(3% + 90px);
@@ -54,4 +54,9 @@
 .secondSidebarChild {
     top: 20%;
     min-height: 100px;
+}
+.seventhSidebarChild {
+    top: 75%;
+    min-height: 100px;
+    min-width: 150px;
 }

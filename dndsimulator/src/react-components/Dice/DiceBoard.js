@@ -64,6 +64,7 @@ class DiceBoard extends React.Component {
     }
 
     setRollingStatus = (index, on = true) => {
+        console.log("rollingStatus", on)
         if (this.state.diceList.length <= index) {
             console.log("setRollingStatus index out of bounds")
             this.setState({ isRolling: on })
@@ -90,6 +91,7 @@ class DiceBoard extends React.Component {
         }
         var diceMax = this.state.diceList[index][0]
         this.setRollingStatus(index, true)
+
         var times = 0
         var interval = setInterval(() => {
             const status = this.rolling(index, diceMax)

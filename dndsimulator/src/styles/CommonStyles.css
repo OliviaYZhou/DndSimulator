@@ -156,4 +156,15 @@
     padding: 15px;
     min-width: 80px;
 }
+.invisible-input {
+    border-style: none;
+    background-color: rgb(206, 232, 255);
+    width: 15px;
+}
+.invisible-input::-webkit-outer-spin-button,
+.invisible-input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
 /* ... */

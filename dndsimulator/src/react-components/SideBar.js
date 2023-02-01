@@ -4,13 +4,53 @@ import CharacterAdd from "./Characters/CharacterAdd"
 import DiceAdd from "./Dice/DiceAdd"
 function SideBar() {
     const [currentTime, setCurrentTime] = useState(6.5)
+    const [currentHour, setCurrentHour] = useState(6)
+    const [currentMinute, setCurrentMinute] = useState(30)
     const [currentTurn, setCurrentTurn] = useState(1)
     const [showAddDiceModule, setShowAddDiceModule] = useState(false)
     const [showAddCharacterModule, setShowAddCharacterModule] = useState(false)
+    const [showTimePassModule, setShowTimePassModule] = useState(false)
+    function onTimeInput(event, hourMinute = "hour") {
+        var input = event.target.value
 
+        if (input == "") {
+            if (hourMinute === "hour") {
+                setCurrentHour("")
+                console.log("cur time", currentHour, currentMinute)
+            } else {
+                setCurrentMinute("")
+                console.log("cur time 2", currentHour, currentMinute)
+            }
+        } else {
+            if (hourMinute === "hour") {
+                setCurrentHour(Math.floor(parseFloat(input)))
+                console.log("cur time 3", currentHour, currentMinute)
+            } else {
+                setCurrentMinute(Math.floor(parseInt(input)))
+                console.log("cur time 4", currentHour, currentMinute)
+            }
+        }
+    }
+    function formatTime(num) {
+        return Math.floor(parseFloat(num)).toLocaleString("en-US", {
+            minimumIntegerDigits: 2,
+            maximumSignificantDigits: 2,
+            maximumFractionDigits: 0,
+            useGrouping: false,
+        })
+    }
     function incrementTime(hours, days = 0) {
-        var tentativeTime = (currentTime + hours + days * 24) % 24
-        setCurrentTime(tentativeTime)
+        hours = parseFloat(hours)
+
+        var addedMinutes = (hours % 1) * 60
+        var wholeHours = Math.floor(hours)
+        var totalMinutes = addedMinutes + parseInt(currentMinute)
+        if (totalMinutes >= 60) {
+            wholeHours += 1
+            totalMinutes = totalMinutes % 60
+        }
+        setCurrentHour(parseInt(currentHour) + wholeHours)
+        setCurrentMinute(totalMinutes)
     }
 
     function renderAddDiceModule() {
@@ -34,6 +74,38 @@ function SideBar() {
             return null
         }
     }
+    function renderTimePassModule() {
+        if (showTimePassModule) {
+            var passXHours = 0
+            return (
+                <div className="sidebar-popup seventhSidebarChild">
+                    <button className="closeButton" onClick={() => setShowTimePassModule(false)}>
+                        x
+                    </button>
+                    <label> Pass </label>
+                    <input
+                        className="inputboxSmall"
+                        type="number"
+                        onInput={(e) => {
+                            passXHours = e.target.value
+                        }}
+                    />
+                    <label> hours</label>
+
+                    <button
+                        className="submit-button"
+                        onClick={() => {
+                            incrementTime(passXHours)
+                            console.log(currentHour, currentMinute)
+                        }}>
+                        Submit
+                    </button>
+                </div>
+            )
+        } else {
+            return null
+        }
+    }
 
     return (
         <div className="floaty">
@@ -42,7 +114,11 @@ function SideBar() {
                     <div className="time-grid">
                         <div>Turn: {currentTurn}</div>
                         <div>
-                            Time: {Math.floor(currentTime)}:{(currentTime % 1) * 60}
+                            Time:{""}
+                            <input className="invisible-input" value={formatTime(currentHour)} type="number" onInput={(e) => onTimeInput(e, "hour")} />
+                            :
+                            <input className="invisible-input" value={formatTime(currentMinute)} type="number" onInput={(e) => onTimeInput(e, "minute")} />
+                            {/* {Math.floor(currentTime)}:{(currentTime % 1) * 60} */}
                         </div>
                     </div>
                     <button onClick={() => setShowAddCharacterModule(true)}>Add Character</button>
@@ -50,7 +126,7 @@ function SideBar() {
                     <button onClick={() => setShowAddDiceModule(true)}>Add Dice</button>
                     <button>Add Status Effect</button>
                     <button>Add Permanent Effect</button>
-                    <button>Time Pass</button>
+                    <button onClick={() => setShowTimePassModule(true)}>Time Pass</button>
                     <button
                         onClick={() => {
                             setCurrentTurn(currentTurn + 1)
@@ -62,6 +138,7 @@ function SideBar() {
             <div className="sidebar-popup-wrapper">
                 {renderAddCharacterModule()}
                 {renderAddDiceModule()}
+                {renderTimePassModule()}
             </div>
         </div>
     )
