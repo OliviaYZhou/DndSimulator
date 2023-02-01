@@ -2,11 +2,11 @@ import React, { Fragment, useState, useEffect } from "react"
 import "../styles/SideBar.css"
 import CharacterAdd from "./Characters/CharacterAdd"
 import DiceAdd from "./Dice/DiceAdd"
-function SideBar() {
+function SideBar(props) {
     const [currentTime, setCurrentTime] = useState(6.5)
     const [currentHour, setCurrentHour] = useState(6)
     const [currentMinute, setCurrentMinute] = useState(30)
-    const [currentTurn, setCurrentTurn] = useState(1)
+    const [currentTurn, setCurrentTurn] = useState(props.currentTurn)
     const [showAddDiceModule, setShowAddDiceModule] = useState(false)
     const [showAddCharacterModule, setShowAddCharacterModule] = useState(false)
     const [showTimePassModule, setShowTimePassModule] = useState(false)

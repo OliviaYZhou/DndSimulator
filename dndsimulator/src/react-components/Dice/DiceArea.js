@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
-import DiceBoard from './DiceBoard';
-import '../../styles/DiceArea.css'
+import React, { useState } from "react"
+import DiceBoard from "./DiceBoard"
+import "../../styles/DiceArea.css"
 
 function DiceArea(props) {
-    const [diceList, setDiceList] = useState([["tentacle_guy", true], ["orc_guy", true], ["tester2", true]]);
-    
+    const [diceList, setDiceList] = useState([
+        ["tentacle_guy", true],
+        ["orc_guy", true],
+        ["Enemy", true],
+    ])
+
     let clearDice = (boardIndex) => {
-        this.state.socket.emit("clear_dice", {boardIndex: boardIndex})
+        this.state.socket.emit("clear_dice", { boardIndex: boardIndex })
+    }
+
+    function addDiceBoard(boardKey) {
+        var diceListCopy = [...diceList]
+        // server call
     }
     let showDiceBoard = (boardIndex) => {
         var diceListCopy = [...diceList]
@@ -25,37 +34,35 @@ function DiceArea(props) {
         setDiceList(diceListCopy)
     }
 
-    const renderDiceBoard = (characterid, boardIndex) =>{
+    const renderDiceBoard = (characterid, boardIndex) => {
         console.log(diceList)
-        if (diceList == undefined){
+        if (diceList == undefined) {
             return null
         }
-        if (diceList[0] == undefined){
+        if (diceList[0] == undefined) {
             return null
         }
-        if (diceList[boardIndex][1] == true){
-                return <li><DiceBoard socket={props.socket} boardIndex={boardIndex} 
-                closeDiceBoard={closeDiceBoard} characterid={characterid}/></li>
-            }
-            else{
-                return(
-                <button className='bigHeader clear-dice-button' 
-                    onClick={() => showDiceBoard(boardIndex)}>
+        if (diceList[boardIndex][1] == true) {
+            return (
+                <li>
+                    <DiceBoard socket={props.socket} boardIndex={boardIndex} closeDiceBoard={closeDiceBoard} characterid={characterid} />
+                </li>
+            )
+        } else {
+            return (
+                <button className="bigHeader clear-dice-button" onClick={() => showDiceBoard(boardIndex)}>
                     {characterid}
-                </button>)
-            }
+                </button>
+            )
+        }
     }
-    return  (
-
-    <div className='dice-area'>
-        <ul className='characterDiceBoardList'>
-            {diceList != undefined ? 
-                diceList.map((characterid, boardIndex) => (
-                    renderDiceBoard(characterid, boardIndex))) 
-            : null}
-        </ul>
-
-    </div>)
+    return (
+        <div className="dice-area">
+            <ul className="characterDiceBoardList">
+                {diceList != undefined ? diceList.map((characterid, boardIndex) => renderDiceBoard(characterid, boardIndex)) : null}
+            </ul>
+        </div>
+    )
 }
 
-export default DiceArea;
+export default DiceArea

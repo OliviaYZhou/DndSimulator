@@ -164,7 +164,7 @@ class DiceBoard extends React.Component {
                     }}>
                     {this.state.characterid}
                 </button>
-                <div className="dice-module roundedbox" style={{ backgroundColor: this.state.isRolling ? "rgb(255, 219, 152)" : "rgb(236, 236, 236)" }}>
+                <div className="dice-module roundedbox" style={{ backgroundColor: this.state.isRolling ? "rgb(201, 200, 200)" : "rgb(236, 236, 236)" }}>
                     {/* <div className='row wrapper'> */}
                     {/* <div className="add-dice ">
                         <div className="addDiceButtonColumn">
