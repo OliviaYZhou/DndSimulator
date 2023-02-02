@@ -30,10 +30,11 @@
     margin: auto;
 }
 .vertical-grid > * {
+    height: 100%;
     font-size: small;
     font-weight: bold;
-    overflow: hidden;
-    overflow-x: scroll;
+    /* overflow: hidden;
+    overflow-x: scroll; */
     border-style: none;
     background-color: rgb(227, 225, 225);
 }

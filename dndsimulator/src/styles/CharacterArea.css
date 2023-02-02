@@ -1,7 +1,4 @@
 .character-area {
-    overflow: hidden;
-    overflow-y: scroll;
-    overflow-x: scroll;
     height: 100%;
 }
 .characterWSList {
@@ -18,9 +15,6 @@
     margin-right: 1%;
     display: flex;
     justify-content: center;
-    /* overflow: hidden;
-  overflow-x: scroll;
-  overflow-y: scroll; */
     /* width: fit-content; */
 }
 

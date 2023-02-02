@@ -1,14 +1,12 @@
-#directionsBlock{
+#directionsBlock {
     height: 100%;
-    font-size:x-small;
-    overflow: hidden;
-    overflow-y: scroll;
     padding: 10px;
     /* position: absolute;
     bottom: 5%;
     right: 0; */
 }
-.directions-list{
+.directions-list {
     padding: 0px;
     padding-left: 10px;
+    font-size: x-small;
 }

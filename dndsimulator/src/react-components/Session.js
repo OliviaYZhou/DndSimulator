@@ -1,7 +1,7 @@
 import "../styles/Session.css"
 function Session(props) {
     return (
-        <div className="session-block">
+        <div className="session-block scrollable-y">
             <h3> Turn {props.currentTurn} </h3>
             <h3>Setting: Stronghold Outpost</h3>
             <h4>Name: IceBreaker</h4>

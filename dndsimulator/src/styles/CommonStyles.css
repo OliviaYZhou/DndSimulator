@@ -168,3 +168,23 @@
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 /* ... */
+
+.scrollable-y {
+    overflow: hidden;
+}
+.scrollable-y:hover {
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.112);
+}
+.scrollable-x {
+    overflow: hidden;
+}
+.scrollable-x:hover {
+    overflow-x: auto;
+}
+.scrollable {
+    overflow: hidden;
+}
+.scrollable:hover {
+    overflow: auto;
+}

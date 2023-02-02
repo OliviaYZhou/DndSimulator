@@ -19,7 +19,7 @@ function CharacterArea(props) {
     }, [])
 
     return (
-        <div className="character-area">
+        <div className="character-area scrollable">
             <ul className="characterWSList">
                 {characterList.map((character, index) => (
                     <li>

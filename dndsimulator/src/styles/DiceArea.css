@@ -1,12 +1,11 @@
 .dice-area {
     width: 100%;
-    overflow: hidden;
 }
 .characterDiceBoardList {
     list-style: none;
     display: flex;
     overflow: hidden;
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 .characterDiceBoardList li {
     padding: 0px;

@@ -200,7 +200,7 @@ class DiceBoard extends React.Component {
 
                     {/* <div class='dice-board-wrapper roundedbox'> */}
 
-                    <ul className="dice-board" onDrop={(ev) => this.drop(ev)} onDragOver={(ev) => this.allowDrop(ev)}>
+                    <ul className="dice-board scrollable-y" onDrop={(ev) => this.drop(ev)} onDragOver={(ev) => this.allowDrop(ev)}>
                         {this.state.diceList.map((dice, index) => (
                             <li key={index} className="dicelistitem">
                                 <Dice
@@ -225,7 +225,7 @@ class DiceBoard extends React.Component {
                             }}>
                             History
                         </span>
-                        <ul className="dice-history-list">
+                        <ul className="dice-history-list scrollable-y">
                             {this.state.diceHistory.map((historyString, index) => (
                                 <li key={index}>{historyString}</li>
                             ))}
