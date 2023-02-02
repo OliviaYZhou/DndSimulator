@@ -4,8 +4,6 @@
 .characterDiceBoardList {
     list-style: none;
     display: flex;
-    overflow: hidden;
-    overflow-x: auto;
 }
 .characterDiceBoardList li {
     padding: 0px;

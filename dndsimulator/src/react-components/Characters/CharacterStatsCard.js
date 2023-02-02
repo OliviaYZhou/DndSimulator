@@ -118,7 +118,7 @@ class CharacterStatsCard extends React.Component {
                             {" "}
                             x
                         </button>
-                        <ul className="status_effect_list">
+                        <ul className="status_effect_list scrollable-y">
                             {effectJsonList.map((effect) => (
                                 <li className="status_effect">
                                     <div>
@@ -144,8 +144,7 @@ class CharacterStatsCard extends React.Component {
                     className="characterName"
                     onClick={() => {
                         this.toggleMinimizeCard()
-                    }}
-                >
+                    }}>
                     <span className="nameHeader">{this.state.name}</span>
                 </div>
                 {this.state.minimized ? null : (
@@ -176,7 +175,7 @@ class CharacterStatsCard extends React.Component {
                     </div>
                 </div>
                 <div className="inventoryWrapper" style={{ height: this.state.minimized ? "0px" : "120px" }}>
-                    <ul className="inventoryList">
+                    <ul className="inventoryList scrollable-y">
                         {this.state.inventory.map((itemJson) => (
                             <li>
                                 {itemJson["amount"]} x {itemJson["itemName"]}
@@ -191,8 +190,7 @@ class CharacterStatsCard extends React.Component {
                                 className="eachStat"
                                 onClick={() => {
                                     this.openStatBreakdown(stat)
-                                }}
-                            >
+                                }}>
                                 <div>
                                     <b>{stat}</b>
                                 </div>

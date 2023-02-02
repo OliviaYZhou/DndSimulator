@@ -35,8 +35,6 @@
     border-radius: 5%;
     padding-left: 5%;
     list-style: none;
-    overflow: hidden;
-    overflow-y: auto;
     font-size: small;
     justify-content: left;
 }
@@ -90,8 +88,6 @@
     margin: 0;
     height: 80px;
     background-color: beige;
-    overflow: hidden;
-    overflow-y: auto;
     font-size: small;
 }
 .status_effect_list li {

@@ -174,7 +174,7 @@
 }
 .scrollable-y:hover {
     overflow-y: auto;
-    background-color: rgba(0, 0, 0, 0.112);
+    /* background-color: rgba(0, 0, 0, 0.027); */
 }
 .scrollable-x {
     overflow: hidden;
