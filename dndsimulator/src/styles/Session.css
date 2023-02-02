@@ -1,4 +1,5 @@
 .session-block {
-    max-height: 330px;
+    /* max-height: 330px; */
     display: grid;
+    padding: 10% 0%;
 }
