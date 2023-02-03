@@ -190,16 +190,22 @@
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 /* ... */
-
-.scrollable-y {
-    overflow: hidden;
-    overflow-y: auto;
-
+#root {
     -webkit-transition: all 1s ease-out;
     -moz-transition: all 1s ease-out;
     -o-transition: all 1s ease-out;
     -ms-transition: all 1s ease-out;
     transition: all 1s ease-out;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    transition: all 1s ease;
+}
+
+.scrollable-y {
+    overflow: hidden;
+    overflow-y: auto;
 }
 .scrollable-y:hover {
     -webkit-transition: all 1s ease;

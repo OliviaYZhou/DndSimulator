@@ -14,6 +14,9 @@
     font-weight: bold;
     display: grid;
     grid-template-rows: 1fr;
+    z-index: 3;
+    border-style: solid;
+    border-color: white;
 }
 .vertical-grid {
     display: grid;
