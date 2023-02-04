@@ -64,6 +64,7 @@ def add_new_cumulative_stats():
     data = request.form
     print_block(data, "form")
     character_db.add_cumulative_stats(data["characterid"], data["gold"], data["exp"])
+    
     socketIo.emit(f"get_character_changes/{data['characterid']}", character_db.get_player_stats(data["characterid"]))
     return default_return
 

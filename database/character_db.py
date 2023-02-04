@@ -229,8 +229,9 @@ def get_player_stats(charid):
     stats_dict = get_character_stats(charid)
     # print(stats_dict)
     if stats_dict == False:
+        
         print("character stats not found")
-        return False
+        stats_dict = to_json(stat_order_list, (-1,-1,-1,-1,-1,-1,-1))
 
     q1 = '''
     SELECT GOLD, EXP
