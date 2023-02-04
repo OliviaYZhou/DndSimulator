@@ -156,7 +156,7 @@ class DiceBoard extends React.Component {
         return (
             <div className="dice-module-wrapper">
                 <button
-                    className="bigHeader clear-dice-button"
+                    className="bigHeader clear-dice-button hoverable highlightable"
                     onClick={() => this.props.closeDiceBoard(this.props.boardIndex)}
                     onContextMenu={(e) => {
                         e.preventDefault()

@@ -1,5 +1,5 @@
 .floaty {
-    z-index: 2;
+    z-index: 10;
 }
 #side-bar {
     position: fixed;
@@ -14,9 +14,9 @@
     font-weight: bold;
     display: grid;
     grid-template-rows: 1fr;
-    z-index: 3;
     border-style: solid;
     border-color: white;
+    z-index: inherit;
 }
 .vertical-grid {
     display: grid;
@@ -43,7 +43,6 @@
 }
 
 .vertical-grid > button:hover {
-    cursor: pointer;
     color: rgb(223, 182, 0);
 }
 /* .sidebar-popup-wrapper > * :nth-child() */

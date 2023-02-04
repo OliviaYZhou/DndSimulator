@@ -25,7 +25,7 @@ function DiceAdd(props) {
                 {/* <div className="addDiceButtonColumn"> */}
                 <div className="addDiceButtonGrid">
                     {[4, 6, 8, 10, 20, 100].map((val) => (
-                        <button draggable="true" className="addDiceButton defaultButton" onDragStart={(ev) => drag(ev, val)}>
+                        <button draggable="true" className="addDiceButton defaultButton hoverable grabbable" onDragStart={(ev) => drag(ev, val)}>
                             d{val}
                         </button>
                     ))}

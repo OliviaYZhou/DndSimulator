@@ -1,5 +1,21 @@
-  "proxy": "http://localhost:5000/",
+"proxy": "http://localhost:5000/",
 
-Working directory = /actions-runner/_work/DndSimulator/DndSimulator
+Working directory = 
+cd ~/actions-runner/_work/DndSimulator/DndSimulator
+cd ~/actions-runner/_work/DndSimulator/DndSimulator/dndsimulator/src
 
 Also change app.js
+
+sudo /etc/init.d/nginx reload
+sudo /etc/init.d/nginx restart
+
+cd /etc/nginx/sites-enabled
+sudo nano /etc/nginx/sites-enabled/dndtoolkit
+
+sudo service supervisor restart
+
+cd /var/log/nginx/
+
+http://52.14.89.21/
+
+Access-Control-Allow-Origin: *

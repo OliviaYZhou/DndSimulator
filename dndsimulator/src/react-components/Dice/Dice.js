@@ -69,7 +69,7 @@ class Dice extends React.Component {
     render() {
         return (
             <div
-                className="dice-card"
+                className="dice-card hoverable grabbable"
                 draggable="true"
                 onDragStart={(ev) => {
                     this.props.deleteDice(this.state.index)

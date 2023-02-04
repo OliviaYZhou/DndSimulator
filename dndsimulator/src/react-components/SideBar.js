@@ -115,19 +115,31 @@ function SideBar(props) {
                         <div>Turn: {currentTurn}</div>
                         <div>
                             Time:{""}
-                            <input className="invisible-input" value={formatTime(currentHour)} type="number" onInput={(e) => onTimeInput(e, "hour")} />
+                            <input className="invisible-input editable" value={formatTime(currentHour)} type="number" onInput={(e) => onTimeInput(e, "hour")} />
                             :
-                            <input className="invisible-input" value={formatTime(currentMinute)} type="number" onInput={(e) => onTimeInput(e, "minute")} />
+                            <input
+                                className="invisible-input editable"
+                                value={formatTime(currentMinute)}
+                                type="number"
+                                onInput={(e) => onTimeInput(e, "minute")}
+                            />
                             {/* {Math.floor(currentTime)}:{(currentTime % 1) * 60} */}
                         </div>
                     </div>
-                    <button onClick={() => setShowAddCharacterModule(true)}>Add Character</button>
-                    <button>Add DiceBoard</button>
-                    <button onClick={() => setShowAddDiceModule(true)}>Add Dice</button>
-                    <button>Add Status Effect</button>
-                    <button>Add Permanent Effect</button>
-                    <button onClick={() => setShowTimePassModule(true)}>Time Pass</button>
+                    <button className="hoverable" onClick={() => setShowAddCharacterModule(true)}>
+                        Add Character
+                    </button>
+                    <button className="hoverable">Add DiceBoard</button>
+                    <button className="hoverable" onClick={() => setShowAddDiceModule(true)}>
+                        Add Dice
+                    </button>
+                    <button className="hoverable">Add Status Effect</button>
+                    <button className="hoverable">Add Permanent Effect</button>
+                    <button className="hoverable" onClick={() => setShowTimePassModule(true)}>
+                        Time Pass
+                    </button>
                     <button
+                        className="hoverable"
                         onClick={() => {
                             setCurrentTurn(currentTurn + 1)
                         }}>

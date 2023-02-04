@@ -141,7 +141,7 @@ class CharacterStatsCard extends React.Component {
                     +
                 </button>
                 <div
-                    className="characterName"
+                    className="characterName hoverable highlightable"
                     onClick={() => {
                         this.toggleMinimizeCard()
                     }}>
@@ -187,7 +187,7 @@ class CharacterStatsCard extends React.Component {
                     <div className="row">
                         {["STR", "DEX", "CON", "INT", "WIS", "CHA"].map((stat) => (
                             <div
-                                className="eachStat"
+                                className="eachStat hoverable"
                                 onClick={() => {
                                     this.openStatBreakdown(stat)
                                 }}>

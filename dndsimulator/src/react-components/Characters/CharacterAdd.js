@@ -2,18 +2,18 @@ import React, { Fragment, useState, useEffect } from "react"
 import "../../styles/CharacterAdd.css"
 // ".../styles/CharacterAdd.css"
 function CharacterAdd(props) {
-    const [showAddCharacterForm, setAddCharacterForm] = useState(false)
-    const [showAddStatsForm, setAddStatsForm] = useState(false)
-    const [showAddCumulativeStatsForm, setAddCumulativeStatsForm] = useState(false)
-    const [showDeleteCharacterForm, setDeleteCharacterForm] = useState(false)
+    // const [showAddCharacterForm, setAddCharacterForm] = useState(false)
+    // const [showAddStatsForm, setAddStatsForm] = useState(false)
+    // const [showAddCumulativeStatsForm, setAddCumulativeStatsForm] = useState(false)
+    // const [showDeleteCharacterForm, setDeleteCharacterForm] = useState(false)
     const [showFormName, setShowFormName] = useState("") // "character", "stats", "cumulative", "delete"
-    const [characterid, setCharacterId] = useState("")
+    // const [characterid, setCharacterId] = useState("")
 
-    useEffect(() => {
-        if (props.characterid != undefined) {
-            setCharacterId(props.characterid)
-        }
-    }, [props.characterid])
+    // useEffect(() => {
+    //     if (props.characterid != undefined) {
+    //         setCharacterId(props.characterid)
+    //     }
+    // }, [props.characterid])
 
     const handleFocus = (event) => event.target.select()
 
@@ -41,13 +41,13 @@ function CharacterAdd(props) {
                     </button>
                     <form className="character-form" action="/api/add_character/" target="dummyframe" method="post">
                         <div className="add-character-form-grid">
-                            <label for="charName">Character name:</label>
+                            <label htmlFor="charName">Character name:</label>
                             <input className=".default-inputbox" type="text" id="charName" name="characterName" />
 
-                            <label for="charid">Character ID:</label>
+                            <label htmlFor="charid">Character ID:</label>
                             <input className=".default-inputbox" type="text" id="charid" name="characterid" />
 
-                            <label for="chartype">Character Type:</label>
+                            <label htmlFor="chartype">Character Type:</label>
                             <select className=".default-inputbox" type="text" id="chartype" name="characterType">
                                 <option value="basic">Basic</option>
                                 <option value="npc">NPC</option>
@@ -76,13 +76,13 @@ function CharacterAdd(props) {
                         x
                     </button>
                     <form className="character-form centered-flex column" action="/api/add_new_stats/" target="dummyframe" method="post">
-                        <label for="charidstats">Character ID: </label>
+                        <label htmlFor="charidstats">Character ID: </label>
                         <input type="text" id="charidstats" name="characterid" />
                         {/* <br /> */}
                         <div className="hp-level-grid-row">
                             <span className="gridplaceholder"></span>
                             {/* <span> */}
-                            <label for="nHP">HP: </label>
+                            <label htmlFor="nHP">HP: </label>
                             <input
                                 className="inputboxSmall roundedbox inline"
                                 type="number"
@@ -94,7 +94,7 @@ function CharacterAdd(props) {
                             />
                             {/* </span> */}
                             {/* <span> */}
-                            <label for="nlevel">Level: </label>
+                            <label htmlFor="nlevel">Level: </label>
                             <input
                                 className="inputboxSmall roundedbox inline"
                                 type="number"
@@ -111,7 +111,7 @@ function CharacterAdd(props) {
                         <div className="stats-grid">
                             {["STR", "DEX", "CON", "INT", "WIS", "CHA"].map((stat) => (
                                 <span className="oneStat">
-                                    <label for={stat}>{stat}: </label>
+                                    <label htmlFor={stat}>{stat}: </label>
                                     <input
                                         className="inputboxSmall inline"
                                         type="number"
@@ -145,13 +145,13 @@ function CharacterAdd(props) {
                         x
                     </button>
                     <form className="character-form" action="/api/add_new_cumulative_stats/" target="dummyframe" method="post">
-                        <label for="charidc">Character ID:</label>
+                        <label htmlFor="charidc">Character ID:</label>
                         <input type="text" id="charidc" name="characterid" />
                         <br />
-                        <label for="gold">Gold:</label>
+                        <label htmlFor="gold">Gold:</label>
                         <input type="number" id="gold" name="gold" min="0" defaultValue={0} onFocus={handleFocus} />
                         <br />
-                        <label for="exp">EXP:</label>
+                        <label htmlFor="exp">EXP:</label>
                         <input type="number" id="exp" name="exp" min="0" defaultValue={0} onFocus={handleFocus} />
                         <br />
                         <input type="submit"></input>
@@ -175,7 +175,7 @@ function CharacterAdd(props) {
                         x
                     </button>
                     <form className="character-form" action="/api/delete_character/" target="dummyframe" method="post">
-                        <label for="charidc">Character ID:</label>
+                        <label htmlFor="charidc">Character ID:</label>
                         <input type="text" id="charidc" name="characterid" />
                         <br />
                         <input type="submit"></input>

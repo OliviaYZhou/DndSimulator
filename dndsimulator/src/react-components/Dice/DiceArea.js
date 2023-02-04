@@ -50,7 +50,7 @@ function DiceArea(props) {
             )
         } else {
             return (
-                <button className="bigHeader clear-dice-button" onClick={() => showDiceBoard(boardIndex)}>
+                <button className="bigHeader clear-dice-button hoverable highlightable" onClick={() => showDiceBoard(boardIndex)}>
                     {characterid}
                 </button>
             )

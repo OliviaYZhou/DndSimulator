@@ -220,11 +220,30 @@
     overflow: hidden;
     overflow-x: auto;
 }
-.scrollable-x:hover {
-}
 .scrollable {
     overflow: hidden;
     overflow: auto;
 }
-.scrollable:hover {
+.hoverable {
+    cursor: pointer;
+}
+.hoverable:hover {
+    transform: scale(1.1);
+}
+.grabbable:hover {
+    cursor: grab;
+}
+.grabbable:active {
+    cursor: grabbing;
+}
+.highlightable:hover {
+    color: rgb(223, 182, 0);
+}
+.editable:hover {
+    cursor: default;
+    transform: scale(1.15);
+}
+.parent-hoverable :hover {
+    transform: scale(1.1);
+    cursor: pointer;
 }
