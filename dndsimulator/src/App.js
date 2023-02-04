@@ -22,9 +22,10 @@ class App extends React.Component {
     }
     render() {
         return (
-            <Fragment>
+            <body>
+                <img src="/assets/Art/DNDTK-background.png" id="background" />
                 <SideBar currentTurn={4} />
-                <div className="App">
+                <div id="App">
                     <div className="main-grid">
                         <CharacterArea socket={socket} />
                         <Session currentTurn={4} />
@@ -32,7 +33,7 @@ class App extends React.Component {
                         <Directions />
                     </div>
                 </div>
-            </Fragment>
+            </body>
         )
     }
 }
