@@ -7,7 +7,7 @@ function SideBar(props) {
     const [currentTime, setCurrentTime] = useState(6.5)
     const [currentHour, setCurrentHour] = useState(6)
     const [currentMinute, setCurrentMinute] = useState(30)
-    const [currentTurn, setCurrentTurn] = useState(props.currentTurn)
+    const [currentSession, setCurrentSession] = useState(props.currentTurn)
     const [showAddDiceBoardModule, setShowAddDiceBoardModule] = useState(false)
     const [showAddDiceModule, setShowAddDiceModule] = useState(false)
     const [showAddCharacterModule, setShowAddCharacterModule] = useState(false)
@@ -169,7 +169,7 @@ function SideBar(props) {
             <div id="side-bar">
                 <div className="vertical-grid">
                     <div className="time-grid">
-                        <div>Turn: {currentTurn}</div>
+                        <div>Session: {currentSession}</div>
                         <div>
                             Time:{""}
                             <input
@@ -209,9 +209,9 @@ function SideBar(props) {
                     <button
                         className="hoverable"
                         onClick={() => {
-                            setCurrentTurn(currentTurn + 1)
+                            setCurrentSession(currentSession + 1)
                         }}>
-                        Next Turn
+                        Next Session
                     </button>
                 </div>
             </div>

@@ -21,6 +21,13 @@ export default function PermanentEffectForm() {
                     id="charid"
                     name="characterid"
                 />
+                <label htmlFor="causeid">Cause:</label>
+                <input
+                    className=".default-inputbox centered-text"
+                    type="text"
+                    id="causeid"
+                    name="cause"
+                />
                 <div className="centered-flex">
                     <label htmlFor="change-amount-id">Amount: </label>
                     <input

@@ -95,6 +95,31 @@ def create_table_SKILLS(cur):
             ;''')
     print("Table SKILLS added")
 
+def create_table_HISTORY(cur):
+    cur.execute('DROP TABLE IF EXISTS HISTORY;')
+
+    cur.execute(
+        '''CREATE TABLE HISTORY
+            (HISTORYID       SERIAL   PRIMARY KEY,
+            AFFECTED         TEXT     NOT NULL ,        
+            CHARACTERID      TEXT     NOT NULL , 
+            AMOUNT           INT      NOT NULL,
+            SESSION          INT,
+            DESCRIPTION      TEXT)                    
+            ;''')
+    print("Table HISTORY added")
+
+def create_table_METADATA(cur):
+    cur.execute('DROP TABLE IF EXISTS METADATA;')
+
+    cur.execute(
+        '''CREATE TABLE METADATA
+            (ROOMID      TEXT   PRIMARY KEY,
+            TIME         TEXT     NOT NULL ,        
+            SESSION      TEXT     NOT NULL)                    
+            ;''')
+    print("Table METADATA added")
+
 def add_player_character(characterid, name, stats, level, gold, exp):
     add_character(characterid, name, "player")
     add_character_stats(characterid, stats, level)
