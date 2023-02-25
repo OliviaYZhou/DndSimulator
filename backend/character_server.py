@@ -68,6 +68,20 @@ def add_new_cumulative_stats():
     socketIo.emit(f"get_character_changes/{data['characterid']}", character_db.get_player_stats(data["characterid"]))
     return default_return
 
+@app.route('/api/add_permanent_effect/', methods=["GET", "POST"])
+def add_permanent_effect():
+    data = request.form
+    print_block(data, "form")
+    if (data["effect-type"] == "Gold"):
+        character_db.update_gold(data["characterid"], data["effect-amount"])
+    if (data["effect-type"] == "Exp"):
+        character_db.update_exp(data["characterid"], data["effect-amount"])
+    if (data["effect-type"] == "Level"):
+        character_db.update_level(data["characterid"], data["effect-amount"])
+    if (data["effect-type"] == "HP"):
+        pass
+    socketIo.emit(f"get_character_changes/{data['characterid']}", character_db.get_player_stats(data["characterid"]))
+    return default_return
 # @socketIo.on('character_connected')
 # def send_all_stats(data):
 #     print("server js\n\n\n\n")

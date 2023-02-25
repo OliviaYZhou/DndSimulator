@@ -114,6 +114,9 @@
     align-items: center;
     justify-content: center;
 }
+.centered-text {
+    text-align: center;
+}
 
 /* Buttons */
 .plusButton {
@@ -246,4 +249,8 @@
 .parent-hoverable :hover {
     transform: scale(1.1);
     cursor: pointer;
+}
+.padded-form {
+    padding: 10px;
+    min-height: 30px;
 }

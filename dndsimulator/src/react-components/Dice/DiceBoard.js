@@ -12,17 +12,17 @@ class DiceBoard extends React.Component {
         isRolling: false,
         socket: this.props.socket,
         boardIndex: this.props.boardIndex,
-        characterid: this.props.characterid,
+        boardId: this.props.boardId,
     }
     componentDidMount() {
-        console.log("mount board index", this.props.boardIndex)
-        this.state.socket.emit("i_just_connected", { boardIndex: this.props.boardIndex })
-        this.state.socket.on(`welcome/${this.props.boardIndex}`, (data) => this.load_board(data))
+        console.log("mount board id", this.props.boardId)
+        this.state.socket.emit("i_just_connected", { boardId: this.props.boardId })
+        this.state.socket.on(`welcome/${this.props.boardId}`, (data) => this.load_board(data))
 
-        this.state.socket.on(`get_dice/${this.props.boardIndex}`, (data) => {
+        this.state.socket.on(`get_dice/${this.props.boardId}`, (data) => {
             this.setDice(data)
         })
-        this.state.socket.on(`everyone_start_roll/${this.props.boardIndex}`, (data) => {
+        this.state.socket.on(`everyone_start_roll/${this.props.boardId}`, (data) => {
             this.rollDice(data.index, data.predetermined_result)
         })
         // this.scaleFontSize("dice-history")
@@ -30,19 +30,19 @@ class DiceBoard extends React.Component {
 
     load_board(data) {
         this.setState({ diceList: data.diceList, diceHistory: data.diceHistory })
-        this.state.socket.off(`welcome/${this.state.boardIndex}`)
+        this.state.socket.off(`welcome/${this.state.boardId}`)
     }
 
     deleteDice = (index) => {
-        this.state.socket.emit("delete_dice", { index: index, boardIndex: this.state.boardIndex })
+        this.state.socket.emit("delete_dice", { index: index, boardId: this.state.boardId })
     }
 
     clearDice() {
-        this.state.socket.emit("clear_dice", { boardIndex: this.state.boardIndex })
+        this.state.socket.emit("clear_dice", { boardId: this.state.boardId })
     }
 
     clearHistory() {
-        this.state.socket.emit("clear_history", { boardIndex: this.state.boardIndex })
+        this.state.socket.emit("clear_history", { boardId: this.state.boardId })
     }
 
     rolling = (index, diceMax) => {
@@ -123,7 +123,7 @@ class DiceBoard extends React.Component {
     addDice(diceMax) {
         const newDiceJson = {
             dicemax: diceMax,
-            boardIndex: this.state.boardIndex,
+            boardId: this.state.boardId,
         }
         console.log(newDiceJson)
 
@@ -146,7 +146,7 @@ class DiceBoard extends React.Component {
         const diceJson = {
             index: index,
             diceval: roll,
-            boardIndex: this.state.boardIndex,
+            boardId: this.state.boardId,
         }
         console.log(diceJson)
         this.state.socket.emit("dice_update", diceJson)
@@ -162,9 +162,15 @@ class DiceBoard extends React.Component {
                         e.preventDefault()
                         this.clearDice()
                     }}>
-                    {this.state.characterid}
+                    {this.props.boardId}
                 </button>
-                <div className="dice-module roundedbox" style={{ backgroundColor: this.state.isRolling ? "rgb(201, 200, 200)" : "rgb(236, 236, 236)" }}>
+                <div
+                    className="dice-module roundedbox"
+                    style={{
+                        backgroundColor: this.state.isRolling
+                            ? "rgb(201, 200, 200)"
+                            : "rgb(236, 236, 236)",
+                    }}>
                     {/* <div className='row wrapper'> */}
                     {/* <div className="add-dice ">
                         <div className="addDiceButtonColumn">
@@ -200,7 +206,10 @@ class DiceBoard extends React.Component {
 
                     {/* <div class='dice-board-wrapper roundedbox'> */}
 
-                    <ul className="dice-board scrollable-y" onDrop={(ev) => this.drop(ev)} onDragOver={(ev) => this.allowDrop(ev)}>
+                    <ul
+                        className="dice-board scrollable-y"
+                        onDrop={(ev) => this.drop(ev)}
+                        onDragOver={(ev) => this.allowDrop(ev)}>
                         {this.state.diceList.map((dice, index) => (
                             <li key={index} className="dicelistitem">
                                 <Dice
@@ -208,7 +217,7 @@ class DiceBoard extends React.Component {
                                     index={index}
                                     socket={this.state.socket}
                                     deleteDice={this.deleteDice}
-                                    boardIndex={this.state.boardIndex}
+                                    boardId={this.state.boardId}
                                     drag={this.drag}
                                 />
                             </li>

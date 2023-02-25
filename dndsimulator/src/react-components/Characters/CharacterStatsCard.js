@@ -42,7 +42,9 @@ class CharacterStatsCard extends React.Component {
         // })
         // this.props.socket.on(`character_setup/${this.state.characterid}`, data => this.load_card(data))
         this.load_card()
-        this.props.socket.on(`get_character_changes/${this.state.characterid}`, (data) => this.reload_card(data))
+        this.props.socket.on(`get_character_changes/${this.state.characterid}`, (data) =>
+            this.reload_card(data)
+        )
     }
     load_card(data = {}) {
         // characterid=${this.state.characterid
@@ -55,7 +57,7 @@ class CharacterStatsCard extends React.Component {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log("api server call", data)
+                // console.log("api server call", data)
                 this.setState(data, () => this.setCurrentStats())
             })
 
@@ -72,7 +74,10 @@ class CharacterStatsCard extends React.Component {
         this.setState(data, () => this.setCurrentStats())
     }
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.status_effects != this.state.status_effects || prevState.max_stats != this.state.max_stats) {
+        if (
+            prevState.status_effects != this.state.status_effects ||
+            prevState.max_stats != this.state.max_stats
+        ) {
             this.setCurrentStats()
         }
     }
@@ -123,7 +128,9 @@ class CharacterStatsCard extends React.Component {
                                 <li className="status_effect">
                                     <div>
                                         {effect["AMOUNT"] >= 0 ? "+" : null}
-                                        {effect["AMOUNT"]} {effect["NAME"]} ({effect["DURATION_REMAINING"]}/{effect["DURATION"]} turns left)
+                                        {effect["AMOUNT"]} {effect["NAME"]} (
+                                        {effect["DURATION_REMAINING"]}/{effect["DURATION"]} turns
+                                        left)
                                     </div>
                                     <div>
                                         <i>{effect["DESCRIPTION"]}</i>
@@ -136,7 +143,9 @@ class CharacterStatsCard extends React.Component {
             }
         }
         return (
-            <div className="characterCardBody" style={{ height: this.state.minimized ? "fit-content" : "400px" }}>
+            <div
+                className="characterCardBody"
+                style={{ height: this.state.minimized ? "fit-content" : "400px" }}>
                 <button className="plusButton" onClick={() => this.addStatusEffect()}>
                     +
                 </button>
@@ -157,7 +166,8 @@ class CharacterStatsCard extends React.Component {
                 <div className="hpMpRow row">
                     <div>
                         {" "}
-                        HP: {this.state.current_stats["HP"]}/{this.state.max_stats["HP"] + this.state.current_stats["CON"]}{" "}
+                        HP: {this.state.current_stats["HP"]}/
+                        {this.state.max_stats["HP"] + this.state.current_stats["CON"]}{" "}
                     </div>
                 </div>
 
@@ -174,7 +184,9 @@ class CharacterStatsCard extends React.Component {
                         : null} */}
                     </div>
                 </div>
-                <div className="inventoryWrapper" style={{ height: this.state.minimized ? "0px" : "120px" }}>
+                <div
+                    className="inventoryWrapper"
+                    style={{ height: this.state.minimized ? "0px" : "120px" }}>
                     <ul className="inventoryList scrollable-y">
                         {this.state.inventory.map((itemJson) => (
                             <li>

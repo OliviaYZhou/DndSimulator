@@ -10,6 +10,7 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     position: relative;
     float: left;
+    /* transition: ease 0.5s; */
 }
 
 .characterid {
@@ -28,7 +29,8 @@
     height: 120px;
 }
 .inventoryList {
-    box-shadow: rgba(189, 117, 1, 0.537) 0px 0px 30px -10px inset, rgba(110, 110, 110, 0.3) 0px 0px 6px -18px inset;
+    box-shadow: rgba(189, 117, 1, 0.537) 0px 0px 30px -10px inset,
+        rgba(110, 110, 110, 0.3) 0px 0px 6px -18px inset;
     margin: 10px;
     background-color: beige;
     height: inherit;

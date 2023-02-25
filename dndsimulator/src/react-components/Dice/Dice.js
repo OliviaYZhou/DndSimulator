@@ -49,7 +49,7 @@ class Dice extends React.Component {
         this.props.socket.emit(`i_clicked_roll`, {
             index: this.state.index,
             maxRoll: this.state.diceMax,
-            boardIndex: this.props.boardIndex,
+            boardId: this.props.boardId,
         })
     }
 
