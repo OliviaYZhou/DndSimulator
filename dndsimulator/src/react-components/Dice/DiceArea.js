@@ -102,7 +102,7 @@ function DiceArea(props) {
         }
     }
     return (
-        <div className="dice-area scrollable-x">
+        <div className="dice-area scrollable-x scrollable-y">
             <ul className="characterDiceBoardList">
                 {diceList != undefined
                     ? diceList.map((boardlist, boardIndex) => {

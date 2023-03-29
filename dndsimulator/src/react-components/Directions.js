@@ -3,7 +3,7 @@ function Directions() {
     return (
         <div id="directionsBlock">
             <h2>Directions</h2>
-            <ul className="directions-list scrollable-y">
+            <ul className="directions-list scrollable-y scrollable-x">
                 <li>Click button in red bar to add dice</li>
                 <li>Click dice to roll</li>
                 <li>Right click dice to delete</li>

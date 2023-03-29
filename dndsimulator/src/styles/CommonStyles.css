@@ -152,6 +152,13 @@
     /* color: white; */
 }
 
+.showOnHover {
+    display: none;
+    right: "0px";
+    top: "0px";
+    background-color: rgba(255, 141, 141, 0.654);
+}
+
 .defaultButton {
     background-color: white;
     border-style: none;

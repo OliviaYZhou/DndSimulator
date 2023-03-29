@@ -19,9 +19,11 @@ def send_all_stats():
     # print("api send_all_stats")
     characterid = request.args.get('characterid')
     basic_character_info = character_db.get_basic_character(characterid)
+    
     if basic_character_info["character_type"] == "basic":
         return basic_character_info
     else:
+        print_block(basic_character_info, "basic_character_info")
         all_stats = character_db.get_all_player_info(characterid)
         if not all_stats:
             return basic_character_info
@@ -81,6 +83,35 @@ def add_permanent_effect():
     if (data["effect-type"] == "HP"):
         pass
     socketIo.emit(f"get_character_changes/{data['characterid']}", character_db.get_player_stats(data["characterid"]))
+    return default_return
+
+@app.route('/api/delete_character/', methods=["DELETE", "POST"])
+def delete_character():
+    characterid = request.args.get('characterid')
+    print_block(characterid, "delete character")
+    character_db.delete_character(characterid)
+    print_block(character_db.get_character_id_list())
+    socketIo.emit(f"master_character_changes", {"master_character_list": character_db.get_character_id_list()})
+    return default_return
+
+@app.route('/api/delete_status_effect/', methods=["DELETE", "POST"])
+def delete_status_effect():
+    characterid = request.args.get('characterid')
+    effect_name = request.args.get('effect_name')
+    print_block(characterid, f"delete status_effect {effect_name}")
+    character_db.delete_status_effect(characterid, effect_name)
+
+    socketIo.emit(f"get_character_changes/{characterid}", character_db.get_player_stats(characterid))
+    return default_return
+
+@app.route('/api/delete_inventory_item/', methods=["DELETE", "POST"])
+def delete_inventory_item():
+    characterid = request.args.get('characterid')
+    item_name = request.args.get('item_name')
+    print_block(characterid, f"delete inventory_item {item_name}")
+    character_db.remove_inventory_item(characterid, item_name, 1)
+
+    socketIo.emit(f"get_character_changes/{characterid}", character_db.get_character_inventory(characterid))
     return default_return
 # @socketIo.on('character_connected')
 # def send_all_stats(data):

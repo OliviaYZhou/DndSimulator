@@ -112,6 +112,51 @@ class CharacterStatsCard extends React.Component {
     addStatusEffect() {
         this.props.showStatusForm()
     }
+    deleteCharacter() {
+        var yn = window.confirm("Delete Character FOREVER??")
+        if (!yn) {
+            return false
+        }
+        fetch(`/api/delete_character/?characterid=${this.state.characterid}`, {
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            method: "DELETE",
+        })
+    }
+    deleteStatusEffect(effect_name) {
+        var yn = window.confirm(`Delete Status Effect ${effect_name} FOREVER??`)
+        if (!yn) {
+            return false
+        }
+        fetch(
+            `/api/delete_status_effect/?characterid=${this.state.characterid}&effect_name=${effect_name}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                method: "DELETE",
+            }
+        )
+    }
+    deleteItem(itemName) {
+        var yn = window.confirm(`Remove 1 of ${itemName}?`)
+        if (!yn) {
+            return false
+        }
+        fetch(
+            `/api/delete_inventory_item/?characterid=${this.state.characterid}&item_name=${itemName}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                method: "DELETE",
+            }
+        )
+    }
 
     render() {
         const renderStatBreakdown = () => {
@@ -126,15 +171,22 @@ class CharacterStatsCard extends React.Component {
                         <ul className="status_effect_list scrollable-y">
                             {effectJsonList.map((effect) => (
                                 <li className="status_effect">
-                                    <div>
+                                    <span>
                                         {effect["AMOUNT"] >= 0 ? "+" : null}
-                                        {effect["AMOUNT"]} {effect["NAME"]} (
-                                        {effect["DURATION_REMAINING"]}/{effect["DURATION"]} turns
-                                        left)
-                                    </div>
+                                        {effect["AMOUNT"]}
+                                    </span>
+                                    <span>{effect["NAME"]}</span>
+                                    <span>
+                                        ({effect["DURATION_REMAINING"]}/{effect["DURATION"]})
+                                    </span>
                                     <div>
                                         <i>{effect["DESCRIPTION"]}</i>
                                     </div>
+                                    <button
+                                        className="closeButton showOnHover"
+                                        onClick={() => this.deleteStatusEffect(effect["NAME"])}>
+                                        X
+                                    </button>
                                 </li>
                             ))}
                         </ul>
@@ -148,6 +200,12 @@ class CharacterStatsCard extends React.Component {
                 style={{ height: this.state.minimized ? "fit-content" : "400px" }}>
                 <button className="plusButton" onClick={() => this.addStatusEffect()}>
                     +
+                </button>
+                <button
+                    className="closeButton"
+                    style={{ display: this.state.minimized ? "none" : "inline-block" }}
+                    onClick={() => this.deleteCharacter()}>
+                    X
                 </button>
                 <div
                     className="characterName hoverable highlightable"
@@ -184,17 +242,28 @@ class CharacterStatsCard extends React.Component {
                         : null} */}
                     </div>
                 </div>
-                <div
-                    className="inventoryWrapper"
-                    style={{ height: this.state.minimized ? "0px" : "120px" }}>
-                    <ul className="inventoryList scrollable-y">
-                        {this.state.inventory.map((itemJson) => (
-                            <li>
-                                {itemJson["amount"]} x {itemJson["itemName"]}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                <ul
+                    className="inventoryList scrollable-y"
+                    style={{
+                        height: this.state.minimized ? "0px" : "120px",
+                        padding: this.state.minimized ? "0px" : "0.5em",
+                        /*1.5em 0.5em 0.5em 0.5em */
+                        margin: this.state.minimized ? "5px" : "10px",
+                    }}>
+                    {/* <button className="plusButton">+</button> */}
+                    {this.state.inventory.map((itemJson) => (
+                        <li className="inventory-item">
+                            <span style={{ marginRight: "5px" }}>{itemJson["amount"]} x </span>
+                            <span>{itemJson["itemName"]}</span>
+                            <button
+                                className="closeButton showOnHover"
+                                onClick={() => this.deleteItem(itemJson["itemName"])}>
+                                -
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+
                 <div className="statrow row">
                     <div className="row">
                         {["STR", "DEX", "CON", "INT", "WIS", "CHA"].map((stat) => (

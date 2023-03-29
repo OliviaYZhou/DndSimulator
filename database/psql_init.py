@@ -19,13 +19,13 @@ def create_table_CHARACTER_STATS(cur):
         (
         CHARACTERID      TEXT        PRIMARY KEY   REFERENCES BASIC_CHARACTER, 
         LEVEL            INTEGER,
-        HP               INTEGER,
+        HP               INTEGER, 
         STR              INTEGER,
         DEX              INTEGER,
         CON              INTEGER,
         INT              INTEGER,
         WIS              INTEGER,
-        CHA              INTEGER);''')
+        CHA              INTEGER);''') # baseHP
     print("Table CHARACTER_STATS added")
 
 def create_table_CUMULATIVE_STATS(cur):
@@ -46,18 +46,30 @@ def create_table_STATUS_EFFECTS(cur):
             (STATUSID       SERIAL   PRIMARY KEY,
             NAME            TEXT,
             CHARACTERID     TEXT     REFERENCES BASIC_CHARACTER,   
-            HP              INTEGER,     
+            MAX_HP          INTEGER,     
             STR             INTEGER,
             DEX             INTEGER,
             CON             INTEGER,
             INT             INTEGER,
             WIS             INTEGER,
             CHA             INTEGER,
+            HP_REGEN        INTEGER,
+            MP_REGEN        INTEGER,
             DESCRIPTION     TEXT,
             DURATION        INTEGER,
             DURATION_REMAINING INTEGER )                    
-            ;''')
+            ;''') # make hp a temp buff
     print("Table STATUS_EFFECTS added")
+
+def create_table_REGENERATIVE_STATS(cur):
+    cur.execute('DROP TABLE IF EXISTS REGENERATIVE_STATS CASCADE;')
+    cur.execute(
+        '''CREATE TABLE REGENERATIVE_STATS
+            (CHARACTERID     TEXT    REFERENCES BASIC_CHARACTER PRIMARY KEY ON DELETE CASCADE, 
+             LOST_HP         INTEGER                NOT NULL,
+             LOST_MP         INTEGER                NOT NULL)                    
+            ;''')
+    print("Table REGENERATIVE_STATS added")
 
 def create_table_INVENTORY_ITEMS(cur):
     cur.execute('DROP TABLE IF EXISTS INVENTORY_ITEMS CASCADE;')

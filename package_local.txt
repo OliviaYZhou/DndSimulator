@@ -19,3 +19,4 @@ cd /var/log/nginx/
 http://52.14.89.21/
 
 Access-Control-Allow-Origin: *
+ 
