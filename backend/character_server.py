@@ -85,6 +85,14 @@ def add_permanent_effect():
     socketIo.emit(f"get_character_changes/{data['characterid']}", character_db.get_player_stats(data["characterid"]))
     return default_return
 
+@app.route('/api/add_inventory_item/', methods=["GET", "POST"])
+def add_inventory_item():
+    data = request.form
+    print_block(data, "form")
+    character_db.add_inventory_item(data["characterid"], data["item-name"], data["amount"])
+    socketIo.emit(f"get_character_changes/{data['characterid']}", character_db.get_character_inventory(data["characterid"]))
+    return default_return
+
 @app.route('/api/delete_character/', methods=["DELETE", "POST"])
 def delete_character():
     characterid = request.args.get('characterid')

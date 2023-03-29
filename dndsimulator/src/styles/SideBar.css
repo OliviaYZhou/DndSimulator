@@ -62,6 +62,11 @@
     top: 30%;
     min-height: 100px;
 }
+.fifthSidebarChild {
+    top: 50%;
+    min-height: 100px;
+    min-width: 150px;
+}
 .sixthSidebarChild {
     top: 65%;
     min-height: 100px;

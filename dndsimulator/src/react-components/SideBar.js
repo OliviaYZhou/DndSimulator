@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from "react"
 import "../styles/SideBar.css"
 import CharacterAdd from "./Characters/CharacterAdd"
 import PermanentEffectForm from "./Characters/PermanentEffectForm"
+import StatusEffectForm from "./Characters/StatusEffectForm"
 import DiceAdd from "./Dice/DiceAdd"
 function SideBar(props) {
     const [currentTime, setCurrentTime] = useState(6.5)
@@ -11,6 +12,7 @@ function SideBar(props) {
     const [showAddDiceBoardModule, setShowAddDiceBoardModule] = useState(false)
     const [showAddDiceModule, setShowAddDiceModule] = useState(false)
     const [showAddCharacterModule, setShowAddCharacterModule] = useState(false)
+    const [showStatusEffectModule, setShowStatusEffectModule] = useState(false)
     const [showPermanentEffectModule, setShowPermanentEffectModule] = useState(false)
     const [showTimePassModule, setShowTimePassModule] = useState(false)
     function onTimeInput(event, hourMinute = "hour") {
@@ -115,6 +117,23 @@ function SideBar(props) {
         }
     }
 
+    function renderStatusEffectModule() {
+        if (showStatusEffectModule) {
+            return (
+                <div className="sidebar-popup fifthSidebarChild">
+                    <button
+                        className="closeButton"
+                        onClick={() => setShowStatusEffectModule(false)}>
+                        x
+                    </button>
+                    <StatusEffectForm />
+                </div>
+            )
+        } else {
+            return null
+        }
+    }
+
     function renderPermanentEffectModule() {
         if (showPermanentEffectModule) {
             return (
@@ -197,7 +216,9 @@ function SideBar(props) {
                     <button className="hoverable" onClick={() => setShowAddDiceModule(true)}>
                         Add Dice
                     </button>
-                    <button className="hoverable">Add Status Effect</button>
+                    <button className="hoverable" onClick={() => setShowStatusEffectModule(true)}>
+                        Add Status Effect
+                    </button>
                     <button
                         className="hoverable"
                         onClick={() => setShowPermanentEffectModule(true)}>
@@ -219,6 +240,7 @@ function SideBar(props) {
                 {renderAddCharacterModule()}
                 {renderAddDiceBoardModule()}
                 {renderAddDiceModule()}
+                {renderStatusEffectModule()}
                 {renderPermanentEffectModule()}
                 {renderTimePassModule()}
             </div>
