@@ -1,10 +1,10 @@
+import psycopg2
+from psycopg2 import sql
+conn = psycopg2.connect("dbname=dndtoolkitdb user=olivia")
 try:    
     from database.db_functions import *
 except ModuleNotFoundError:
     from db_functions import *
-import psycopg2
-from psycopg2 import sql
-conn = psycopg2.connect("dbname=dndtoolkitdb user=olivia")
 
 
 def get_character_id_list():

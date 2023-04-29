@@ -113,10 +113,10 @@ def create_table_HISTORY(cur):
     cur.execute(
         '''CREATE TABLE HISTORY
             (HISTORYID       SERIAL   PRIMARY KEY,
-            AFFECTED         TEXT     NOT NULL ,        
-            CHARACTERID      TEXT     NOT NULL , 
+            CHARACTERID      TEXT     NOT NULL    REFERENCES BASIC_CHARACTER, 
+            AFFECTED         TEXT     NOT NULL,        
             AMOUNT           INT      NOT NULL,
-            SESSION          INT,
+            SESSION          INT      NOT NULL,
             DESCRIPTION      TEXT)                    
             ;''')
     print("Table HISTORY added")
@@ -274,10 +274,11 @@ def alter_char_health():
 if __name__ == '__main__':
 
     conn = psycopg2.connect("dbname=dndtoolkitdb user=olivia")
-    alter_char_regen("orc_guy", 12, 0)
-    alter_char_regen("tentacle_guy", 0, 0)
-    alter_char_regen("tester2", 0, 0)
-    # cur = conn.cursor()
+    cur = conn.cursor()
+    create_table_HISTORY(cur)
+    conn.commit()
+
+
     # create_table_REGENERATIVE_STATS(cur)
     
 

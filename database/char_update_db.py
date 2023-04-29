@@ -2,7 +2,15 @@ import math
 import psycopg2
 conn = psycopg2.connect("dbname=dndtoolkitdb user=olivia")
 
-def update_gold(charid, amount):
+try:
+    from database.db_functions import SESSION
+    from database.char_insert_db import add_history
+except ModuleNotFoundError:
+    from db_functions import SESSION
+    from char_insert_db import add_history
+
+
+def update_gold(charid, amount, cause="", session=SESSION):
     cur = conn.cursor()
     q1 = """
     UPDATE CUMULATIVE_STATS SET GOLD = (CUMULATIVE_STATS.GOLD + (%s)) WHERE CHARACTERID=(%s);
@@ -11,8 +19,10 @@ def update_gold(charid, amount):
     conn.commit()
     cur.close()
     print(f"{amount} of gold added to {charid}")
+    add_history(charid, "gold", amount, session, cause)
 
-def update_exp(charid, amount):
+
+def update_exp(charid, amount, cause="", session=SESSION):
     print("update exp")
     cur = conn.cursor()
     q1 = """
@@ -22,8 +32,9 @@ def update_exp(charid, amount):
     conn.commit()
     cur.close()
     print(f"{amount} of exp added to {charid}")
+    add_history(charid, "exp", amount, session, cause)
 
-def update_level(charid, amount):
+def update_level(charid, amount, cause="", session=SESSION):
     cur = conn.cursor()
     q1 = """
     UPDATE CHARACTER_STATS SET LEVEL = (CHARACTER_STATS.LEVEL + (%s)) WHERE CHARACTERID=(%s);
@@ -32,8 +43,9 @@ def update_level(charid, amount):
     conn.commit()
     cur.close()
     print(f"{amount} levels added to {charid}")
+    add_history(charid, "level", amount, session, cause)
 
-def lose_hp(charid, amount):
+def lose_hp(charid, amount, cause="", session=SESSION):
     # negative amount is positive lost hp
     amount = abs(amount)
     cur = conn.cursor()
@@ -44,8 +56,9 @@ def lose_hp(charid, amount):
     conn.commit()
     cur.close()
     print(f"{charid} hp - {amount}")
+    add_history(charid, "hp", -amount, session, cause)
 
-def recover_lost_hp(charid, amount):
+def recover_lost_hp(charid, amount, cause="", session=SESSION):
     # we work with positive amounts
     amount = abs(amount)
     cur = conn.cursor()
@@ -62,3 +75,4 @@ def recover_lost_hp(charid, amount):
     conn.commit()
     cur.close()
     print(f"{charid} hp + {amount}")
+    add_history(charid, "hp", amount, session, cause)

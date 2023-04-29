@@ -75,17 +75,17 @@ def add_permanent_effect():
     data = request.form
     print_block(data, "form")
     if (data["effect-type"] == "Gold"):
-        character_db.update_gold(data["characterid"], data["effect-amount"])
+        character_db.update_gold(data["characterid"], data["effect-amount"], data["cause"])
     if (data["effect-type"] == "Exp"):
-        character_db.update_exp(data["characterid"], data["effect-amount"])
+        character_db.update_exp(data["characterid"], data["effect-amount"], data["cause"])
     if (data["effect-type"] == "Level"):
-        character_db.update_level(data["characterid"], data["effect-amount"])
+        character_db.update_level(data["characterid"], data["effect-amount"], data["cause"])
     if (data["effect-type"] == "HP"):
         print_block(data, "HP")
         if (int(data["effect-amount"]) > 0):
-            character_db.recover_lost_hp(data["characterid"], int(data["effect-amount"]))
+            character_db.recover_lost_hp(data["characterid"], int(data["effect-amount"]), data["cause"])
         else:
-            character_db.lose_hp(data["characterid"], int(data["effect-amount"]))
+            character_db.lose_hp(data["characterid"], int(data["effect-amount"]), data["cause"])
     socketIo.emit(f"get_character_changes/{data['characterid']}", character_db.get_player_stats(data["characterid"]))
     return default_return
 
