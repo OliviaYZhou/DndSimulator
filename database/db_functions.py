@@ -1,5 +1,5 @@
 stat_order_list = ["HP", "STR", "DEX", "CON", "INT", "WIS", "CHA"]
-
+stat_order_list_lower = [x.lower() for x in stat_order_list]
 
 def print_block(info, name=""):
     print("\n\n\n", name, info, "\n\n\n")

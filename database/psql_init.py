@@ -2,7 +2,6 @@ from character_db import *
 
 stat_order_list = ["HP", "STR", "DEX", "CON", "INT", "WIS", "CHA"]
 
-
 def create_table_BASIC_CHARACTER(cur):
     cur.execute('DROP TABLE IF EXISTS BASIC_CHARACTER CASCADE;')
     cur.execute(
@@ -65,10 +64,11 @@ def create_table_REGENERATIVE_STATS(cur):
     cur.execute('DROP TABLE IF EXISTS REGENERATIVE_STATS CASCADE;')
     cur.execute(
         '''CREATE TABLE REGENERATIVE_STATS
-            (CHARACTERID     TEXT    REFERENCES BASIC_CHARACTER PRIMARY KEY ON DELETE CASCADE, 
+            (CHARACTERID     TEXT    PRIMARY KEY REFERENCES BASIC_CHARACTER ON DELETE CASCADE, 
              LOST_HP         INTEGER                NOT NULL,
              LOST_MP         INTEGER                NOT NULL)                    
             ;''')
+    conn.commit()
     print("Table REGENERATIVE_STATS added")
 
 def create_table_INVENTORY_ITEMS(cur):
@@ -86,7 +86,7 @@ def create_table_ITEMS(cur):
     cur.execute('DROP TABLE IF EXISTS ITEMS CASCADE;')
     cur.execute(
     '''CREATE TABLE ITEMS
-        (ITEMID         SERIAL   PRIMARY KEY,
+        (ITEMID         SERIAL        PRIMARY KEY,
         ITEMNAME        TEXT                   NOT NULL,        
         DESCRIPTION     INTEGER,
         EFFECTID        INTEGER)                    
@@ -121,6 +121,42 @@ def create_table_HISTORY(cur):
             ;''')
     print("Table HISTORY added")
 
+
+
+def create_table_RECORDS(cur):
+    cur.execute('DROP TABLE IF EXISTS RECORDS;')
+
+    cur.execute(
+        '''CREATE TABLE RECORDS
+            (RECORDID   SERIAL  PRIMARY KEY,
+            ROOMID      TEXT    REFERENCES ROOMS,       
+            SESSION     FLOAT   NOT NULL,
+            EVENTS      TEXT    NOT NULL)                    
+            ;''')
+    print("Table RECORDS added")
+
+    
+def create_table_USERS(cur):
+    cur.execute('DROP TABLE IF EXISTS METADATA;')
+
+    cur.execute(
+        '''CREATE TABLE USERS
+            (USERID      TEXT   PRIMARY KEY,
+            PASSWORD     TEXT     NOT NULL)                    
+            ;''')
+    print("Table USERS added")
+
+
+
+def create_table_ROOMS(cur):
+    cur.execute('DROP TABLE IF EXISTS ROOMS;')
+
+    cur.execute(
+        '''CREATE TABLE ROOM_USERS
+            (ROOMID      TEXT   PRIMARY KEY,
+             PASSWORD    TEXT);
+            ''')
+    print("Table ROOMS added") 
 def create_table_METADATA(cur):
     cur.execute('DROP TABLE IF EXISTS METADATA;')
 
@@ -128,9 +164,23 @@ def create_table_METADATA(cur):
         '''CREATE TABLE METADATA
             (ROOMID      TEXT   PRIMARY KEY,
             TIME         TEXT     NOT NULL ,        
-            SESSION      TEXT     NOT NULL)                    
+            SESSION      FLOAT     NOT NULL,
+            SESSION_NAME TEXT
+            SESSION_DESCRIPTION TEXT,
+            DICEBOARDS   TEXT)                    
             ;''')
     print("Table METADATA added")
+
+def create_table_ROOM_USERS(cur):
+    cur.execute('DROP TABLE IF EXISTS USER_ROOMS;')
+
+    cur.execute(
+        '''CREATE TABLE ROOM_USERS
+            (ROOMID      TEXT   NOT NULL REFERENCES ROOMS ON DELETE CASCADE,
+             USERID      TEXT   NOT NULL REFERENCES USERS,
+             PRIMARY KEY (ROOMID, USERID));
+            ''')
+    print("Table ROOM_USERS added")
 
 def add_player_character(characterid, name, stats, level, gold, exp):
     add_character(characterid, name, "player")
@@ -204,18 +254,41 @@ def init_tester_olivia():
 
     print(get_all_player_info("tester2"))
 
+def alter_char_regen(character_id, lost_hp, lost_mp):
+
+    cur = conn.cursor()
+    cur.execute('INSERT INTO REGENERATIVE_STATS (CHARACTERID, LOST_HP, LOST_MP) VALUES (%s, %s, %s)', (character_id, lost_hp, lost_mp))
+    conn.commit()
+    cur.close()
+    print(f"REGENERATIVE_STATS of {character_id} added")
+
+def alter_char_health():
+
+    cur = conn.cursor()
+
+    # q1 = "DELETE FROM STATUS_EFFECTS WHERE HP != 0"
+    conn.commit()
+    cur.close()
+    print(f"REGENERATIVE_STATS of {character_id} added")
+
 if __name__ == '__main__':
 
-    # conn = psycopg2.connect("dbname=dndtoolkitdb user=olivia")
+    conn = psycopg2.connect("dbname=dndtoolkitdb user=olivia")
+    alter_char_regen("orc_guy", 12, 0)
+    alter_char_regen("tentacle_guy", 0, 0)
+    alter_char_regen("tester2", 0, 0)
     # cur = conn.cursor()
+    # create_table_REGENERATIVE_STATS(cur)
+    
+
     # set_conn(conn)
     # init_tester_olivia()
 
 
     # init_db(cur, conn)
     # cur.close()
-    init_tentacle_guy()
-    init_orc_guy()
+    # init_tentacle_guy()
+    # init_orc_guy()
     
     # print(get_character_stats("tentacle_guy"))
 

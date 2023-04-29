@@ -1,4 +1,5 @@
 import psycopg2
+from psycopg2 import sql
 from character_db import *
 def get_blocked_pids(conn):
     print("get blocked pids")
@@ -93,6 +94,7 @@ if __name__ == '__main__':
     print("run psql scripts")
     conn = psycopg2.connect("dbname=dndtoolkitdb user=olivia")
     print("connected")
-    get_blocked_pids(conn)
+    # get_blocked_pids(conn)
+    # print(get_column_query("str", "status_effects"))
     # terminate_blocks(conn, [99900, 99012])
     # alter_delete_cascades(conn)

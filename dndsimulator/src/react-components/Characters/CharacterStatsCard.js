@@ -10,45 +10,26 @@ class CharacterStatsCard extends React.Component {
         name: "No Name",
         status_effects: { HP: 0, STR: 0, DEX: 0, CON: 0, INT: 0, WIS: 0, CHA: 0 },
         max_stats: { HP: 0, STR: 0, DEX: 0, CON: 0, INT: 0, WIS: 0, CHA: 0 },
+        lost_hp: 0,
         current_stats: {}, // never directly set, always calculate this
         exp: 0,
         gold: 0,
         level: 0,
         toggleStatBreakdown: false,
-        stat_breakdown: { STR: [], DEX: [], CON: [], INT: [], WIS: [], CHA: [] },
+        stat_breakdown: { HP: [], STR: [], DEX: [], CON: [], INT: [], WIS: [], CHA: [] },
         selectedStat: "",
         inventory: [], // item name: amount {"itemName": "bandage", "amount": 1}
         minimized: true,
     }
-    // componentDidMount(){
-    //     this.setCurrentStats()
-    //     // this.props.socket.on("send_stat_breakdown", data => this.renderStatBreakdown(data))
-    // }
-    // state = {
-    //     characterid: this.props.characterid,
-    //     name: '',
-    //     status_effects: {},
-    //     max_stats: {},
-    //     current_stats: {}, // never directly set, always calculate this
-    //     exp: 0,
-    //     gold: 0
-    // }
 
     componentDidMount() {
         // console.log("mount")
-        // this.props.socket.emit("character_connected", {characterid: this.state.characterid}, function(error, message){
-        //     console.log(error);
-        //     console.log(message);
-        // })
-        // this.props.socket.on(`character_setup/${this.state.characterid}`, data => this.load_card(data))
         this.load_card()
         this.props.socket.on(`get_character_changes/${this.state.characterid}`, (data) =>
             this.reload_card(data)
         )
     }
     load_card(data = {}) {
-        // characterid=${this.state.characterid
-
         fetch(`/api/character_connected/?characterid=${this.state.characterid}`, {
             headers: {
                 "Content-Type": "application/json",
@@ -106,7 +87,8 @@ class CharacterStatsCard extends React.Component {
         for (const key in this.state.max_stats) {
             newCurrStats[key] = this.state.max_stats[key] + this.state.status_effects[key]
         }
-        newCurrStats["HP"] += newCurrStats["CON"]
+        newCurrStats["currHP"] = newCurrStats["HP"] + newCurrStats["CON"] - this.state.lost_hp
+        console.log("newCurrStats", newCurrStats)
         this.setState({ current_stats: newCurrStats })
     }
     addStatusEffect() {
@@ -203,9 +185,12 @@ class CharacterStatsCard extends React.Component {
                 </button>
                 <button
                     className="closeButton"
-                    style={{ display: this.state.minimized ? "none" : "inline-block" }}
+                    id="deleteCharacterButton"
+                    style={{
+                        display: this.state.minimized ? "none" : "inline-block",
+                    }}
                     onClick={() => this.deleteCharacter()}>
-                    X
+                    .
                 </button>
                 <div
                     className="characterName hoverable highlightable"
@@ -222,10 +207,14 @@ class CharacterStatsCard extends React.Component {
                 )}
 
                 <div className="hpMpRow row">
-                    <div>
+                    <div
+                        className="hoverable"
+                        onClick={() => {
+                            this.openStatBreakdown("HP")
+                        }}>
                         {" "}
-                        HP: {this.state.current_stats["HP"]}/
-                        {this.state.max_stats["HP"] + this.state.current_stats["CON"]}{" "}
+                        HP: {this.state.current_stats["currHP"]}/
+                        {this.state.current_stats["HP"] + this.state.current_stats["CON"]}{" "}
                     </div>
                 </div>
 

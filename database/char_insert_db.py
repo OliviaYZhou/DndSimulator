@@ -16,6 +16,8 @@ def add_character_stats(character_id, stats, level):
         cur.execute('INSERT INTO CHARACTER_STATS (CHARACTERID, LEVEL, HP, STR, DEX, CON, INT, WIS, CHA)'
         'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)', (character_id, level, list_stats[0], list_stats[1],
         list_stats[2], list_stats[3], list_stats[4], list_stats[5], list_stats[6]))
+
+        cur.execute('INSERT INTO REGENERATIVE_STATS (CHARACTERID, LOST_HP, LOST_MP) VALUES (%s, %s, %s)', (character_id, 0, 0))
     conn.commit()
     cur.close()
     print(f"Character stats of {character_id} added")

@@ -81,7 +81,11 @@ def add_permanent_effect():
     if (data["effect-type"] == "Level"):
         character_db.update_level(data["characterid"], data["effect-amount"])
     if (data["effect-type"] == "HP"):
-        pass
+        print_block(data, "HP")
+        if (int(data["effect-amount"]) > 0):
+            character_db.recover_lost_hp(data["characterid"], int(data["effect-amount"]))
+        else:
+            character_db.lose_hp(data["characterid"], int(data["effect-amount"]))
     socketIo.emit(f"get_character_changes/{data['characterid']}", character_db.get_player_stats(data["characterid"]))
     return default_return
 
@@ -121,6 +125,10 @@ def delete_inventory_item():
 
     socketIo.emit(f"get_character_changes/{characterid}", character_db.get_character_inventory(characterid))
     return default_return
+
+
+
+
 # @socketIo.on('character_connected')
 # def send_all_stats(data):
 #     print("server js\n\n\n\n")

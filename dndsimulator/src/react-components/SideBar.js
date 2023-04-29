@@ -15,6 +15,7 @@ function SideBar(props) {
     const [showStatusEffectModule, setShowStatusEffectModule] = useState(false)
     const [showPermanentEffectModule, setShowPermanentEffectModule] = useState(false)
     const [showTimePassModule, setShowTimePassModule] = useState(false)
+    
     function onTimeInput(event, hourMinute = "hour") {
         var input = event.target.value
 

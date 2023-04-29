@@ -3,6 +3,7 @@ try:
 except ModuleNotFoundError:
     from db_functions import *
 import psycopg2
+from psycopg2 import sql
 conn = psycopg2.connect("dbname=dndtoolkitdb user=olivia")
 
 
@@ -95,7 +96,7 @@ def get_player_stats(charid):
     # print(charid)
     # print("get_player_stats", charid)
     
-    stats_dict = get_character_stats(charid)
+    stats_dict = get_character_stats(charid) # status_effects, max_stats, level
     # print(stats_dict)
     if stats_dict == False:
         
@@ -117,23 +118,21 @@ def get_player_stats(charid):
     if cumulative_stats is not None:
         stats_dict["gold"] = cumulative_stats["gold"]
         stats_dict["exp"] = cumulative_stats["exp"]
-
-    stat_queries = [
-        """SELECT HP, NAME, DESCRIPTION, DURATION, DURATION_REMAINING FROM STATUS_EFFECTS WHERE CHARACTERID=(%s) AND HP != 0""",
-        """SELECT STR, NAME, DESCRIPTION, DURATION, DURATION_REMAINING FROM STATUS_EFFECTS WHERE CHARACTERID=(%s) AND STR != 0""",
-        """SELECT DEX, NAME, DESCRIPTION, DURATION, DURATION_REMAINING FROM STATUS_EFFECTS WHERE CHARACTERID=(%s) AND DEX != 0""",
-        """SELECT CON, NAME, DESCRIPTION, DURATION, DURATION_REMAINING FROM STATUS_EFFECTS WHERE CHARACTERID=(%s) AND CON != 0""",
-        """SELECT INT, NAME, DESCRIPTION, DURATION, DURATION_REMAINING FROM STATUS_EFFECTS WHERE CHARACTERID=(%s) AND INT != 0""",
-        """SELECT WIS, NAME, DESCRIPTION, DURATION, DURATION_REMAINING FROM STATUS_EFFECTS WHERE CHARACTERID=(%s) AND WIS != 0""",
-        """SELECT CHA, NAME, DESCRIPTION, DURATION, DURATION_REMAINING FROM STATUS_EFFECTS WHERE CHARACTERID=(%s) AND CHA != 0""",
-    ]
     status_breakdown = {}
     for i in range(7):
-        status_breakdown[stat_order_list[i]] = get_status_effects_of(stat_queries[i], charid)
-    # print(status_breakdown)
+        status_breakdown[stat_order_list[i]] = get_status_effects_of(stat_order_list_lower[i], charid)
     stats_dict["stat_breakdown"] = status_breakdown
+
+    # add regenerative stats to stats_dict
+    q2 = '''
+    SELECT LOST_HP FROM REGENERATIVE_STATS WHERE CHARACTERID=(%s);'''
+    cur.execute(q2, (charid,))
+    regenerative_stats = cur.fetchone()
+    lost_hp = regenerative_stats["lost_hp"]
+    stats_dict["lost_hp"] = lost_hp
     cur.close()
-    return stats_dict
+    return stats_dict # status_effects, max_stats, level, gold, exp, stat_breakdown, lost_hp
+
 
 def get_all_player_info(charid):
     # print("playerinfo")
@@ -149,14 +148,12 @@ def get_all_player_info(charid):
     if not inventory["inventory"]:
         return player_stats
     player_stats["inventory"] = inventory["inventory"]
-    
-    return player_stats
+    print_block(player_stats, "player_stats")
+    return player_stats # status_effects, max_stats, level, gold, exp, stat_breakdown, lost_hp, inventory
   
-def get_status_effects_of(statQuery, charid, verbose=False):
-    # cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
-    # q1 = sql.SQL("""SELECT "WIS" FROM STATUS_EFFECTS WHERE CHARACTERID=(%s) AND WIS != 0""")
-    # q1 = sql.SQL("""SELECT {}, NAME, DESCRIPTION, DURATION, DURATION_REMAINING FROM STATUS_EFFECTS WHERE CHARACTERID=(%s) AND {} != 0""").format(sql.Identifier(stat), sql.Identifier(stat))
-    q1 = statQuery
+def get_status_effects_of(stat, charid, verbose=False):
+
+    q1 = sql.SQL("""SELECT {}, NAME, DESCRIPTION, DURATION, DURATION_REMAINING FROM STATUS_EFFECTS WHERE CHARACTERID=(%s) AND {} != 0""").format(sql.Identifier(stat), sql.Identifier(stat))
     cur = conn.cursor()
     cur.execute(q1,  (charid,))
     status_effects_tuple_list = cur.fetchall()
