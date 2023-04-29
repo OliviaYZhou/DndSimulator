@@ -87,7 +87,8 @@ class CharacterStatsCard extends React.Component {
         for (const key in this.state.max_stats) {
             newCurrStats[key] = this.state.max_stats[key] + this.state.status_effects[key]
         }
-        newCurrStats["currHP"] = newCurrStats["HP"] + newCurrStats["CON"] - this.state.lost_hp
+        newCurrStats["currHP"] =
+            this.state.max_stats["HP"] + newCurrStats["CON"] - this.state.lost_hp
         console.log("newCurrStats", newCurrStats)
         this.setState({ current_stats: newCurrStats })
     }
@@ -214,7 +215,7 @@ class CharacterStatsCard extends React.Component {
                         }}>
                         {" "}
                         HP: {this.state.current_stats["currHP"]}/
-                        {this.state.current_stats["HP"] + this.state.current_stats["CON"]}{" "}
+                        {this.state.max_stats["HP"] + this.state.current_stats["CON"]}{" "}
                     </div>
                 </div>
 
