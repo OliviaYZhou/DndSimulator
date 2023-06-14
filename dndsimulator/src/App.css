@@ -32,7 +32,7 @@ body {
     /* background-image: url("../../dndsimulator/public/assets/Art/DNDTK_revised_dracowithsword.png"); */
     /* height: 100%; */
     height: 50%;
-    width: fit-content;
+    /* width: fit-content; */
     z-index: 0;
 }
 #border {
