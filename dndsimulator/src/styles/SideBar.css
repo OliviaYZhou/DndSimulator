@@ -8,22 +8,27 @@
     top: 5%;
     bottom: 5%;
 
-    background-color: rgb(227, 225, 225);
-    border-radius: 10px;
+    background-color: rgb(227, 225, 225, 0);
+    /* border-radius: 10px; */
     font-size: small;
     font-weight: bold;
     display: grid;
     grid-template-rows: 1fr;
-    border-style: solid;
+    /* border-style: solid; */
     border-color: white;
     z-index: inherit;
+    background-image: url("../../public/DNDTK_revised_sidebar.png");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 .vertical-grid {
     display: grid;
     height: 100%;
     /* border-radius: 20px; */
     padding: 5px;
-    grid-template-rows: repeat(8, 1fr);
+    /* 15px 5px 15px 5px; */
+    grid-template-rows: 1fr repeat(8, 2fr) 1fr;
 }
 .time-grid {
     display: grid;
@@ -77,3 +82,8 @@
     min-height: 100px;
     min-width: 150px;
 }
+/* .eighthSidebarChild {
+    top: 85%;
+    min-height: 100px;
+    min-width: 150px;
+} */

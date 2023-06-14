@@ -167,9 +167,12 @@ class DiceBoard extends React.Component {
                 <div
                     className="dice-module roundedbox"
                     style={{
+                        // backgroundColor: this.state.isRolling
+                        //     ? "rgb(201, 200, 200)"
+                        //     : "rgb(236, 236, 236)",
                         backgroundColor: this.state.isRolling
-                            ? "rgb(201, 200, 200)"
-                            : "rgb(236, 236, 236)",
+                            ? "rgb(245, 222, 179)"
+                            : "rgb(179, 144, 118)",
                     }}>
                     {/* <div className='row wrapper'> */}
                     {/* <div className="add-dice ">

@@ -3,3 +3,14 @@
     display: grid;
     padding: 10% 0%;
 }
+
+/* @media screen and (orientation: landscape) {
+    .session-block {
+    }
+} */
+
+@media screen and (orientation: portrait) {
+    .session-block {
+        display: none;
+    }
+}

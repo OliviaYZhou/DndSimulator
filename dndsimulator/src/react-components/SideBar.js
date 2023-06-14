@@ -15,7 +15,7 @@ function SideBar(props) {
     const [showStatusEffectModule, setShowStatusEffectModule] = useState(false)
     const [showPermanentEffectModule, setShowPermanentEffectModule] = useState(false)
     const [showTimePassModule, setShowTimePassModule] = useState(false)
-    
+
     function onTimeInput(event, hourMinute = "hour") {
         var input = event.target.value
 
@@ -188,6 +188,7 @@ function SideBar(props) {
         <div className="floaty">
             <div id="side-bar">
                 <div className="vertical-grid">
+                    <div></div>
                     <div className="time-grid">
                         <div>Session: {currentSession}</div>
                         <div>
@@ -229,7 +230,7 @@ function SideBar(props) {
                         Time Pass
                     </button>
                     <button
-                        className="hoverable"
+                        className="hoverable eighthSidebarChild"
                         onClick={() => {
                             setCurrentSession(currentSession + 1)
                         }}>

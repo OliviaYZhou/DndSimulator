@@ -19,14 +19,21 @@ function CharacterArea(props) {
     }, [])
 
     return (
-        <div className="character-area scrollable">
-            <ul className="characterWSList">
+        <div className="character-area">
+            <img src="/assets/Art/DNDTK_revised_characterboard.png" id="characterAreaBG" />
+            {/* <div className="padded "> */}
+            <ul className="characterWSList scrollable-y">
                 {characterList.map((character, index) => (
                     <li>
-                        <CharacterWorkSpace characterid={character} socket={props.socket} boardIndex={index} />
+                        <CharacterWorkSpace
+                            characterid={character}
+                            socket={props.socket}
+                            boardIndex={index}
+                        />
                     </li>
                 ))}
             </ul>
+            {/* </div> */}
         </div>
     )
 }

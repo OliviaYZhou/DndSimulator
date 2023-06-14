@@ -3,7 +3,8 @@
     height: 400px;
     align-items: center;
     text-align: center;
-    background-color: rgb(236, 236, 236);
+    /* background-color: rgb(236, 236, 236); */
+    background-color: rgb(179, 144, 118);
     padding: 5px;
     width: 275px;
     border-radius: 3%;
@@ -132,4 +133,5 @@
 #deleteCharacterButton {
     background-image: url("../../public/skullicon.png");
     background-size: contain;
+    background-repeat: no-repeat;
 }

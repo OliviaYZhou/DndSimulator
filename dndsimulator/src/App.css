@@ -1,31 +1,51 @@
 /* #root {
 
 } */
+body {
+    width: 100vw;
+}
 #App {
     height: 100vh;
     margin-left: calc(3% + 90px);
     margin-top: 2%;
 }
-/* #root {
-    background-image: url("../../assets/Art/DNDTK-background.png");
-    background-position: center;
+#root {
+    /* background-image: url("../../dndsimulator/public/assets/Art/DNDTK_revised_background.png"); */
+    /* background-position: fixed; */
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-} */
+}
+
 #background {
     width: 100%;
     position: fixed;
     top: 0px;
     right: 0px;
     height: 100%;
-    /* object-fit: contain; */
+    z-index: -2;
+}
+#draco {
+    position: fixed;
+    bottom: 10px;
+    right: 20px;
+    /* background-image: url("../../dndsimulator/public/assets/Art/DNDTK_revised_dracowithsword.png"); */
+    /* height: 100%; */
+    height: 50%;
+    width: fit-content;
+    z-index: 0;
+}
+#border {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    right: 0px;
     z-index: -1;
-    opacity: 0.3;
 }
 
 .main-grid {
-    max-height: 100%;
+    max-height: 97%;
     display: grid;
     grid-template-columns: 3fr 1fr;
     grid-template-rows: 5fr 4fr;
@@ -39,10 +59,19 @@
 
 @media screen and (orientation: portrait) {
     .main-grid {
-        /* grid-template-columns: 1fr; */
+        margin-right: 20px;
+        grid-template-columns: 1fr;
         grid-template-rows: 1fr 1fr;
         grid-auto-flow: row;
         grid-auto-rows: 50%;
+    }
+    #draco {
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+
+        z-index: -1;
     }
 }
 

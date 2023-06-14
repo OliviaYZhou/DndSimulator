@@ -23,14 +23,16 @@ class App extends React.Component {
     render() {
         return (
             <body>
-                <img src="/assets/Art/DNDTK-background.png" id="background" />
+                <img src="/assets/Art/DNDTK_revised_background.png" id="background" />
+                <img id="border" src="/assets/Art/DNDTK_revised_screenborder.png" />
+                <img id="draco" src="/assets/Art/DNDTK_revised_dracowithsword.png" />
                 <SideBar currentTurn={4} />
                 <div id="App">
                     <div className="main-grid">
                         <CharacterArea socket={socket} />
                         <Session currentTurn={4} />
                         <DiceArea socket={socket} />
-                        <Directions />
+                        {/* <Directions /> */}
                     </div>
                 </div>
             </body>

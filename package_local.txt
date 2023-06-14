@@ -3,6 +3,7 @@
 Working directory = 
 cd ~/actions-runner/_work/DndSimulator/DndSimulator
 cd ~/actions-runner/_work/DndSimulator/DndSimulator/dndsimulator/src
+cd ~/actions-runner/_work/DndSimulator/DndSimulator/database
 
 Also change app.js
 
@@ -20,3 +21,10 @@ http://52.14.89.21/
 
 Access-Control-Allow-Origin: *
  
+
+
+
+OPEN PSQL CONSOLE:
+
+sudo -i -u postgres  
+psql -d dndtoolkit
